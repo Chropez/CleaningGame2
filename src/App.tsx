@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import "typeface-roboto"; // Used by Material Design
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
+        <CssBaseline />
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
