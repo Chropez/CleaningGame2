@@ -22,7 +22,6 @@ const HomeRouteComponent: FunctionComponent = () => {
 
   return (
     <div>
-      HOME
       <div onClick={() => dispatch(addText())}>{text}</div>
     </div>
   );

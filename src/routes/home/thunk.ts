@@ -7,6 +7,6 @@ export default function addText(): ThunkAction<{}, {}, {}, AnyAction> {
   return (dispatch: ThunkDispatch<{}, {}, AnyAction>) =>
     dispatch({
       type: 'ADD_TEXT',
-      payload: 'Hooky booiiii'
+      payload: 'Hooky booiiiiadad cool it works'
     });
 }
