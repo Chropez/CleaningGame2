@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    "paths": {
-      "src/*": ["*"]
-    },
     "baseUrl": "src/",
     "rootDir": "src",
     "target": "es5",
