@@ -1,0 +1,31 @@
+{
+  "extends": ["tslint-config-airbnb"],
+  "rules": {
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-pascal-case"
+    ],
+    "no-boolean-literal-compare": true,
+    "no-duplicate-imports": false,
+    "jsx-no-lambda": false,
+    "import-name": false,
+    "no-console": {
+      "severity": "warning",
+      "options": ["debug", "info", "log", "time", "timeEnd", "trace"]
+    },
+    "no-debugger": {
+      "severity": "warning"
+    },
+    "prefer-const": false,
+    "ordered-imports": true
+  },
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts",
+      "coverage/lcov-report/*.js"
+    ]
+  }
+}

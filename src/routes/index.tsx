@@ -4,16 +4,16 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 // import HomeRouteComponent from 'routes/home';
 import LoginRouteComponent from 'routes/account/routes/login';
 
-const RoutesComponent: FunctionComponent<{}> = () => {
+let RoutesComponent: FunctionComponent<{}> = () => {
   return (
     <Switch>
       {/* <Route exact={true} path='/' component={() => <HomeRouteComponent />} /> */}
       <Route
         exact={true}
-        path='/login'
+        path="/login"
         component={() => <LoginRouteComponent />}
       />
-      <Route render={() => <Redirect to='/login' />} />
+      <Route render={() => <Redirect to="/login" />} />
     </Switch>
   );
 };

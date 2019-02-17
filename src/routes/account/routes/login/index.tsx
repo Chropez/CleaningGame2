@@ -1,9 +1,8 @@
-import * as React from 'react';
-import { FunctionComponent } from 'react';
-import styled from 'themes/styled';
-// import Logo from 'components/Logo';
 import { withTheme } from '@material-ui/core/styles';
 import Logo from 'components/Logo';
+import { FunctionComponent } from 'react';
+import * as React from 'react';
+import styled from 'themes/styled';
 
 const Container = withTheme()(styled.div`
   background-image: linear-gradient(

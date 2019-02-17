@@ -6,7 +6,7 @@ import rootReducer, { IApplicationState } from 'store/root-reducer';
 const configureStore = () => {
   const store = createStore(
     rootReducer,
-    applyMiddleware(thunk as ThunkMiddleware<IApplicationState>)
+    applyMiddleware(thunk as ThunkMiddleware<IApplicationState>),
   );
 
   if (process.env.NODE_ENV !== 'production') {

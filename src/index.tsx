@@ -1,16 +1,16 @@
+import { MuiThemeProvider } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import React, { FunctionComponent } from 'react';
 import ReactDOM from 'react-dom';
-import * as serviceWorker from './serviceWorker';
-import 'typeface-roboto'; // Used by Material Design
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { BrowserRouter } from 'react-router-dom';
+import { StoreContext } from 'redux-react-hook';
+import Routes from 'routes';
+import Application from 'routes/application';
 import GlobalTheme from 'themes/global-theme';
 import mainTheme from 'themes/main-theme';
-import { MuiThemeProvider } from '@material-ui/core';
-import Routes from 'routes';
-import { BrowserRouter } from 'react-router-dom';
+import 'typeface-roboto'; // Used by Material Design
+import * as serviceWorker from './serviceWorker';
 import configureStore from './store';
-import { StoreContext } from 'redux-react-hook';
-import Application from 'routes/application';
 
 const { Provider } = StoreContext;
 const store = configureStore();
@@ -28,7 +28,7 @@ const render = (RoutesComponent: FunctionComponent) => {
         </BrowserRouter>
       </MuiThemeProvider>
     </Provider>,
-    document.getElementById('root')
+    document.getElementById('root'),
   );
 };
 

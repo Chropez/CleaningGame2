@@ -22,7 +22,7 @@ export default combineReducers<IApplicationState>({
       case 'ADD_TEXT': {
         return {
           ...state,
-          text: state.text + ' <3 ' + action.payload
+          text: `${state.text} <3 ${action.payload}`,
         };
       }
 
@@ -30,5 +30,5 @@ export default combineReducers<IApplicationState>({
         return state;
       }
     }
-  }
+  },
 });
