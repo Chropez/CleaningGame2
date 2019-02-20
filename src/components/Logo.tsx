@@ -1,14 +1,14 @@
-import { withTheme } from '@material-ui/core/styles';
 import * as React from 'react';
+import { withTheme } from 'styled-components';
 import styled from 'themes/styled';
 
-const StyledLogo = withTheme()(
+const StyledLogo = withTheme(
   styled.h1`
     color: ${({
-      theme: {
-        palette: { getContrastText, primary },
-      },
-    }) => getContrastText(primary.main)};
+    theme: {
+      palette: { getContrastText, primary },
+    },
+  }) => getContrastText(primary.main)};
     font-size: 3.75rem;
     font-weight: 300;
     line-height: 1;

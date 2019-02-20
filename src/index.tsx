@@ -1,4 +1,3 @@
-import { MuiThemeProvider } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import React, { FunctionComponent } from 'react';
 import ReactDOM from 'react-dom';
@@ -8,6 +7,7 @@ import Routes from 'routes';
 import Application from 'routes/application';
 import GlobalTheme from 'themes/global-theme';
 import mainTheme from 'themes/main-theme';
+import { ThemeProvider } from 'themes/styled';
 import 'typeface-roboto'; // Used by Material Design
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store';
@@ -20,13 +20,13 @@ const render = (RoutesComponent: FunctionComponent) => {
     <Provider value={store}>
       <CssBaseline />
       <GlobalTheme />
-      <MuiThemeProvider theme={mainTheme}>
+      <ThemeProvider theme={mainTheme}>
         <BrowserRouter>
           <Application>
             <RoutesComponent />
           </Application>
         </BrowserRouter>
-      </MuiThemeProvider>
+      </ThemeProvider>
     </Provider>,
     document.getElementById('root'),
   );

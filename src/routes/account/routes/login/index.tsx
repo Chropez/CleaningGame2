@@ -1,37 +1,13 @@
-import { withTheme } from '@material-ui/core/styles';
+import ColoredWrapper from 'components/ColoredWrapper';
 import Logo from 'components/Logo';
 import { FunctionComponent } from 'react';
 import * as React from 'react';
-import styled from 'themes/styled';
-
-const Container = withTheme()(styled.div`
-  background-image: linear-gradient(
-    to right bottom,
-    #62a3ff,
-    #579af6,
-    #4b91ed,
-    #3e89e5,
-    #3080dc,
-    #2779d4,
-    #1e71cc,
-    #116ac4,
-    #0d62bb,
-    #085ab1,
-    #0452a8,
-    #004a9f
-  );
-
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`);
 
 const LoginRouteComponent: FunctionComponent = () => {
   return (
-    <Container>
+    <ColoredWrapper>
       <Logo />
-    </Container>
+    </ColoredWrapper>
   );
 };
 

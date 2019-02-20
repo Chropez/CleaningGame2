@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { FunctionComponent } from 'react';
-import styled from 'styled-components';
+import styled from 'themes/styled';
 
 const Container = styled.div`
-  display: grid;
-  flex: 1 0 100%;
+  display: flex;
+  flex: 1 1 auto;
+  height: 100%;
 `;
 
 const Application: FunctionComponent = ({ children }) => (

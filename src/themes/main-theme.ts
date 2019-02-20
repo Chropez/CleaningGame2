@@ -1,12 +1,12 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme, Theme } from '@material-ui/core/styles';
 
-const mainTheme = createMuiTheme({
+const muiTheme = createMuiTheme({
   typography: {
     useNextVariants: true,
   },
   palette: {
     primary: {
-      main: '#1675d1',
+      main: '#1e88e5',
       light: '#62a3ff',
       dark: '#004a9f',
       contrastText: '#fff',
@@ -19,5 +19,32 @@ const mainTheme = createMuiTheme({
     },
   },
 });
+
+export interface MainTheme extends Theme {
+  other: {
+    bgImage: string;
+  };
+}
+
+const mainTheme: MainTheme = {
+  ...muiTheme,
+  other: {
+    bgImage: ` linear-gradient(
+      to right bottom,
+      #62a3ff,
+      #579af6,
+      #4b91ed,
+      #3e89e5,
+      #3080dc,
+      #2779d4,
+      #1e71cc,
+      #116ac4,
+      #0d62bb,
+      #085ab1,
+      #0452a8,
+      #004a9f
+    );`,
+  },
+};
 
 export default mainTheme;
