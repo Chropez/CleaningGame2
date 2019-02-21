@@ -1,14 +1,15 @@
 import { Link, Typography } from '@material-ui/core';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import { TypographyProps } from '@material-ui/core/Typography';
-import ColoredWrapper from 'components/ColoredWrapper';
 import Logo from 'components/Logo';
+import SecondaryBackground from 'components/SecondaryBackground';
 import Google from 'mdi-material-ui/Google';
+import FacebookBox from 'mdi-material-ui/FacebookBox';
 import * as React from 'react';
 import { FunctionComponent, SFC } from 'react';
 import styled from 'themes/styled';
 
-const Wrapper = styled(ColoredWrapper)`
+const Wrapper = styled(SecondaryBackground)`
   height: 100%;
   display: flex;
   flex: 1 1 auto;
@@ -37,30 +38,40 @@ const IconWrapper = styled.div`
   display: inline-flex;
 `;
 
-const GoogleButton = styled(Button as SFC<ButtonProps>)`
-  width: 20rem;
+const LoginButton = styled(Button as SFC<ButtonProps>)`
+  width: 95%;
+  max-width: 20rem;
 
-  &.google-button {
+  &.login-button {
     margin-bottom: 1rem;
   }
 `;
 
 const LoginWithGoogleButton = () => (
-  <GoogleButton className='google-button' color='default' variant='contained'>
+  <LoginButton className="login-button" color="default" variant="contained">
     <IconWrapper>
       <Google />
     </IconWrapper>
     Logga in med Google
-  </GoogleButton>
+  </LoginButton>
+);
+
+const LoginWithFacebookButton = () => (
+  <LoginButton className="login-button" color="default" variant="contained">
+    <IconWrapper>
+      <FacebookBox />
+    </IconWrapper>
+    Logga in med Facebook
+  </LoginButton>
 );
 
 const CreateAccountText = styled(Typography as SFC<TypographyProps>)`
   &.create-account__text {
-    color: white;
+    color: ${props => props.theme.secondaryBackground.textColor};
   }
 
   a.create-account__link {
-    color: #90ff7e;
+    color: ${props => props.theme.secondaryBackground.linkColor};
   }
 `;
 
@@ -71,13 +82,14 @@ const AccountRouteComponent: FunctionComponent = () => (
     </Header>
     <Content>
       <LoginWithGoogleButton />
+      <LoginWithFacebookButton />
       <CreateAccountText
-        className='create-account__text'
-        color='default'
-        variant='body2'
+        className="create-account__text"
+        color="default"
+        variant="body2"
       >
         Har du inte ett konto?&nbsp;
-        <Link className='create-account__link' href='/account/create'>
+        <Link className="create-account__link" href="/account/create">
           Skapa ett här
         </Link>
       </CreateAccountText>

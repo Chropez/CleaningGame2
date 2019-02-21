@@ -21,14 +21,16 @@ const muiTheme = createMuiTheme({
 });
 
 export interface MainTheme extends Theme {
-  other: {
+  secondaryBackground: {
     bgImage: string;
+    linkColor: string;
+    textColor: string;
   };
 }
 
 const mainTheme: MainTheme = {
   ...muiTheme,
-  other: {
+  secondaryBackground: {
     bgImage: ` linear-gradient(
       to right bottom,
       #62a3ff,
@@ -44,6 +46,8 @@ const mainTheme: MainTheme = {
       #0452a8,
       #004a9f
     );`,
+    linkColor: '#90ff7e',
+    textColor: '#fff',
   },
 };
 
