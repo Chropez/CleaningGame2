@@ -8,6 +8,7 @@ import Application from 'routes/application';
 import GlobalTheme from 'themes/global-theme';
 import mainTheme from 'themes/main-theme';
 import { ThemeProvider } from 'themes/styled';
+import 'typeface-leckerli-one'; // Used logo
 import 'typeface-roboto'; // Used by Material Design
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store';

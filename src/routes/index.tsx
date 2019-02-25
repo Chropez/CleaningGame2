@@ -1,18 +1,12 @@
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import LoginRoute from 'routes/account/routes/login';
-import AccountRoute from './account/AccountRoute';
+import AccountRoute from './account';
 
-let Routes: FunctionComponent<{}> = () => {
+const Routes: FunctionComponent<{}> = () => {
   return (
     <Switch>
-      <Route exact={true} path="/account" component={() => <AccountRoute />} />
-      <Route
-        exact={true}
-        path="/account/login"
-        component={() => <LoginRoute />}
-      />
+      <Route path="/account" component={() => <AccountRoute />} />
       <Route render={() => <Redirect to="/account" />} />
     </Switch>
   );

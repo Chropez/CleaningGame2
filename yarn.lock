@@ -10014,6 +10014,11 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
+typeface-leckerli-one@^0.0.54:
+  version "0.0.54"
+  resolved "https://registry.npmjs.org/typeface-leckerli-one/-/typeface-leckerli-one-0.0.54.tgz#6d19b51590c336551a340b581be6a3a41d8257d1"
+  integrity sha512-PIlFnU1iagLTUuxy1uAYUm3SulpqYIwsfhmp7o5rxNXx9wHTUKv1x+EGUHfbwkLg2oO0PFjg0ROtgunTZotoLw==
+
 typeface-roboto@^0.0.54:
   version "0.0.54"
   resolved "https://registry.npmjs.org/typeface-roboto/-/typeface-roboto-0.0.54.tgz#8f02c9a18d1cfa7f49381a6ff0d21ff061f38ad2"

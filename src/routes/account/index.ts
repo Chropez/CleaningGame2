@@ -1,1 +1,1 @@
-export { default as AccountRoute } from './AccountRoute';
+export { default } from './AccountRoute';
