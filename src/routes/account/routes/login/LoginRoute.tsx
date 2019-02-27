@@ -18,6 +18,14 @@ const CreateAccountText = styled(Typography as SFC<TypographyProps>)`
   }
 `;
 
+const GoogleColoredIcon = styled(Google as FunctionComponent)`
+  color: #3f86f7;
+`;
+
+const FacebookColoredIcon = styled(FacebookBox as FunctionComponent)`
+  color: #4168b4;
+`;
+
 const LoginButtonWrapper = styled.div`
   flex-direction: column;
   flex: initial;
@@ -36,12 +44,12 @@ const LoginRoute: FunctionComponent = () => (
     <LoginButtonWrapper>
       <ThirdPartyButton
         className="login-button"
-        icon={<Google />}
+        icon={<GoogleColoredIcon />}
         text="Logga in med Google"
       />
       <ThirdPartyButton
         className="login-button"
-        icon={<FacebookBox />}
+        icon={<FacebookColoredIcon />}
         text="Logga in med Facebook"
       />
     </LoginButtonWrapper>

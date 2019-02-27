@@ -4,8 +4,12 @@ import { FunctionComponent, memo, ReactNode, SFC } from 'react';
 import styled from 'themes/styled';
 
 const IconWrapper = styled.div`
-  margin-right: 1rem;
+  flex: 0 1 auto;
   display: inline-flex;
+`;
+
+const TextWrapper = styled.div`
+  flex: 1 0 auto;
 `;
 
 const ThirdPartyButtonStyled = styled(Button as SFC<ButtonProps>)`
@@ -31,7 +35,7 @@ const ThirdPartyButton: FunctionComponent<Props> = ({
     variant="contained"
   >
     <IconWrapper>{icon}</IconWrapper>
-    <div>{text}</div>
+    <TextWrapper>{text}</TextWrapper>
   </ThirdPartyButtonStyled>
 );
 
