@@ -1,5 +1,4 @@
 import { Typography } from '@material-ui/core';
-import Button, { ButtonProps } from '@material-ui/core/Button';
 import { TypographyProps } from '@material-ui/core/Typography';
 import Link from 'components/Link';
 import FacebookBox from 'mdi-material-ui/FacebookBox';
@@ -7,38 +6,7 @@ import Google from 'mdi-material-ui/Google';
 import * as React from 'react';
 import { FunctionComponent, SFC } from 'react';
 import styled from 'themes/styled';
-
-const IconWrapper = styled.div`
-  margin-right: 1rem;
-  display: inline-flex;
-`;
-
-const LoginButton = styled(Button as SFC<ButtonProps>)`
-  width: 95%;
-  max-width: 20rem;
-
-  &.login-button {
-    margin-bottom: 1rem;
-  }
-`;
-
-const LoginWithGoogleButton = () => (
-  <LoginButton className="login-button" color="default" variant="contained">
-    <IconWrapper>
-      <Google />
-    </IconWrapper>
-    Logga in med Google
-  </LoginButton>
-);
-
-const LoginWithFacebookButton = () => (
-  <LoginButton className="login-button" color="default" variant="contained">
-    <IconWrapper>
-      <FacebookBox />
-    </IconWrapper>
-    Logga in med Facebook
-  </LoginButton>
-);
+import ThirdPartyButton from '../../components/ThirdPartyButton';
 
 const CreateAccountText = styled(Typography as SFC<TypographyProps>)`
   &.create-account__text {
@@ -50,10 +18,34 @@ const CreateAccountText = styled(Typography as SFC<TypographyProps>)`
   }
 `;
 
+const LoginButtonWrapper = styled.div`
+  flex-direction: column;
+  flex: initial;
+  display: flex;
+  width: 95%;
+  align-items: center;
+
+  .login-button {
+    margin-bottom: 0.7rem;
+    max-width: 20rem;
+  }
+`;
+
 const LoginRoute: FunctionComponent = () => (
   <>
-    <LoginWithGoogleButton />
-    <LoginWithFacebookButton />
+    <LoginButtonWrapper>
+      <ThirdPartyButton
+        className="login-button"
+        icon={<Google />}
+        text="Logga in med Google"
+      />
+      <ThirdPartyButton
+        className="login-button"
+        icon={<FacebookBox />}
+        text="Logga in med Facebook"
+      />
+    </LoginButtonWrapper>
+
     <CreateAccountText
       className="create-account__text"
       color="default"
@@ -64,7 +56,6 @@ const LoginRoute: FunctionComponent = () => (
         color="primary"
         className="create-account__link"
         href="/account/sign-up"
-        component={undefined}
       >
         Skapa ett här
       </Link>
