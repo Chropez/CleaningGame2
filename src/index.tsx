@@ -1,4 +1,5 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { initializeFirebase } from 'config/firebase';
 import React, { FunctionComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -10,8 +11,10 @@ import mainTheme from 'themes/main-theme';
 import { ThemeProvider } from 'themes/styled';
 import 'typeface-leckerli-one'; // Used logo
 import 'typeface-roboto'; // Used by Material Design
+import configureStore from './config/redux';
 import * as serviceWorker from './serviceWorker';
-import configureStore from './store';
+
+initializeFirebase();
 
 const { Provider } = StoreContext;
 const store = configureStore();

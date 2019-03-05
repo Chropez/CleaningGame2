@@ -1,28 +1,23 @@
 import * as React from 'react';
 import { FunctionComponent } from 'react';
-import { AnyAction } from 'redux';
 import { useDispatch, useMappedState } from 'redux-react-hook';
-import { ThunkDispatch } from 'redux-thunk';
+import { AppThunkDispatch } from 'store';
 import { IApplicationState } from 'store/root-reducer';
-import addText from './thunk';
+import { addText, deleteText } from './duck';
 
-interface IState {
-  login: {
-    text: string;
-  };
-}
-
-const mapState = (state: IState) => ({
-  text: state.login.text,
+const mapState = (state: IApplicationState) => ({
+  text: state.home.greet,
 });
 
 const HomeRouteComponent: FunctionComponent = () => {
   let { text } = useMappedState(mapState);
-  let dispatch: ThunkDispatch<IApplicationState, {}, AnyAction> = useDispatch();
+  let dispatch: AppThunkDispatch = useDispatch();
 
   return (
     <div>
-      <div onClick={() => dispatch(addText())}>{text}</div>
+      <div>Hello {text}.</div>
+      <button onClick={() => dispatch(addText())}>Add text</button>
+      <button onClick={() => dispatch(deleteText())}>DELETE</button>
     </div>
   );
 };
