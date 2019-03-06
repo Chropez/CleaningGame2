@@ -1,6 +1,6 @@
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import * as React from 'react';
-import { FunctionComponent, memo, ReactNode, SFC } from 'react';
+import { FunctionComponent, ReactNode, SFC } from 'react';
 import styled from 'themes/styled';
 
 const IconWrapper = styled.div`
@@ -18,7 +18,7 @@ const ThirdPartyButtonStyled = styled(Button as SFC<ButtonProps>)`
   }
 `;
 
-interface Props {
+interface Props extends ButtonProps {
   className?: string;
   icon: ReactNode;
   text: string;
@@ -28,15 +28,17 @@ const ThirdPartyButton: FunctionComponent<Props> = ({
   className,
   icon,
   text,
+  ...rest
 }) => (
   <ThirdPartyButtonStyled
     className={`${className} thirdparty-button`}
     color="default"
     variant="contained"
+    {...rest}
   >
     <IconWrapper>{icon}</IconWrapper>
     <TextWrapper>{text}</TextWrapper>
   </ThirdPartyButtonStyled>
 );
 
-export default memo(ThirdPartyButton);
+export default ThirdPartyButton;

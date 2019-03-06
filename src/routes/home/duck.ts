@@ -27,7 +27,7 @@ export const addText: AppActionCreator<AddTextAction> = (newText: string) => (
 
   console.log(state);
   console.log(fb);
-  console.log(fs);
+  console.log(fs.collection);
 
   dispatch({
     type: HomeActionTypes.AddText,

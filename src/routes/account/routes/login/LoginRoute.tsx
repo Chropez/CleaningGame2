@@ -3,12 +3,15 @@ import { TypographyProps } from '@material-ui/core/Typography';
 import Link from 'components/Link';
 import * as React from 'react';
 import { FunctionComponent, SFC } from 'react';
+import { useDispatch } from 'redux-react-hook';
+import { AppThunkDispatch } from 'store';
 import styled from 'themes/styled';
 import ThirdPartyButton from '../../components/ThirdPartyButton';
 import {
   FacebookColoredIcon,
   GoogleColoredIcon,
 } from '../../components/ThirdPartyIcons';
+import { logInWithFacebook, logInWithGoogle } from './duck';
 
 const CreateAccountText = styled(Typography as SFC<TypographyProps>)`
   &.create-account__text {
@@ -33,36 +36,50 @@ const LoginButtonWrapper = styled.div`
   }
 `;
 
-const LoginRoute: FunctionComponent = () => (
-  <>
-    <LoginButtonWrapper>
-      <ThirdPartyButton
-        className="login-button"
-        icon={<GoogleColoredIcon />}
-        text="Logga in med Google"
-      />
-      <ThirdPartyButton
-        className="login-button"
-        icon={<FacebookColoredIcon />}
-        text="Logga in med Facebook"
-      />
-    </LoginButtonWrapper>
+const LoginRoute: FunctionComponent = () => {
+  let dispatch: AppThunkDispatch = useDispatch();
 
-    <CreateAccountText
-      className="create-account__text"
-      color="default"
-      variant="body2"
-    >
-      Har du inte ett konto?&nbsp;
-      <Link
-        color="primary"
-        className="create-account__link"
-        href="/account/sign-up"
+  function handleLogInWithGoogleClick() {
+    dispatch(logInWithGoogle());
+  }
+
+  function handleLogInWithFacebookClick() {
+    dispatch(logInWithFacebook());
+  }
+
+  return (
+    <>
+      <LoginButtonWrapper>
+        <ThirdPartyButton
+          className="login-button"
+          icon={<GoogleColoredIcon />}
+          text="Logga in med Google"
+          onClick={handleLogInWithGoogleClick}
+        />
+        <ThirdPartyButton
+          className="login-button"
+          icon={<FacebookColoredIcon />}
+          text="Logga in med Facebook"
+          onClick={handleLogInWithFacebookClick}
+        />
+      </LoginButtonWrapper>
+
+      <CreateAccountText
+        className="create-account__text"
+        color="default"
+        variant="body2"
       >
-        Skapa ett här
-      </Link>
-    </CreateAccountText>
-  </>
-);
+        Har du inte ett konto?&nbsp;
+        <Link
+          color="primary"
+          className="create-account__link"
+          href="/account/sign-up"
+        >
+          Skapa ett här
+        </Link>
+      </CreateAccountText>
+    </>
+  );
+};
 
 export default LoginRoute;

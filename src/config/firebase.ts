@@ -1,4 +1,5 @@
 import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import 'firebase/firestore';
 import { reactReduxFirebase } from 'react-redux-firebase';
 import { reduxFirestore } from 'redux-firestore';
@@ -12,7 +13,7 @@ const firebaseEnhancers = [
   reduxFirestore(firebase),
   reactReduxFirebase(firebase, {
     userProfile: 'users',
-    useFiresoreForProfile: true,
+    useFirestoreForProfile: true,
   }),
 ];
 

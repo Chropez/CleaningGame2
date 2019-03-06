@@ -1,24 +1,21 @@
-import { AnyAction, applyMiddleware, compose, createStore } from 'redux';
-import thunk, { ThunkAction } from 'redux-thunk';
-
+import firebase from 'firebase';
 import { AppState } from 'react-native';
 import { getFirebase } from 'react-redux-firebase';
+import { AnyAction, applyMiddleware, compose, createStore } from 'redux';
 import { getFirestore } from 'redux-firestore';
+import thunk, { ThunkAction } from 'redux-thunk';
 import rootReducer from 'store/root-reducer';
 import { firebaseEnhancers } from './firebase';
 
 export interface ExtraArguments {
-  getFirebase: any;
-  getFirestore: any;
+  getFirebase: () => any; // typeof firebase;
+  getFirestore: () => firebase.firestore.Firestore;
 }
 
 const configureStore = () => {
   const store = createStore(
     rootReducer,
-    // initialState,
-    {},
     compose(
-      // applyMiddleware(thunk as ThunkMiddleware<IApplicationState>),
       applyMiddleware(
         thunk.withExtraArgument({ getFirebase, getFirestore } as ExtraArguments),
       ),
