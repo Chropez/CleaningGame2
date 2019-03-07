@@ -1,25 +1,28 @@
-import { AnyAction } from 'redux';
 import { AppActionCreator } from 'store';
 
-enum LoginActionTypes {
-  LoginWithGoogle = 'LOGIN_LOGIN_GOOGLE',
-  LoginWithFacebook = 'LOGIN_LOGIN_FACEBOOK',
-  LogOut = 'ACCOUNT_LOGOUT',
+enum AccountActionTypes {
+  LoginWithGoogle = 'ACCOUNT_LOGIN_GOOGLE',
+  LoginWithFacebook = 'ACCOUNT_LOGIN_FACEBOOK',
+  Logout = 'ACCOUNT_LOGOUT',
 }
 
 interface LoginWithGoogleAction {
-  type: LoginActionTypes.LoginWithGoogle;
+  type: AccountActionTypes.LoginWithGoogle;
 }
 
 interface LoginWithFacebookAction {
-  type: LoginActionTypes.LoginWithFacebook;
+  type: AccountActionTypes.LoginWithFacebook;
+}
+
+interface LogoutAction {
+  type: AccountActionTypes.Logout;
 }
 
 // type Actions = LoginWithGoogleAction | LoginWithFacebookAction;
 
 // ActionCreators
 
-export const logInWithGoogle: AppActionCreator<LoginWithGoogleAction> = () => (
+export const loginWithGoogle: AppActionCreator<LoginWithGoogleAction> = () => (
   dispatch,
   getState,
   { getFirebase },
@@ -27,19 +30,19 @@ export const logInWithGoogle: AppActionCreator<LoginWithGoogleAction> = () => (
   // login with google in firebase
   let firebase = getFirebase();
   firebase.login({ provider: 'google', type: 'redirect' });
-  dispatch({ type: LoginActionTypes.LoginWithGoogle });
+  dispatch({ type: AccountActionTypes.LoginWithGoogle });
 };
 
-export const logInWithFacebook: AppActionCreator<
+export const loginWithFacebook: AppActionCreator<
   LoginWithFacebookAction
 > = () => (dispatch, getState, { getFirebase }) => {
   // login with google in firebase
   let firebase = getFirebase();
   firebase.login({ provider: 'facebook', type: 'redirect' });
-  dispatch({ type: LoginActionTypes.LoginWithFacebook });
+  dispatch({ type: AccountActionTypes.LoginWithFacebook });
 };
 
-export const logout: AppActionCreator<AnyAction> = () => (
+export const logout: AppActionCreator<LogoutAction> = () => (
   dispatch,
   getState,
   { getFirebase },
@@ -47,5 +50,6 @@ export const logout: AppActionCreator<AnyAction> = () => (
   // login with google in firebase
   let firebase = getFirebase();
 
+  dispatch({ type: AccountActionTypes.Logout });
   firebase.logout();
 };
