@@ -10,7 +10,7 @@ const mapState = (state: IApplicationState) => ({
   text: state.home.greet,
 });
 
-const HomeRouteComponent: FunctionComponent = () => {
+const TestRouteComponent: FunctionComponent = () => {
   let { text } = useMappedState(mapState);
   let dispatch: AppThunkDispatch = useDispatch();
 
@@ -26,4 +26,4 @@ const HomeRouteComponent: FunctionComponent = () => {
   );
 };
 
-export default HomeRouteComponent;
+export default TestRouteComponent;

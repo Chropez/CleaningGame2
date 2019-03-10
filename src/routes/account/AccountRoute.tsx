@@ -2,10 +2,10 @@ import Logo from 'components/Logo';
 import SecondaryBackground from 'components/SecondaryBackground';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
-import { Redirect, Route, Switch } from 'react-router';
+import { Redirect, Switch } from 'react-router';
 import styled from 'themes/styled';
+import AnonymousOnlyRoute from 'utils/AnonymousOnlyRoute';
 import LoginRouteComponent from './routes/login';
-import SignUpRoute from './routes/sign-up';
 
 const Wrapper = styled(SecondaryBackground)`
   height: 100%;
@@ -38,17 +38,14 @@ const AccountRouteComponent: FunctionComponent = () => (
     </Header>
     <Content>
       <Switch>
-        <Route
+        <AnonymousOnlyRoute
           exact={true}
           path="/account/login"
           component={() => <LoginRouteComponent />}
         />
-        <Route
-          exact={true}
-          path="/account/sign-up"
-          component={() => <SignUpRoute />}
+        <AnonymousOnlyRoute
+          component={() => <Redirect to="/account/login" />}
         />
-        <Route component={() => <Redirect to="/account/login" />} />
       </Switch>
     </Content>
   </Wrapper>

@@ -19,7 +19,7 @@ const AnonymousOnlyRoute: FunctionComponent<IProps> = props => {
   }
 
   if (isLoggedIn) {
-    return <Redirect to="/home" />;
+    return <Redirect to="/test" />;
   }
 
   return <Route {...props} />;

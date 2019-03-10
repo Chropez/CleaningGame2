@@ -1,7 +1,7 @@
 import { firebaseReducer } from 'react-redux-firebase';
 import { combineReducers } from 'redux';
 import { firestoreReducer } from 'redux-firestore';
-import { homeReducer } from 'routes/home/duck';
+import { testReducer } from 'routes/test/duck';
 
 export interface IApplicationState {
   firebase: any;
@@ -14,5 +14,5 @@ export interface IApplicationState {
 export default combineReducers<IApplicationState>({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
-  home: homeReducer,
+  home: testReducer,
 });

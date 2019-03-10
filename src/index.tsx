@@ -1,4 +1,5 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Application from 'components/application';
 import { initializeFirebase } from 'config/firebase';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -7,7 +8,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { StoreContext } from 'redux-react-hook';
 import Routes from 'routes';
-import Application from 'routes/application';
 import GlobalTheme from 'themes/global-theme';
 import mainTheme from 'themes/main-theme';
 import { ThemeProvider } from 'themes/styled';

@@ -1,17 +1,17 @@
 import { AppActionCreator } from 'store';
 
-enum HomeActionTypes {
-  AddText = 'HOME_ADD_TEXT',
-  RemoveText = 'HOME_REMOVE_TEXT',
+enum TestActionTypes {
+  AddText = 'TEST_ADD_TEXT',
+  RemoveText = 'TEST_REMOVE_TEXT',
 }
 
 interface AddTextAction {
-  type: HomeActionTypes.AddText;
+  type: TestActionTypes.AddText;
   newText: string;
 }
 
 interface RemoveTextAction {
-  type: HomeActionTypes.RemoveText;
+  type: TestActionTypes.RemoveText;
 }
 
 type Actions = AddTextAction | RemoveTextAction;
@@ -30,13 +30,13 @@ export const addText: AppActionCreator<AddTextAction> = (newText: string) => (
   console.log(fs.collection);
 
   dispatch({
-    type: HomeActionTypes.AddText,
+    type: TestActionTypes.AddText,
     newText: 'World',
   });
 };
 
 export const deleteText: AppActionCreator<RemoveTextAction> = () => dispatch =>
-  dispatch({ type: HomeActionTypes.RemoveText });
+  dispatch({ type: TestActionTypes.RemoveText });
 
 interface State {
   greet: string;
@@ -46,12 +46,12 @@ const initialState: State = {
   greet: 'me',
 };
 
-export const homeReducer = (state: State = initialState, action: Actions) => {
+export const testReducer = (state: State = initialState, action: Actions) => {
   switch (action.type) {
-    case HomeActionTypes.AddText: {
+    case TestActionTypes.AddText: {
       return { ...state, greet: `${state.greet}  ${action.newText}` };
     }
-    case HomeActionTypes.RemoveText: {
+    case TestActionTypes.RemoveText: {
       return { ...state, greet: ' ' };
     }
     default: {
