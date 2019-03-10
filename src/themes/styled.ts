@@ -1,5 +1,5 @@
 import * as styledComponents from 'styled-components';
-import { Theme } from '@material-ui/core/styles';
+import { MainTheme } from './main-theme';
 
 const {
   default: styled,
@@ -7,7 +7,9 @@ const {
   createGlobalStyle,
   keyframes,
   ThemeProvider,
-} = styledComponents as styledComponents.ThemedStyledComponentsModule<Theme>;
+} = styledComponents as styledComponents.ThemedStyledComponentsModule<
+  MainTheme
+>;
 
 export { css, createGlobalStyle, keyframes, ThemeProvider };
 export default styled;

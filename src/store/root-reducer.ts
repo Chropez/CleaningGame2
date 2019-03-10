@@ -1,34 +1,18 @@
+import { firebaseReducer } from 'react-redux-firebase';
 import { combineReducers } from 'redux';
-
-type Action = {
-  type: string;
-  payload: string;
-};
+import { firestoreReducer } from 'redux-firestore';
+import { testReducer } from 'routes/test/duck';
 
 export interface IApplicationState {
-  home: Object;
-  login: {
-    text: string;
+  firebase: any;
+  firestore: any;
+  home: {
+    greet: string;
   };
 }
 
 export default combineReducers<IApplicationState>({
-  home: () => {
-    /* combined reducers */
-    return {};
-  },
-  login: (state = { text: 'awesome' }, action: Action) => {
-    switch (action.type) {
-      case 'ADD_TEXT': {
-        return {
-          ...state,
-          text: `${state.text} <3 ${action.payload}`,
-        };
-      }
-
-      default: {
-        return state;
-      }
-    }
-  },
+  firebase: firebaseReducer,
+  firestore: firestoreReducer,
+  home: testReducer,
 });

@@ -1,21 +1,18 @@
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-// import HomeRouteComponent from 'routes/home';
-import LoginRouteComponent from 'routes/account/routes/login';
+import ProtectedRoute from 'utils/ProtectedRoute';
+import AccountRoute from './account';
+import TestRouteComponent from './test';
 
-let RoutesComponent: FunctionComponent<{}> = () => {
+const Routes: FunctionComponent<{}> = () => {
   return (
     <Switch>
-      {/* <Route exact={true} path='/' component={() => <HomeRouteComponent />} /> */}
-      <Route
-        exact={true}
-        path="/login"
-        component={() => <LoginRouteComponent />}
-      />
-      <Route render={() => <Redirect to="/login" />} />
+      <Route path="/account" component={() => <AccountRoute />} />
+      <ProtectedRoute path="/test" component={() => <TestRouteComponent />} />
+      <Route render={() => <Redirect to="/account" />} />
     </Switch>
   );
 };
 
-export default RoutesComponent;
+export default Routes;
