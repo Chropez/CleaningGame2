@@ -6,6 +6,7 @@ const Container = styled.div`
   display: flex;
   flex: 1 1 auto;
   height: 100%;
+  flex-direction: column;
 `;
 
 const Application: FunctionComponent = ({ children }) => (
