@@ -4,13 +4,13 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import AnonymousOnlyRoute from 'utils/AnonymousOnlyRoute';
 import ProtectedRoute from 'utils/ProtectedRoute';
 import AccountRoute from './account';
-import StartRoute from './start';
+import HomeRoute from './home';
 import TestRouteComponent from './test';
 
 const Routes: FunctionComponent<{}> = () => {
   return (
     <Switch>
-      <ProtectedRoute exact={true} path="/" component={() => <StartRoute />} />
+      <ProtectedRoute exact={true} path="/" component={() => <HomeRoute />} />
       <AnonymousOnlyRoute
         path="/account/login"
         component={() => <AccountRoute />}
