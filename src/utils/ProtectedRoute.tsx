@@ -19,7 +19,7 @@ const ProtectedRoute: FunctionComponent<IProps> = props => {
   }
 
   if (!isLoggedIn) {
-    return <Redirect to="account/login" />;
+    return <Redirect to="/account/login" />;
   }
 
   return <Route {...props} />;
