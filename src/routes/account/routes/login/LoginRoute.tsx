@@ -1,3 +1,5 @@
+import Logo from 'components/Logo';
+import SecondaryBackground from 'components/SecondaryBackground';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import { useDispatch } from 'redux-react-hook';
@@ -10,6 +12,29 @@ import {
   GoogleColoredIcon,
 } from '../../components/ThirdPartyIcons';
 
+const Wrapper = styled(SecondaryBackground)`
+  height: 100%;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const Header = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Content = styled.div`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+`;
 const LoginButtonWrapper = styled.div`
   flex-direction: column;
   flex: initial;
@@ -35,22 +60,27 @@ const LoginRoute: FunctionComponent = () => {
   }
 
   return (
-    <>
-      <LoginButtonWrapper>
-        <ThirdPartyButton
-          className="login-button"
-          icon={<GoogleColoredIcon />}
-          text="Logga in med Google"
-          onClick={handleLoginWithGoogleClick}
-        />
-        <ThirdPartyButton
-          className="login-button"
-          icon={<FacebookColoredIcon />}
-          text="Logga in med Facebook"
-          onClick={handleLoginWithFacebookClick}
-        />
-      </LoginButtonWrapper>
-    </>
+    <Wrapper>
+      <Header>
+        <Logo />
+      </Header>
+      <Content>
+        <LoginButtonWrapper>
+          <ThirdPartyButton
+            className="login-button"
+            icon={<GoogleColoredIcon />}
+            text="Logga in med Google"
+            onClick={handleLoginWithGoogleClick}
+          />
+          <ThirdPartyButton
+            className="login-button"
+            icon={<FacebookColoredIcon />}
+            text="Logga in med Facebook"
+            onClick={handleLoginWithFacebookClick}
+          />
+        </LoginButtonWrapper>
+      </Content>
+    </Wrapper>
   );
 };
 

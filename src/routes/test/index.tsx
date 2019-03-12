@@ -7,7 +7,7 @@ import { IApplicationState } from 'store/root-reducer';
 import { addText, deleteText } from './duck';
 
 const mapState = (state: IApplicationState) => ({
-  text: state.home.greet,
+  text: state.test.greet,
 });
 
 const TestRouteComponent: FunctionComponent = () => {
