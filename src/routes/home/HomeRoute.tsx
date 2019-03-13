@@ -4,7 +4,7 @@ import { ToolbarProps } from '@material-ui/core/Toolbar';
 import Logo from 'components/Logo';
 import DotsVerticalIcon from 'mdi-material-ui/DotsVertical';
 import * as React from 'react';
-import { FunctionComponent, SFC, useState } from 'react';
+import { FunctionComponent, SFC, useRef } from 'react';
 import { useDispatch, useMappedState } from 'redux-react-hook';
 import { logout } from 'routes/account/account-actions';
 import { AppThunkDispatch } from 'store';
@@ -47,33 +47,23 @@ const mapState = (state: IApplicationState) => ({
 const HomeRoute: FunctionComponent = () => {
   let dispatch: AppThunkDispatch = useDispatch();
   let { menuIsOpen } = useMappedState(mapState);
-  let [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  let menuAnchorRef = useRef<HTMLElement | null>(null);
 
-  function handleIconButtonClick(
-    evt: React.MouseEvent<HTMLElement, MouseEvent>,
-  ) {
-    setMenuAnchor(evt.currentTarget);
-    dispatch(showMenu());
-  }
-
-  function handleMenuClose() {
-    setMenuAnchor(null);
-    dispatch(hideMenu());
-  }
   return (
     <>
       <LargeAppBar position="sticky">
         <LargeToolbar disableGutters={true}>
           <TopBar>
-            <IconButton color="inherit" onClick={handleIconButtonClick}>
+            <span ref={menuAnchorRef} />
+            <IconButton color="inherit" onClick={() => dispatch(showMenu())}>
               <DotsVerticalIcon />
             </IconButton>
 
             <Menu
               id="simple-menu"
-              anchorEl={menuAnchor}
+              anchorEl={menuAnchorRef.current}
               open={menuIsOpen}
-              onClose={handleMenuClose}
+              onClose={() => dispatch(hideMenu())}
             >
               <MenuItem onClick={() => dispatch(logout())}>Logga Ut</MenuItem>
             </Menu>
