@@ -7,20 +7,17 @@ import Logo from 'components/Logo';
 import DotsVerticalIcon from 'mdi-material-ui/DotsVertical';
 import { FunctionComponent, SFC, useRef } from 'react';
 import * as React from 'react';
-import { useDispatch, useMappedState } from 'redux-react-hook';
-import { logout } from 'routes/account/account-actions';
-import { AppThunkDispatch } from 'store';
-import { IApplicationState } from 'store/root-reducer';
 import styled from 'themes/styled';
-import { hideMenu, showMenu } from '../duck';
 
 const LargeAppBar = styled(AppBar as SFC<AppBarProps>)`
-  background-image: ${props => props.theme.secondaryBackground.bgImage};
+  && {
+    background-image: ${props => props.theme.secondaryBackground.bgImage};
+  }
 `;
 
 const LargeToolbar = styled(Toolbar as SFC<ToolbarProps>)`
   flex-direction: column;
-  height: 300px;
+  height: 150px;
 `;
 
 const TopBar = styled.div`
@@ -28,6 +25,7 @@ const TopBar = styled.div`
   justify-content: flex-end;
   flex-direction: row;
   width: 100%;
+  top: 0;
 `;
 
 const LogoWrapper = styled.div`
@@ -46,33 +44,40 @@ const TopRightMenu = styled(Menu as SFC<MenuProps>)`
   }
 `;
 
-const mapState = (state: IApplicationState) => ({
-  menuIsOpen: state.home.menuIsOpen,
-});
+interface IProps {
+  menuIsOpen: boolean;
+  onHideMenu: () => void;
+  onLogout: () => void;
+  onShowMenu: () => void;
+}
 
-const HomeAppBar: FunctionComponent = () => {
-  let dispatch: AppThunkDispatch = useDispatch();
-  let { menuIsOpen } = useMappedState(mapState);
+const HomeAppBar: FunctionComponent<IProps> = ({
+  menuIsOpen,
+  onHideMenu,
+  onLogout,
+  onShowMenu,
+}) => {
   let menuAnchorRef = useRef<HTMLElement | null>(null);
 
   return (
-    <LargeAppBar position="sticky">
+    <LargeAppBar position="static">
       <LargeToolbar disableGutters={true}>
         <TopBar>
           <span ref={menuAnchorRef} />
-          <IconButton color="inherit" onClick={() => dispatch(showMenu())}>
+          <IconButton color="inherit" onClick={onShowMenu}>
             <DotsVerticalIcon />
           </IconButton>
 
           <TopRightMenu
             anchorEl={menuAnchorRef.current}
             open={menuIsOpen}
-            onClose={() => dispatch(hideMenu())}
+            onClose={onHideMenu}
             PopoverClasses={{ paper: 'top-right-menu' }}
           >
-            <MenuItem onClick={() => dispatch(logout())}>Logga Ut</MenuItem>
+            <MenuItem onClick={onLogout}>Logga Ut</MenuItem>
           </TopRightMenu>
         </TopBar>
+
         <LogoWrapper>
           <AppBarLogo />
         </LogoWrapper>
