@@ -1,4 +1,5 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import Application from 'components/application';
 import { initializeFirebase } from 'config/firebase';
 import 'firebase/auth';
@@ -26,13 +27,15 @@ const render = (RoutesComponent: FunctionComponent) => {
     <Provider value={store}>
       <CssBaseline />
       <GlobalTheme />
-      <ThemeProvider theme={mainTheme}>
-        <BrowserRouter>
-          <Application>
-            <RoutesComponent />
-          </Application>
-        </BrowserRouter>
-      </ThemeProvider>
+      <MuiThemeProvider theme={mainTheme}>
+        <ThemeProvider theme={mainTheme}>
+          <BrowserRouter>
+            <Application>
+              <RoutesComponent />
+            </Application>
+          </BrowserRouter>
+        </ThemeProvider>
+      </MuiThemeProvider>
     </Provider>,
     document.getElementById('root'),
   );
