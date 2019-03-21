@@ -13,6 +13,7 @@ const StyledLogo = styled.h1`
   line-height: 1;
   letter-spacing: -0.00833em;
   font-family: 'Leckerli One', cursive;
+  margin: 0;
 `;
 
 const Logo: FunctionComponent<{}> = props => (

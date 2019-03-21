@@ -3,6 +3,8 @@ import { createMuiTheme, Theme } from '@material-ui/core/styles';
 const muiTheme = createMuiTheme({
   typography: {
     useNextVariants: true,
+    fontSize: 14,
+    htmlFontSize: 16,
   },
   palette: {
     primary: {
