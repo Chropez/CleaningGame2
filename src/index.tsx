@@ -6,8 +6,8 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import React, { FunctionComponent } from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { StoreContext } from 'redux-react-hook';
 import Routes from 'routes';
 import GlobalTheme from 'themes/global-theme';
 import mainTheme from 'themes/main-theme';
@@ -19,12 +19,11 @@ import * as serviceWorker from './serviceWorker';
 
 initializeFirebase();
 
-const { Provider } = StoreContext;
 const store = configureStore();
 
 const render = (RoutesComponent: FunctionComponent) => {
   return ReactDOM.render(
-    <Provider value={store}>
+    <Provider store={store}>
       <CssBaseline />
       <GlobalTheme />
       <MuiThemeProvider theme={mainTheme}>

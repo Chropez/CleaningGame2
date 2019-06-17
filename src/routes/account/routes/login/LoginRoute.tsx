@@ -2,7 +2,7 @@ import Logo from 'components/Logo';
 import SecondaryBackground from 'components/SecondaryBackground';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
-import { useDispatch } from 'redux-react-hook';
+import { useDispatch } from 'react-redux';
 import { AppThunkDispatch } from 'store';
 import styled from 'themes/styled';
 import { loginWithFacebook, loginWithGoogle } from '../../account-actions';

@@ -1,17 +1,13 @@
 import * as React from 'react';
 import { FunctionComponent } from 'react';
-import { useDispatch, useMappedState } from 'redux-react-hook';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from 'routes/account/account-actions';
 import { AppThunkDispatch } from 'store';
 import { IApplicationState } from 'store/root-reducer';
 import { addText, deleteText } from './duck';
 
-const mapState = (state: IApplicationState) => ({
-  text: state.test.greet,
-});
-
 const TestRouteComponent: FunctionComponent = () => {
-  let { text } = useMappedState(mapState);
+  let text = useSelector((state: IApplicationState) => state.test.greet);
   let dispatch: AppThunkDispatch = useDispatch();
 
   return (
