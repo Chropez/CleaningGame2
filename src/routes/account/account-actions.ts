@@ -3,7 +3,7 @@ import { AppActionCreator } from 'store';
 enum AccountActionTypes {
   LoginWithGoogle = 'ACCOUNT_LOGIN_GOOGLE',
   LoginWithFacebook = 'ACCOUNT_LOGIN_FACEBOOK',
-  Logout = 'ACCOUNT_LOGOUT',
+  Logout = 'ACCOUNT_LOGOUT'
 }
 
 interface LoginWithGoogleAction {
@@ -25,7 +25,7 @@ interface LogoutAction {
 export const loginWithGoogle: AppActionCreator<LoginWithGoogleAction> = () => (
   dispatch,
   getState,
-  { getFirebase },
+  { getFirebase }
 ) => {
   // login with google in firebase
   let firebase = getFirebase();
@@ -45,7 +45,7 @@ export const loginWithFacebook: AppActionCreator<
 export const logout: AppActionCreator<LogoutAction> = () => (
   dispatch,
   getState,
-  { getFirebase },
+  { getFirebase }
 ) => {
   // login with google in firebase
   let firebase = getFirebase();

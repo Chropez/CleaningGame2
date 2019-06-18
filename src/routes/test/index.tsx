@@ -3,11 +3,11 @@ import { FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from 'routes/account/account-actions';
 import { AppThunkDispatch } from 'store';
-import { IApplicationState } from 'store/root-reducer';
+import { ApplicationState } from 'store/root-reducer';
 import { addText, deleteText } from './duck';
 
 const TestRouteComponent: FunctionComponent = () => {
-  let text = useSelector((state: IApplicationState) => state.test.greet);
+  let text = useSelector((state: ApplicationState) => state.test.greet);
   let dispatch: AppThunkDispatch = useDispatch();
 
   return (

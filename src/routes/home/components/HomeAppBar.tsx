@@ -44,18 +44,18 @@ const TopRightMenu = styled(Menu as SFC<MenuProps>)`
   }
 `;
 
-interface IProps {
+interface Props {
   menuIsOpen: boolean;
   onHideMenu: () => void;
   onLogout: () => void;
   onShowMenu: () => void;
 }
 
-const HomeAppBar: FunctionComponent<IProps> = ({
+const HomeAppBar: FunctionComponent<Props> = ({
   menuIsOpen,
   onHideMenu,
   onLogout,
-  onShowMenu,
+  onShowMenu
 }) => {
   let menuAnchorRef = useRef<HTMLElement | null>(null);
 

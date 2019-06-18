@@ -1,4 +1,4 @@
-export interface IFirebaseConfig {
+export interface FirebaseConfigInterface {
   apiKey: string;
   authDomain: string;
   databaseURL: string;
@@ -7,7 +7,7 @@ export interface IFirebaseConfig {
   messagingSenderId: string;
 }
 
-let firebaseConfig: IFirebaseConfig;
+let firebaseConfig: FirebaseConfigInterface;
 
 if (process.env.NODE_ENV === 'production') {
   firebaseConfig = require('./production').FirebaseConfig;

@@ -1,14 +1,14 @@
 import { ExtraArguments } from 'config/redux';
 import { Action, ActionCreator, AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IApplicationState } from 'store/root-reducer';
+import { ApplicationState } from 'store/root-reducer';
 
 export type AppActionCreator<A extends Action> = ActionCreator<
-  ThunkAction<void, IApplicationState, ExtraArguments, A>
+  ThunkAction<void, ApplicationState, ExtraArguments, A>
 >;
 
 export type AppThunkDispatch = ThunkDispatch<
-  IApplicationState,
+  ApplicationState,
   ExtraArguments,
   AnyAction
 >;

@@ -36,7 +36,7 @@ const render = (RoutesComponent: FunctionComponent) => {
         </ThemeProvider>
       </MuiThemeProvider>
     </Provider>,
-    document.getElementById('root'),
+    document.getElementById('root')
   );
 };
 

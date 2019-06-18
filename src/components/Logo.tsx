@@ -5,8 +5,8 @@ import styled from 'themes/styled';
 const StyledLogo = styled.h1`
   color: ${({
     theme: {
-      palette: { getContrastText, primary },
-    },
+      palette: { getContrastText, primary }
+    }
   }) => getContrastText(primary.main)};
   font-size: 3.75rem;
   font-weight: 300;

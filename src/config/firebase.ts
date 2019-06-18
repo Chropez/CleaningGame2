@@ -13,11 +13,16 @@ const firebaseEnhancers = [
   reduxFirestore(firebase),
   reactReduxFirebase(firebase, {
     userProfile: 'users',
-    useFirestoreForProfile: true,
-  }),
+    useFirestoreForProfile: true
+  })
 ];
 
-const reduxDevToolsExtension = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
+interface WindowWithReduxDevtools extends Window {
+  __REDUX_DEVTOOLS_EXTENSION__: () => void;
+}
+const reduxDevToolsExtension = (window as WindowWithReduxDevtools)
+  .__REDUX_DEVTOOLS_EXTENSION__;
+
 if (
   process.env.NODE_ENV === 'development' &&
   typeof reduxDevToolsExtension === 'function'

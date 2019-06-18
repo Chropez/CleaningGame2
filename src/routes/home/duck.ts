@@ -2,7 +2,7 @@ import { AppActionCreator } from 'store';
 
 enum HomeActionTypes {
   showMenu = 'HOME_SHOW_MENU',
-  hideMenu = 'HOME_HIDE_MENU',
+  hideMenu = 'HOME_HIDE_MENU'
 }
 
 interface ShowMenuAction {
@@ -23,17 +23,17 @@ export const hideMenu: AppActionCreator<HideMenuAction> = () => dispatch => {
 
 type Actions = ShowMenuAction | HideMenuAction;
 
-export interface IHomeState {
+export interface HomeState {
   menuIsOpen: boolean;
 }
 
-const initialState: IHomeState = {
-  menuIsOpen: false,
+const initialState: HomeState = {
+  menuIsOpen: false
 };
 
 export const homeReducer = (
-  state: IHomeState = initialState,
-  action: Actions,
+  state: HomeState = initialState,
+  action: Actions
 ) => {
   switch (action.type) {
     case HomeActionTypes.showMenu:

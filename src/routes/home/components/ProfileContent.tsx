@@ -33,12 +33,12 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-interface IProps {
+interface Props {
   name: string;
   avatarUrl: string;
 }
 
-const ProfileContent: FunctionComponent<IProps> = ({ name, avatarUrl }) => {
+const ProfileContent: FunctionComponent<Props> = ({ name, avatarUrl }) => {
   return (
     <AvatarWrapper className="avatarwrapper">
       <AvatarContent>

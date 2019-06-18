@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 // tslint:disable:no-console
 // This optional code is used to register a service worker.
 // register() is not called by default.
@@ -17,21 +19,21 @@ const isLocalhost = Boolean(
     window.location.hostname === '[::1]' ||
     // 127.0.0.1/8 is considered localhost for IPv4.
     window.location.hostname.match(
-      /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/,
-    ),
+      /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+    )
 );
 
-interface IConfig {
+interface Config {
   onSuccess?: (registration: ServiceWorkerRegistration) => void;
   onUpdate?: (registration: ServiceWorkerRegistration) => void;
 }
 
-export function register(config?: IConfig) {
+export function register(config?: Config) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(
       (process as { env: { [key: string]: string } }).env.PUBLIC_URL,
-      window.location.href,
+      window.location.href
     );
     if (publicUrl.origin !== window.location.origin) {
       // Our service worker won't work if PUBLIC_URL is on a different origin
@@ -52,7 +54,7 @@ export function register(config?: IConfig) {
         navigator.serviceWorker.ready.then(() => {
           console.log(
             'This web app is being served cache-first by a service ' +
-              'worker. To learn more, visit http://bit.ly/CRA-PWA',
+              'worker. To learn more, visit http://bit.ly/CRA-PWA'
           );
         });
       } else {
@@ -63,7 +65,7 @@ export function register(config?: IConfig) {
   }
 }
 
-function registerValidSW(swUrl: string, config?: IConfig) {
+function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
@@ -80,7 +82,7 @@ function registerValidSW(swUrl: string, config?: IConfig) {
               // content until all client tabs are closed.
               console.log(
                 'New content is available and will be used when all ' +
-                  'tabs for this page are closed. See http://bit.ly/CRA-PWA.',
+                  'tabs for this page are closed. See http://bit.ly/CRA-PWA.'
               );
 
               // Execute callback
@@ -107,7 +109,7 @@ function registerValidSW(swUrl: string, config?: IConfig) {
     });
 }
 
-function checkValidServiceWorker(swUrl: string, config?: IConfig) {
+function checkValidServiceWorker(swUrl: string, config?: Config) {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl)
     .then(response => {
@@ -130,7 +132,7 @@ function checkValidServiceWorker(swUrl: string, config?: IConfig) {
     })
     .catch(() => {
       console.log(
-        'No internet connection found. App is running in offline mode.',
+        'No internet connection found. App is running in offline mode.'
       );
     });
 }

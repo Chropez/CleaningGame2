@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 import { AppActionCreator } from 'store';
 
 enum TestActionTypes {
   AddText = 'TEST_ADD_TEXT',
-  RemoveText = 'TEST_REMOVE_TEXT',
+  RemoveText = 'TEST_REMOVE_TEXT'
 }
 
 interface AddTextAction {
@@ -16,10 +17,10 @@ interface RemoveTextAction {
 
 type Actions = AddTextAction | RemoveTextAction;
 
-export const addText: AppActionCreator<AddTextAction> = (newText: string) => (
+export const addText: AppActionCreator<AddTextAction> = () => (
   dispatch,
   getState,
-  { getFirebase, getFirestore },
+  { getFirebase, getFirestore }
 ) => {
   const state = getState();
   const fb = getFirebase();
@@ -31,7 +32,7 @@ export const addText: AppActionCreator<AddTextAction> = (newText: string) => (
 
   dispatch({
     type: TestActionTypes.AddText,
-    newText: 'World',
+    newText: 'World'
   });
 };
 
@@ -43,7 +44,7 @@ interface State {
 }
 
 const initialState: State = {
-  greet: 'me',
+  greet: 'me'
 };
 
 export const testReducer = (state: State = initialState, action: Actions) => {

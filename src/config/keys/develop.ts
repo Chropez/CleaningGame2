@@ -1,10 +1,10 @@
-import { IFirebaseConfig } from '.';
+import { FirebaseConfigInterface } from '.';
 
-export const FirebaseConfig: IFirebaseConfig = {
+export const FirebaseConfig: FirebaseConfigInterface = {
   apiKey: 'AIzaSyDJCYjlVk8yYNUEocqM1Vo6IfLGR2q3EGU',
   authDomain: 'stadspelet.firebaseapp.com',
   databaseURL: 'https://stadspelet.firebaseio.com',
   projectId: 'stadspelet',
   storageBucket: 'stadspelet.appspot.com',
-  messagingSenderId: '96589965693',
+  messagingSenderId: '96589965693'
 };

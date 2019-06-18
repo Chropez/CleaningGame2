@@ -3,22 +3,22 @@ import { createMuiTheme, Theme } from '@material-ui/core/styles';
 const muiTheme = createMuiTheme({
   typography: {
     fontSize: 14,
-    htmlFontSize: 16,
+    htmlFontSize: 16
   },
   palette: {
     primary: {
       main: '#1e88e5',
       light: '#62a3ff',
       dark: '#004a9f',
-      contrastText: '#fff',
+      contrastText: '#fff'
     },
     secondary: {
       main: '#f50057',
       light: '#ff5983',
       dark: '#bb002f',
-      contrastText: '#fff',
-    },
-  },
+      contrastText: '#fff'
+    }
+  }
 });
 
 export interface MainTheme extends Theme {
@@ -48,8 +48,8 @@ const mainTheme: MainTheme = {
       #004a9f
     );`,
     linkColor: '#90ff7e',
-    textColor: '#fff',
-  },
+    textColor: '#fff'
+  }
 };
 
 export default mainTheme;

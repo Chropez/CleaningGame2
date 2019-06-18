@@ -1,26 +1,29 @@
 import firebase from 'firebase';
 import { AppState } from 'react-native';
 import { getFirebase } from 'react-redux-firebase';
+import { getFirestore as reduxGetFirestore } from 'redux-firestore';
 import { AnyAction, applyMiddleware, compose, createStore } from 'redux';
-import { getFirestore } from 'redux-firestore';
 import thunk, { ThunkAction } from 'redux-thunk';
 import rootReducer from 'store/root-reducer';
 import { firebaseEnhancers } from './firebase';
 
 export interface ExtraArguments {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getFirebase: () => any; // typeof firebase;
   getFirestore: () => firebase.firestore.Firestore;
 }
+
+const getFirestore = reduxGetFirestore as () => firebase.firestore.Firestore;
+
+const firebaseArgs: ExtraArguments = { getFirebase, getFirestore };
 
 const configureStore = () => {
   const store = createStore(
     rootReducer,
     compose(
-      applyMiddleware(
-        thunk.withExtraArgument({ getFirebase, getFirestore } as ExtraArguments),
-      ),
-      compose(...firebaseEnhancers),
-    ),
+      applyMiddleware(thunk.withExtraArgument(firebaseArgs)),
+      compose(...firebaseEnhancers)
+    )
   );
 
   if (process.env.NODE_ENV !== 'production') {
