@@ -4,8 +4,9 @@ import { FunctionComponent, SFC } from 'react';
 import styled from 'themes/styled';
 
 const AvatarWrapper = styled.div`
-  min-height: 110px;
+  min-height: 100px;
   position: relative;
+  margin-bottom: 30px;
 `;
 
 const AvatarContent = styled.div`
@@ -20,12 +21,12 @@ const AvatarName = styled(Typography as SFC<TypographyProps>)`
 `;
 
 const AvatarImage = styled.img`
-  height: 120px;
-  width: 120px;
+  height: 100px;
+  width: 100px;
   border-radius: 50%;
-  border: 10px solid ${props => props.theme.palette.background.default};
+  border: 2px solid ${props => props.theme.palette.background.default};
   position: absolute;
-  top: -35px;
+  top: -40px;
   z-index: 1100;
 `;
 

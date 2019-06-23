@@ -6,7 +6,8 @@ import { AppThunkDispatch } from 'store';
 import { ApplicationState } from 'store/root-reducer';
 import HomeAppBar from './components/HomeAppBar';
 import ProfileContent from './components/ProfileContent';
-import { hideMenu, showMenu } from './duck';
+import { hideMenu, showMenu } from './home-duck';
+import GamesContainer from './components/games/GamesContainer';
 
 const HomeRoute: FunctionComponent = () => {
   let dispatch: AppThunkDispatch = useDispatch();
@@ -31,9 +32,7 @@ const HomeRoute: FunctionComponent = () => {
 
       <ProfileContent avatarUrl={avatarUrl} name={name} />
 
-      <div>
-        <div style={{ height: '3000px' }}>CONTENT</div>
-      </div>
+      <GamesContainer />
     </>
   );
 };

@@ -1,24 +1,25 @@
 import { AppActionCreator } from 'store';
 
 enum HomeActionTypes {
-  showMenu = 'HOME_SHOW_MENU',
-  hideMenu = 'HOME_HIDE_MENU'
+  ShowMenu = 'HOME_SHOW_MENU',
+  HideMenu = 'HOME_HIDE_MENU',
+  CreateGame = 'HOME_CREATE_GAME'
 }
 
 interface ShowMenuAction {
-  type: HomeActionTypes.showMenu;
+  type: HomeActionTypes.ShowMenu;
 }
 
 interface HideMenuAction {
-  type: HomeActionTypes.hideMenu;
+  type: HomeActionTypes.HideMenu;
 }
 
 export const showMenu: AppActionCreator<ShowMenuAction> = () => dispatch => {
-  dispatch({ type: HomeActionTypes.showMenu });
+  dispatch({ type: HomeActionTypes.ShowMenu });
 };
 
 export const hideMenu: AppActionCreator<HideMenuAction> = () => dispatch => {
-  dispatch({ type: HomeActionTypes.hideMenu });
+  dispatch({ type: HomeActionTypes.HideMenu });
 };
 
 type Actions = ShowMenuAction | HideMenuAction;
@@ -36,11 +37,10 @@ export const homeReducer = (
   action: Actions
 ) => {
   switch (action.type) {
-    case HomeActionTypes.showMenu:
+    case HomeActionTypes.ShowMenu:
       return { ...state, menuIsOpen: true };
-    case HomeActionTypes.hideMenu:
+    case HomeActionTypes.HideMenu:
       return { ...state, menuIsOpen: false };
-
     default:
       return state;
   }
