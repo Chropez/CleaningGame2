@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from 'routes/account/account-actions';
+import { logout } from 'routes/account/account-duck';
 import { AppThunkDispatch } from 'store';
 import { ApplicationState } from 'store/root-reducer';
 import { addText, deleteText } from './duck';
