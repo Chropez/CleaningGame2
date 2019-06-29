@@ -17,7 +17,7 @@ interface RemoveTextAction {
 
 type Actions = AddTextAction | RemoveTextAction;
 
-export const addText: AppActionCreator<AddTextAction> = () => (
+export const addText: AppActionCreator = () => (
   dispatch,
   getState,
   { getFirebase, getFirestore }
@@ -36,7 +36,7 @@ export const addText: AppActionCreator<AddTextAction> = () => (
   });
 };
 
-export const deleteText: AppActionCreator<RemoveTextAction> = () => dispatch =>
+export const deleteText: AppActionCreator = () => dispatch =>
   dispatch({ type: TestActionTypes.RemoveText });
 
 interface State {

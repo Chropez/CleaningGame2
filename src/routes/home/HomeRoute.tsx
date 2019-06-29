@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from 'routes/account/account-actions';
+import { logout } from 'routes/account/account-duck';
 import { AppThunkDispatch } from 'store';
 import { ApplicationState } from 'store/root-reducer';
 import HomeAppBar from './components/HomeAppBar';
 import ProfileContent from './components/ProfileContent';
-import { hideMenu, showMenu } from './duck';
+import { hideMenu, showMenu } from './home-duck';
+import GamesContainer from './components/games/GamesContainer';
 
 const HomeRoute: FunctionComponent = () => {
   let dispatch: AppThunkDispatch = useDispatch();
@@ -27,13 +28,11 @@ const HomeRoute: FunctionComponent = () => {
         onHideMenu={() => dispatch(hideMenu())}
         onLogout={() => dispatch(logout())}
         onShowMenu={() => dispatch(showMenu())}
-      />
+      >
+        <ProfileContent avatarUrl={avatarUrl} name={name} />
+      </HomeAppBar>
 
-      <ProfileContent avatarUrl={avatarUrl} name={name} />
-
-      <div>
-        <div style={{ height: '3000px' }}>CONTENT</div>
-      </div>
+      <GamesContainer />
     </>
   );
 };

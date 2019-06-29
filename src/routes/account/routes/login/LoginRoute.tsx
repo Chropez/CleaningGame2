@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppThunkDispatch } from 'store';
 import styled from 'themes/styled';
-import { loginWithFacebook, loginWithGoogle } from '../../account-actions';
+import { loginWithFacebook, loginWithGoogle } from '../../account-duck';
 import ThirdPartyButton from '../../components/ThirdPartyButton';
 import {
   FacebookColoredIcon,
@@ -67,15 +67,15 @@ const LoginRoute: FunctionComponent = () => {
       <Content>
         <LoginButtonWrapper>
           <ThirdPartyButton
-            className="login-button"
+            className='login-button'
             icon={<GoogleColoredIcon />}
-            text="Logga in med Google"
+            text='Logga in med Google'
             onClick={handleLoginWithGoogleClick}
           />
           <ThirdPartyButton
-            className="login-button"
+            className='login-button'
             icon={<FacebookColoredIcon />}
-            text="Logga in med Facebook"
+            text='Logga in med Facebook'
             onClick={handleLoginWithFacebookClick}
           />
         </LoginButtonWrapper>

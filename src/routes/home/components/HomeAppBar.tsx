@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar, { ToolbarProps } from '@material-ui/core/Toolbar/Toolbar';
 import Logo from 'components/Logo';
 import DotsVerticalIcon from 'mdi-material-ui/DotsVertical';
+import AccountMultiple from 'mdi-material-ui/AccountMultiple';
 import { FunctionComponent, SFC, useRef } from 'react';
 import * as React from 'react';
 import styled from 'themes/styled';
@@ -17,7 +18,6 @@ const LargeAppBar = styled(AppBar as SFC<AppBarProps>)`
 
 const LargeToolbar = styled(Toolbar as SFC<ToolbarProps>)`
   flex-direction: column;
-  height: 150px;
 `;
 
 const TopBar = styled.div`
@@ -34,7 +34,7 @@ const LogoWrapper = styled.div`
 
 const AppBarLogo = styled(Logo)`
   && {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
   }
 `;
 
@@ -52,6 +52,7 @@ interface Props {
 }
 
 const HomeAppBar: FunctionComponent<Props> = ({
+  children,
   menuIsOpen,
   onHideMenu,
   onLogout,
@@ -64,6 +65,11 @@ const HomeAppBar: FunctionComponent<Props> = ({
       <LargeToolbar disableGutters={true}>
         <TopBar>
           <span ref={menuAnchorRef} />
+
+          <IconButton color="inherit">
+            <AccountMultiple />
+          </IconButton>
+
           <IconButton color="inherit" onClick={onShowMenu}>
             <DotsVerticalIcon />
           </IconButton>
@@ -82,6 +88,7 @@ const HomeAppBar: FunctionComponent<Props> = ({
           <AppBarLogo />
         </LogoWrapper>
       </LargeToolbar>
+      {children}
     </LargeAppBar>
   );
 };

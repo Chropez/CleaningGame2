@@ -1,4 +1,6 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import { Palette } from '@material-ui/core/styles/createPalette';
+import { Color } from '@material-ui/core';
 
 const muiTheme = createMuiTheme({
   typography: {
@@ -10,16 +12,24 @@ const muiTheme = createMuiTheme({
       main: '#1e88e5',
       light: '#62a3ff',
       dark: '#004a9f',
-      contrastText: '#fff'
+      contrastText: '#e9f3fc'
     },
     secondary: {
       main: '#f50057',
       light: '#ff5983',
       dark: '#bb002f',
       contrastText: '#fff'
+    },
+    text: {
+      primary: '#555',
+      secondary: '#555'
     }
   }
 });
+
+interface ExtendedPalette extends Palette {
+  blue: Color;
+}
 
 export interface MainTheme extends Theme {
   secondaryBackground: {
@@ -27,6 +37,7 @@ export interface MainTheme extends Theme {
     linkColor: string;
     textColor: string;
   };
+  palette: ExtendedPalette;
 }
 
 const mainTheme: MainTheme = {
@@ -49,6 +60,25 @@ const mainTheme: MainTheme = {
     );`,
     linkColor: '#90ff7e',
     textColor: '#fff'
+  },
+  palette: {
+    ...muiTheme.palette,
+    blue: {
+      50: '#e6edf5',
+      100: '#b3c9e2',
+      200: '#80a5cf	',
+      300: '#4d80bc',
+      400: '#1a5ca9',
+      500: '#004a9f',
+      600: '#003b7f',
+      700: '#002c5f',
+      800: '#001e40',
+      900: '#000f20',
+      A100: '#d5d5d5',
+      A200: '#aaaaaa',
+      A400: '#303030',
+      A700: '#616161'
+    }
   }
 };
 
