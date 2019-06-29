@@ -11,6 +11,8 @@ import { ApplicationState } from 'store/root-reducer';
 import Game from 'models/game';
 import User from 'models/user';
 import { H1 } from 'components/typography';
+import Link from 'components/Link';
+import { LinkProps } from '@material-ui/core/Link';
 
 const AddFab = styled(MuiFab as SFC<FabProps>)`
   && {
@@ -25,6 +27,14 @@ const SearchFab = styled(MuiFab as SFC<FabProps>)`
     position: fixed;
     right: 32px;
     bottom: 94px;
+  }
+`;
+
+const StyledLink = styled(Link as SFC<LinkProps>)`
+  &&,
+  &&:hover {
+    color: ${props => props.theme.palette.text.primary};
+    text-decoration: none;
   }
 `;
 
@@ -52,7 +62,7 @@ const GamesContainer: FC = () => {
           <>
             {games &&
               games.map((game: Game) => (
-                <div key={game.id}>
+                <StyledLink key={game.id} href={`games/${game.id}`}>
                   {game.id}
                   <br />
                   {game.name} <br />
@@ -61,7 +71,7 @@ const GamesContainer: FC = () => {
                   <br />
                   {new Date(game.createdAt).toString()}
                   <hr />
-                </div>
+                </StyledLink>
               ))}
           </>
         </Box>
