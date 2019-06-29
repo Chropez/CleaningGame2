@@ -10,13 +10,16 @@ import TestRouteComponent from './test';
 const Routes: FunctionComponent<{}> = () => {
   return (
     <Switch>
-      <ProtectedRoute exact={true} path="/" component={() => <HomeRoute />} />
       <AnonymousOnlyRoute
         path="/account/login"
         component={() => <AccountRoute />}
       />
 
+      <ProtectedRoute exact={true} path="/" component={() => <HomeRoute />} />
+      <ProtectedRoute path="/games/:id" component={() => <HomeRoute />} />
+
       <ProtectedRoute path="/test" component={() => <TestRouteComponent />} />
+
       <Route render={() => <Redirect to="/account" />} />
     </Switch>
   );
