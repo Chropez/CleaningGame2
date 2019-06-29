@@ -5,7 +5,7 @@ import { AnyAction, applyMiddleware, compose, createStore } from 'redux';
 import thunk, { ThunkAction } from 'redux-thunk';
 import rootReducer from 'store/root-reducer';
 import { firebaseEnhancers } from './firebase';
-import Firestore from './firestore';
+import Firestore from '../typings/firestore';
 
 export interface ExtraArguments {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -6,23 +6,9 @@ enum AccountActionTypes {
   Logout = 'ACCOUNT_LOGOUT'
 }
 
-interface LoginWithGoogleAction {
-  type: AccountActionTypes.LoginWithGoogle;
-}
-
-interface LoginWithFacebookAction {
-  type: AccountActionTypes.LoginWithFacebook;
-}
-
-interface LogoutAction {
-  type: AccountActionTypes.Logout;
-}
-
-// type Actions = LoginWithGoogleAction | LoginWithFacebookAction;
-
 // ActionCreators
 
-export const loginWithGoogle: AppActionCreator<LoginWithGoogleAction> = () => (
+export const loginWithGoogle: AppActionCreator = () => (
   dispatch,
   getState,
   { getFirebase }
@@ -33,16 +19,18 @@ export const loginWithGoogle: AppActionCreator<LoginWithGoogleAction> = () => (
   dispatch({ type: AccountActionTypes.LoginWithGoogle });
 };
 
-export const loginWithFacebook: AppActionCreator<
-  LoginWithFacebookAction
-> = () => (dispatch, getState, { getFirebase }) => {
+export const loginWithFacebook: AppActionCreator = () => (
+  dispatch,
+  getState,
+  { getFirebase }
+) => {
   // login with google in firebase
   let firebase = getFirebase();
   firebase.login({ provider: 'facebook', type: 'redirect' });
   dispatch({ type: AccountActionTypes.LoginWithFacebook });
 };
 
-export const logout: AppActionCreator<LogoutAction> = () => (
+export const logout: AppActionCreator = () => (
   dispatch,
   getState,
   { getFirebase }

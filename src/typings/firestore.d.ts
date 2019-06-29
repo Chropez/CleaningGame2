@@ -6,12 +6,13 @@ interface Populates {
   childAlias?: string;
 }
 
-export interface Document {
+export interface DocumentQuery {
   collection: string;
   doc?: string;
   orderBy?: string | string[] | string[][];
   where?: string | string[] | string[][];
   populates?: Populates[];
+  storeAs?: string;
 }
 
 interface Timestamp {
@@ -19,7 +20,7 @@ interface Timestamp {
 }
 
 interface SubCollection {
-  options: string | Document;
+  options: string | DocumentQuery;
 }
 
 export interface FirebaseTimestamp {
@@ -30,13 +31,24 @@ export interface FirebaseTimestamp {
 interface FieldValue {
   serverTimestamp: () => FirebaseTimestamp;
 }
+interface SnapshotMetadata {
+  fromCache: boolean;
+  hasPendingWrites: boolean;
+}
+interface DocumentSnapshot {
+  exists: boolean;
+  id: string;
+  metadata: SnapshotMetadata;
+  ref: DocumentReference;
+}
 
 export default interface Firestore extends firebase.firestore.Firestore {
-  add: <T>(options: string | Document, document?: T) => void;
-  set: <T>(options: string | Document, document?: T) => void;
+  add: <T>(options: string | DocumentQuery, document?: T) => void;
+  get: (options: string | DocumentQuery) => Promise<DocumentSnapshot>;
+  set: <T>(options: string | DocumentQuery, document?: T) => Promise<string>;
   subcollections: SubCollection[];
-  setListener: (options: string | Document) => void;
-  unsetListener: (options: string | Document) => void;
+  setListener: (options: string | DocumentQuery) => void;
+  unsetListener: (options: string | DocumentQuery) => void;
   Timestamp: Timestamp;
   FieldValue: FieldValue;
   storeAs: string;

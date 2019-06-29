@@ -1,5 +1,5 @@
 import React, { FC, SFC, useEffect } from 'react';
-import { Fab as MuiFab, Container } from '@material-ui/core';
+import { Fab as MuiFab, Container, Box } from '@material-ui/core';
 import AddIcon from 'mdi-material-ui/Plus';
 import MagnifyIcon from 'mdi-material-ui/Magnify';
 import styled from 'themes/styled';
@@ -10,6 +10,7 @@ import { createGame, subscribeToGames, unsubscribeToGames } from './games-duck';
 import { ApplicationState } from 'store/root-reducer';
 import Game from 'models/game';
 import User from 'models/user';
+import { H1 } from 'components/typography';
 
 const AddFab = styled(MuiFab as SFC<FabProps>)`
   && {
@@ -45,21 +46,25 @@ const GamesContainer: FC = () => {
   return (
     <>
       <Container>
-        <>
-          {games &&
-            games.map((game: Game) => (
-              <div key={game.id}>
-                {game.id}
-                <br />
-                {game.name} <br />
-                {users[game.createdById] &&
-                  (users[game.createdById] as User).displayName}
-                <br />
-                {new Date(game.createdAt).toString()}
-                <hr />
-              </div>
-            ))}
-        </>
+        <Box p={2}>
+          <H1>Städspel</H1>
+
+          <>
+            {games &&
+              games.map((game: Game) => (
+                <div key={game.id}>
+                  {game.id}
+                  <br />
+                  {game.name} <br />
+                  {users[game.createdById] &&
+                    (users[game.createdById] as User).displayName}
+                  <br />
+                  {new Date(game.createdAt).toString()}
+                  <hr />
+                </div>
+              ))}
+          </>
+        </Box>
       </Container>
       <SearchFab color="default" size="small" aria-label="Search">
         <MagnifyIcon />

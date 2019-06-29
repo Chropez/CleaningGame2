@@ -2,12 +2,8 @@ import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import * as React from 'react';
 import { FunctionComponent, SFC } from 'react';
 import styled from 'themes/styled';
-
-const AvatarWrapper = styled.div`
-  min-height: 100px;
-  position: relative;
-  margin-bottom: 30px;
-`;
+import { Box, Avatar as MuiAvatar } from '@material-ui/core';
+import { AvatarProps } from '@material-ui/core/Avatar';
 
 const AvatarContent = styled.div`
   display: flex;
@@ -17,21 +13,19 @@ const AvatarContent = styled.div`
 `;
 
 const AvatarName = styled(Typography as SFC<TypographyProps>)`
-  flex: 0;
+  && {
+    flex: 0;
+    color: ${props => props.theme.palette.blue[100]};
+    font-weight: ${props => props.theme.typography.fontWeightBold};
+  }
 `;
 
-const AvatarImage = styled.img`
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
-  border: 2px solid ${props => props.theme.palette.background.default};
-  position: absolute;
-  top: -40px;
-  z-index: 1100;
-`;
-
-const Spacer = styled.div`
-  flex: 1;
+const Avatar = styled(MuiAvatar as SFC<AvatarProps>)`
+  && {
+    height: 80px;
+    width: 80px;
+    border: 2px solid ${props => props.theme.palette.background.default};
+  }
 `;
 
 interface Props {
@@ -41,13 +35,14 @@ interface Props {
 
 const ProfileContent: FunctionComponent<Props> = ({ name, avatarUrl }) => {
   return (
-    <AvatarWrapper className="avatarwrapper">
+    <Box p={3}>
       <AvatarContent>
-        <AvatarImage src={avatarUrl} />
-        <Spacer />
+        <Box pb={2}>
+          <Avatar alt={name} src={avatarUrl} />
+        </Box>
         <AvatarName variant="body1">{name}</AvatarName>
       </AvatarContent>
-    </AvatarWrapper>
+    </Box>
   );
 };
 

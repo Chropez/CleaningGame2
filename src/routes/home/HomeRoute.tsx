@@ -28,9 +28,9 @@ const HomeRoute: FunctionComponent = () => {
         onHideMenu={() => dispatch(hideMenu())}
         onLogout={() => dispatch(logout())}
         onShowMenu={() => dispatch(showMenu())}
-      />
-
-      <ProfileContent avatarUrl={avatarUrl} name={name} />
+      >
+        <ProfileContent avatarUrl={avatarUrl} name={name} />
+      </HomeAppBar>
 
       <GamesContainer />
     </>

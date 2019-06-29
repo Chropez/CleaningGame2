@@ -14,11 +14,11 @@ interface HideMenuAction {
   type: HomeActionTypes.HideMenu;
 }
 
-export const showMenu: AppActionCreator<ShowMenuAction> = () => dispatch => {
+export const showMenu: AppActionCreator = () => dispatch => {
   dispatch({ type: HomeActionTypes.ShowMenu });
 };
 
-export const hideMenu: AppActionCreator<HideMenuAction> = () => dispatch => {
+export const hideMenu: AppActionCreator = () => dispatch => {
   dispatch({ type: HomeActionTypes.HideMenu });
 };
 
