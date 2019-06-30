@@ -1,4 +1,4 @@
-import MuiLink, { LinkProps } from '@material-ui/core/Link';
+import MuiLink, { LinkProps as MuiLinkProps } from '@material-ui/core/Link';
 import React, { forwardRef } from 'react';
 import { FunctionComponent, memo } from 'react';
 import {
@@ -6,19 +6,15 @@ import {
   LinkProps as RouterLinkProps
 } from 'react-router-dom';
 
-const AdapterLink = forwardRef<HTMLAnchorElement, RouterLinkProps>(
-  (props, ref) => <RouterLink innerRef={ref} {...props} />
-);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AdapterLink = forwardRef<HTMLAnchorElement, any>((props, ref) => (
+  <RouterLink {...(props as RouterLinkProps)} to={props.href} innerRef={ref} />
+));
 
 AdapterLink.displayName = 'AdapterLink';
 
-const Link: FunctionComponent<LinkProps> = ({ href, ...rest }) => (
-  <MuiLink
-    component={props => <AdapterLink {...props} />}
-    {...{ to: href }}
-    color="primary"
-    {...rest}
-  />
+const Link: FunctionComponent<MuiLinkProps> = props => (
+  <MuiLink component={AdapterLink} {...props} />
 );
 
 export default memo(Link);
