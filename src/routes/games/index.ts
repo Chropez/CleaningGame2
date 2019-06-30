@@ -1,1 +1,1 @@
-export { default } from './GamesRoute';
+export { default as GameRoute } from './routes/Game/GameRoute';

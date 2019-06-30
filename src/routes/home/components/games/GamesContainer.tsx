@@ -31,9 +31,7 @@ const SearchFab = styled(MuiFab as SFC<FabProps>)`
 `;
 
 const StyledLink = styled(Link as SFC<LinkProps>)`
-  &&,
   &&:hover {
-    color: ${props => props.theme.palette.text.primary};
     text-decoration: none;
   }
 `;
@@ -55,14 +53,18 @@ const GamesContainer: FC = () => {
 
   return (
     <>
-      <Container>
+      <Container maxWidth="md">
         <Box p={2}>
           <H1>Städspel</H1>
 
           <>
             {games &&
               games.map((game: Game) => (
-                <StyledLink key={game.id} href={`games/${game.id}`}>
+                <StyledLink
+                  key={game.id}
+                  color="inherit"
+                  href={`/games/${game.id}`}
+                >
                   {game.id}
                   <br />
                   {game.name} <br />

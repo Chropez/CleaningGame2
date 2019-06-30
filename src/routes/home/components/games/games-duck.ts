@@ -4,20 +4,20 @@ import { getId } from 'animal-id';
 import Firestore from 'typings/firestore';
 
 enum GamesActionTypes {
-  CreateGame = 'GAMES_CREATE_GAME',
-  SubscribeToGames = 'GAMES_SUBSCRIBE_TO_GAMES',
-  UnsubscribeToGames = 'GAMES_UNSUBSCRIBE_TO_GAMES',
-  GetAvailableGameName = 'GAMES_GET_AVAILABLE_GAME_NAME',
+  CreateGameRequested = 'GAMES_CREATE_GAME_REQUESTED',
+  AllUserGamesSubscribed = 'GAMES_ALL_USER_GAMES_SUBSCRIBED',
+  AllUserGamesUnsubscribed = 'GAMES_ALL_USER_GAMES_UNSUBSCRIBED',
   GameNameCheckRequested = 'GAMES_GAME_NAME_CHECK_REQUESTED',
-  GameNameAvailable = 'GAMES_GAME_NAME_AVAILABLE',
-  GameNameUnavailable = 'GAMES_GAME_NAME_UNAVAILABLE'
+  GameNameWasAvailable = 'GAMES_GAME_NAME_WAS_AVAILABLE',
+  GameNameWasUnavailable = 'GAMES_GAME_NAME_WAS_UNAVAILABLE'
 }
 
 export const subscribeToGames: AppActionCreator = () => (
+  dispatch,
   _,
-  __,
   { getFirestore }
 ) => {
+  dispatch({ type: GamesActionTypes.AllUserGamesSubscribed });
   getFirestore().setListener({
     collection: 'games',
     orderBy: [['createdAt', 'desc']],
@@ -26,10 +26,13 @@ export const subscribeToGames: AppActionCreator = () => (
 };
 
 export const unsubscribeToGames: AppActionCreator = () => (
+  dispatch,
   _,
-  __,
   { getFirestore }
-) => getFirestore().unsetListener({ collection: 'games' });
+) => {
+  dispatch({ type: GamesActionTypes.AllUserGamesUnsubscribed });
+  getFirestore().unsetListener({ collection: 'games' });
+};
 
 const getAvailableGameName = async (
   dispatch: AppThunkDispatch,
@@ -49,13 +52,24 @@ const getAvailableGameName = async (
   });
 
   if (game.exists) {
-    dispatch({ type: GamesActionTypes.GameNameUnavailable });
+    dispatch({ type: GamesActionTypes.GameNameWasUnavailable });
     return await getAvailableGameName(dispatch, firestore);
   }
 
-  dispatch({ type: GamesActionTypes.GameNameAvailable });
+  dispatch({ type: GamesActionTypes.GameNameWasAvailable });
   return gameId;
 };
+
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function makeIdHumanReadable(gameId: string) {
+  return gameId
+    .split('-')
+    .map(id => capitalizeFirstLetter(id))
+    .join(' ');
+}
 
 export const createGame: AppActionCreator = () => async (
   dispatch,
@@ -67,18 +81,19 @@ export const createGame: AppActionCreator = () => async (
 
   let firestore = getFirestore();
   let gameId = await getAvailableGameName(dispatch, firestore);
+  let name = makeIdHumanReadable(gameId);
 
   let game: Game = {
-    name: 'Game',
+    name,
     createdAt: firestore.Timestamp.now().toMillis(),
     createdById: userId,
     playerIds: [userId]
   };
 
   dispatch({
-    type: GamesActionTypes.CreateGame,
+    type: GamesActionTypes.CreateGameRequested,
     payload: { ...game, documentId: gameId }
   });
 
-  firestore.set({ collection: 'games', doc: getId() }, game);
+  firestore.set({ collection: 'games', doc: gameId }, game);
 };

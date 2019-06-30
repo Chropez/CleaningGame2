@@ -7,5 +7,5 @@ const H1Component: FC<TypographyProps> = props => (
 );
 
 export const H1 = styled(H1Component)`
-  color: ${props => props.theme.palette.blue[600]};
+  color: ${props => props.theme.palette.grey[500]};
 `;

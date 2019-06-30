@@ -6,7 +6,7 @@ import ProtectedRoute from 'utils/ProtectedRoute';
 import AccountRoute from './account';
 import HomeRoute from './home';
 import TestRouteComponent from './test';
-import GamesRoute from './games';
+import { GameRoute } from './games';
 
 const Routes: FunctionComponent = () => {
   return (
@@ -16,7 +16,7 @@ const Routes: FunctionComponent = () => {
         component={() => <AccountRoute />}
       />
       <ProtectedRoute exact={true} path="/" component={HomeRoute} />
-      <ProtectedRoute path="/games/:gameId" component={GamesRoute} />
+      <ProtectedRoute path="/games/:gameId" component={GameRoute} />
       <ProtectedRoute path="/test" component={TestRouteComponent} />
       <Route render={() => <Redirect to="/account" />} />
     </Switch>
