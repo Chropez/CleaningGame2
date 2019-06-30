@@ -5,7 +5,6 @@ import styled from 'themes/styled';
 const Container = styled.div`
   display: flex;
   flex: 1 1 auto;
-  height: 100%;
   flex-direction: column;
 `;
 
