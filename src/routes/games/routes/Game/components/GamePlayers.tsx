@@ -5,10 +5,13 @@ interface Props {
   players: User[];
 }
 
-const GamePlayers: FC<Props> = () => (
+const GamePlayers: FC<Props> = ({ players }) => (
   <>
-    <div></div>
-    <div></div>
+    <div>
+      {players.map(
+        player => player && <div key={player.id}>{player.displayName}</div>
+      )}
+    </div>
   </>
 );
 

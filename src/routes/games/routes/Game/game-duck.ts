@@ -8,6 +8,13 @@ enum GameActionTypes {
   GameUnsubscribed = 'GAME_GAME_UNSUBSCRIBED'
 }
 
+const getGameByIdQuery = (gameId: string) => ({
+  collection: 'games',
+  doc: gameId,
+  storeAs: 'activeGame',
+  populates: [{ child: 'playerIds', root: 'users' }]
+});
+
 export const subscribeToGame: AppActionCreator = (gameId: string) => (
   dispatch,
   _,
@@ -15,12 +22,7 @@ export const subscribeToGame: AppActionCreator = (gameId: string) => (
 ) => {
   dispatch({ type: GameActionTypes.GameSubscribed, payload: gameId });
   let firestore = getFirestore();
-  firestore.setListener({
-    collection: 'games',
-    doc: gameId,
-    storeAs: 'activeGame',
-    populates: [{ child: 'playerIds', root: 'users' }]
-  });
+  firestore.setListener(getGameByIdQuery(gameId));
 };
 
 export const unsubscribeToGame: AppActionCreator = (gameId: string) => (
@@ -30,12 +32,7 @@ export const unsubscribeToGame: AppActionCreator = (gameId: string) => (
 ) => {
   dispatch({ type: GameActionTypes.GameUnsubscribed, payload: gameId });
   let firestore = getFirestore();
-  firestore.unsetListener({
-    collection: 'games',
-    doc: gameId,
-    storeAs: 'activeGame',
-    populates: [{ child: 'playerIds', root: 'users' }]
-  });
+  firestore.unsetListener(getGameByIdQuery(gameId));
 };
 
 // Selectors
