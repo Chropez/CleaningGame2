@@ -1,13 +1,19 @@
 import React, { FC, useEffect } from 'react';
 import { Container, Typography, Box } from '@material-ui/core';
-import GamePlayers from './GamePlayers';
+import GamePlayersContainer from './GamePlayersContainer';
 import { AppThunkDispatch } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   subscribeToGame,
   unsubscribeToGame,
   selectGame,
-  selectGamePlayers
+  selectGamePlayers,
+  showAddPlayerDialog,
+  selectShowAddPlayerModal,
+  hideAddPlayerDialog,
+  loadAvailablePlayers,
+  selectIsLoadingAvailablePlayers,
+  selectAvailablePlayers
 } from '../game-duck';
 import GameAppBar from './GameAppBar';
 
@@ -18,11 +24,19 @@ const GameContainer: FC<Props> = ({ gameId }) => {
   let dispatch: AppThunkDispatch = useDispatch();
   let game = useSelector(selectGame);
   let gamePlayers = useSelector(selectGamePlayers);
+  let showAddPlayerModal = useSelector(selectShowAddPlayerModal);
+  let isLoadingAvailablePlayers = useSelector(selectIsLoadingAvailablePlayers);
+  let availablePlayers = useSelector(selectAvailablePlayers);
 
   useEffect(() => {
     dispatch(subscribeToGame(gameId));
     return () => dispatch(unsubscribeToGame(gameId));
   }, [dispatch, gameId]);
+
+  async function loadAddPlayerDialog() {
+    dispatch(loadAvailablePlayers());
+    dispatch(showAddPlayerDialog());
+  }
 
   if (!game) {
     return null;
@@ -38,7 +52,16 @@ const GameContainer: FC<Props> = ({ gameId }) => {
             spelet <strong>{game.name}</strong>.
           </Typography>
         </Box>
-        <GamePlayers players={gamePlayers} />
+        <GamePlayersContainer
+          availablePlayers={availablePlayers}
+          isLoadingAvailablePlayers={isLoadingAvailablePlayers}
+          onAddPlayerToGame={id => console.log(`Adding ${id}`)}
+          onShowAddPlayerDialog={loadAddPlayerDialog}
+          onHidePlayersAddDialog={() => dispatch(hideAddPlayerDialog())}
+          onRemovePlayer={() => console.log('removing player')}
+          players={gamePlayers}
+          showAddPlayerModal={showAddPlayerModal}
+        />
       </Container>
     </>
   );

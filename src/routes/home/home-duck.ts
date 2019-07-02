@@ -1,17 +1,10 @@
 import { AppActionCreator } from 'store';
+import { AppAction } from 'config/redux';
 
 enum HomeActionTypes {
   ShowMenu = 'HOME_SHOW_MENU',
   HideMenu = 'HOME_HIDE_MENU',
   CreateGame = 'HOME_CREATE_GAME'
-}
-
-interface ShowMenuAction {
-  type: HomeActionTypes.ShowMenu;
-}
-
-interface HideMenuAction {
-  type: HomeActionTypes.HideMenu;
 }
 
 export const showMenu: AppActionCreator = () => dispatch => {
@@ -22,7 +15,9 @@ export const hideMenu: AppActionCreator = () => dispatch => {
   dispatch({ type: HomeActionTypes.HideMenu });
 };
 
-type Actions = ShowMenuAction | HideMenuAction;
+type Actions =
+  | AppAction<HomeActionTypes.ShowMenu>
+  | AppAction<HomeActionTypes.HideMenu>;
 
 export interface HomeState {
   menuIsOpen: boolean;
