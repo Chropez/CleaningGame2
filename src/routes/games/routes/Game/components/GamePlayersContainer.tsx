@@ -6,6 +6,7 @@ import GamePlayerModel from '../game-player-model';
 
 interface Props {
   availablePlayers: GamePlayerModel[];
+  currentPlayerId: string;
   isLoadingAvailablePlayers: boolean;
   onShowAddPlayerDialog: () => void;
   onAddPlayerToGame: (playerId: string) => void;
@@ -17,6 +18,7 @@ interface Props {
 
 const GamePlayersContainer: FC<Props> = ({
   availablePlayers,
+  currentPlayerId,
   isLoadingAvailablePlayers,
   onShowAddPlayerDialog,
   onAddPlayerToGame,
@@ -34,6 +36,7 @@ const GamePlayersContainer: FC<Props> = ({
       show={showAddPlayerModal}
     />
     <GamePlayersList
+      currentPlayerId={currentPlayerId}
       onRemovePlayer={onRemovePlayer}
       onShowAddPlayerDialog={onShowAddPlayerDialog}
       players={players}

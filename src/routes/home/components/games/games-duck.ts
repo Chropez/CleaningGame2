@@ -5,10 +5,10 @@ import Firestore from 'typings/firestore';
 import { ApplicationState } from 'store/root-reducer';
 
 enum GamesActionTypes {
-  CreateGameRequest = 'GAMES/CREATE_GAME_REQUEST',
-  AllUserGamesSubscribe = 'GAMES/ALL_USER_GAMES_SUBSCRIBE',
-  AllUserGamesUnsubscribe = 'GAMES/ALL_USER_GAMES_UNSUBSCRIBE',
-  GameNameCheckRequest = 'GAMES/GAME_NAME_CHECK_REQUEST',
+  CreateGameRequested = 'GAMES/CREATE_GAME_REQUESTED',
+  AllUserGamesSubscribed = 'GAMES/ALL_USER_GAMES_SUBSCRIBED',
+  AllUserGamesUnsubscribed = 'GAMES/ALL_USER_GAMES_UNSUBSCRIBED',
+  GameNameCheckRequested = 'GAMES/GAME_NAME_CHECK_REQUESTED',
   GameNameWasAvailable = 'GAMES/GAME_NAME_WAS_AVAILABLE',
   GameNameWasUnavailable = 'GAMES/GAME_NAME_WAS_UNAVAILABLE'
 }
@@ -16,7 +16,10 @@ enum GamesActionTypes {
 const getGamesQuery = () => ({
   collection: 'games',
   orderBy: [['createdAt', 'desc']],
-  populates: [{ child: 'createdById', root: 'users' }]
+  populates: [
+    { child: 'createdById', root: 'users' },
+    { child: 'playerIds', root: 'users' }
+  ]
 });
 
 export const subscribeToGames: AppActionCreator = () => (
@@ -24,7 +27,7 @@ export const subscribeToGames: AppActionCreator = () => (
   _,
   { getFirestore }
 ) => {
-  dispatch({ type: GamesActionTypes.AllUserGamesSubscribe });
+  dispatch({ type: GamesActionTypes.AllUserGamesSubscribed });
   getFirestore().setListener(getGamesQuery());
 };
 
@@ -33,7 +36,7 @@ export const unsubscribeToGames: AppActionCreator = () => (
   _,
   { getFirestore }
 ) => {
-  dispatch({ type: GamesActionTypes.AllUserGamesUnsubscribe });
+  dispatch({ type: GamesActionTypes.AllUserGamesUnsubscribed });
   getFirestore().unsetListener(getGamesQuery());
 };
 
@@ -44,7 +47,7 @@ const getAvailableGameName = async (
   let gameId = getId();
 
   dispatch({
-    type: GamesActionTypes.GameNameCheckRequest,
+    type: GamesActionTypes.GameNameCheckRequested,
     payload: { gameId }
   });
 
@@ -94,7 +97,7 @@ export const createGame: AppActionCreator = () => async (
   };
 
   dispatch({
-    type: GamesActionTypes.CreateGameRequest,
+    type: GamesActionTypes.CreateGameRequested,
     payload: { ...game, documentId: gameId }
   });
 

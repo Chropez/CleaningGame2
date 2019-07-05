@@ -1,15 +1,17 @@
 import { firebaseReducer } from 'react-redux-firebase';
-import { combineReducers } from 'redux';
+import { combineReducers, AnyAction, Reducer } from 'redux';
 import { firestoreReducer } from 'redux-firestore';
 import { homeReducer, HomeState } from 'routes/home/home-duck';
 import { testReducer } from 'routes/test/duck';
 import { GameState, gameReducer } from 'routes/games/routes/Game/game-duck';
 import { User } from 'firebase';
 import Game from 'models/game';
+import reduceReducers from 'reduce-reducers';
+import firestoreEnhancedReducers from './firestore-enhanced-reducer';
 
 interface AppData {
   users: User[];
-  activeGame: Game;
+  currentGame: Game;
 }
 export interface FirestoreState {
   status: {
@@ -34,7 +36,7 @@ export interface ApplicationState {
   };
 }
 
-export default combineReducers<ApplicationState>({
+const combinedReducers = combineReducers<ApplicationState>({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
   test: testReducer,
@@ -45,3 +47,8 @@ export default combineReducers<ApplicationState>({
     })
   })
 });
+
+export default reduceReducers<ApplicationState>(
+  combinedReducers,
+  firestoreEnhancedReducers
+) as Reducer<ApplicationState, AnyAction>;

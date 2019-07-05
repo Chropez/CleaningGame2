@@ -19,11 +19,13 @@ import { FabProps } from '@material-ui/core/Fab';
 import User from 'models/user';
 
 interface PlayerListItemProps {
+  canBeRemoved: boolean;
   onRemovePlayer: (playerId: string) => void;
   player: User;
 }
 
 const PlayerListItem: FC<PlayerListItemProps> = ({
+  canBeRemoved,
   onRemovePlayer,
   player
 }) => (
@@ -33,14 +35,17 @@ const PlayerListItem: FC<PlayerListItemProps> = ({
         <Avatar alt={player.displayName} src={player.avatarUrl} />
       </ListItemAvatar>
       <ListItemText primary={player.displayName} />
-      <ListItemSecondaryAction>
-        <IconButton
-          aria-label="Delete"
-          onClick={() => onRemovePlayer(player.id)}
-        >
-          <DeleteIcon />
-        </IconButton>
-      </ListItemSecondaryAction>
+
+      {canBeRemoved && (
+        <ListItemSecondaryAction>
+          <IconButton
+            aria-label="Delete"
+            onClick={() => onRemovePlayer(player.id)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
+      )}
     </ListItem>
 
     <Divider variant="inset" component="li" />
@@ -65,12 +70,14 @@ const AddPlayerButton = styled(Fab as SFC<FabProps>)`
 `;
 
 interface Props {
+  currentPlayerId: string;
   onShowAddPlayerDialog: () => void;
   onRemovePlayer: (playerId: string) => void;
   players: User[];
 }
 
 const GamePlayersList: FC<Props> = ({
+  currentPlayerId,
   onShowAddPlayerDialog,
   onRemovePlayer,
   players
@@ -92,6 +99,7 @@ const GamePlayersList: FC<Props> = ({
     {players.map(player => (
       <PlayerListItem
         key={player.id}
+        canBeRemoved={currentPlayerId !== player.id}
         onRemovePlayer={onRemovePlayer}
         player={player}
       />

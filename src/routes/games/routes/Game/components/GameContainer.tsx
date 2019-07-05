@@ -11,9 +11,12 @@ import {
   showAddPlayerDialog,
   selectShowAddPlayerModal,
   hideAddPlayerDialog,
-  loadAvailablePlayers,
+  getAvailablePlayers,
   selectIsLoadingAvailablePlayers,
-  selectAvailablePlayers
+  selectAvailablePlayers,
+  addPlayerToGame,
+  removePlayerFromGame,
+  selectCurrentUserId
 } from '../game-duck';
 import GameAppBar from './GameAppBar';
 
@@ -27,6 +30,7 @@ const GameContainer: FC<Props> = ({ gameId }) => {
   let showAddPlayerModal = useSelector(selectShowAddPlayerModal);
   let isLoadingAvailablePlayers = useSelector(selectIsLoadingAvailablePlayers);
   let availablePlayers = useSelector(selectAvailablePlayers);
+  let currentPlayerId = useSelector(selectCurrentUserId);
 
   useEffect(() => {
     dispatch(subscribeToGame(gameId));
@@ -34,7 +38,7 @@ const GameContainer: FC<Props> = ({ gameId }) => {
   }, [dispatch, gameId]);
 
   async function loadAddPlayerDialog() {
-    dispatch(loadAvailablePlayers());
+    dispatch(getAvailablePlayers());
     dispatch(showAddPlayerDialog());
   }
 
@@ -54,11 +58,12 @@ const GameContainer: FC<Props> = ({ gameId }) => {
         </Box>
         <GamePlayersContainer
           availablePlayers={availablePlayers}
+          currentPlayerId={currentPlayerId}
           isLoadingAvailablePlayers={isLoadingAvailablePlayers}
-          onAddPlayerToGame={id => console.log(`Adding ${id}`)}
+          onAddPlayerToGame={id => dispatch(addPlayerToGame(id))}
           onShowAddPlayerDialog={loadAddPlayerDialog}
           onHidePlayersAddDialog={() => dispatch(hideAddPlayerDialog())}
-          onRemovePlayer={() => console.log('removing player')}
+          onRemovePlayer={id => dispatch(removePlayerFromGame(id))}
           players={gamePlayers}
           showAddPlayerModal={showAddPlayerModal}
         />
