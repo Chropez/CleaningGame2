@@ -13,11 +13,11 @@ import {
 } from '../../components/ThirdPartyIcons';
 
 const Wrapper = styled(SecondaryBackground)`
-  height: 100%;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   align-items: stretch;
+  min-height: 100vh;
 `;
 
 const Header = styled.div`
@@ -67,15 +67,15 @@ const LoginRoute: FunctionComponent = () => {
       <Content>
         <LoginButtonWrapper>
           <ThirdPartyButton
-            className='login-button'
+            className="login-button"
             icon={<GoogleColoredIcon />}
-            text='Logga in med Google'
+            text="Logga in med Google"
             onClick={handleLoginWithGoogleClick}
           />
           <ThirdPartyButton
-            className='login-button'
+            className="login-button"
             icon={<FacebookColoredIcon />}
-            text='Logga in med Facebook'
+            text="Logga in med Facebook"
             onClick={handleLoginWithFacebookClick}
           />
         </LoginButtonWrapper>

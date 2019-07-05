@@ -45,4 +45,8 @@ export type ThunkResult<R> = ThunkAction<
   AnyAction
 >;
 
+export interface AppAction<T, P = {}> {
+  type: T;
+  payload: P;
+}
 export default configureStore;

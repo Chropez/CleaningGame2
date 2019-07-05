@@ -30,6 +30,8 @@ export interface FirebaseTimestamp {
 
 interface FieldValue {
   serverTimestamp: () => FirebaseTimestamp;
+  arrayUnion: <T>(arrayUnion: T) => T;
+  arrayRemove: <T>(arrayUnion: T) => T;
 }
 interface SnapshotMetadata {
   fromCache: boolean;
@@ -46,6 +48,7 @@ export default interface Firestore extends firebase.firestore.Firestore {
   add: <T>(options: string | DocumentQuery, document?: T) => void;
   get: (options: string | DocumentQuery) => Promise<DocumentSnapshot>;
   set: <T>(options: string | DocumentQuery, document?: T) => Promise<string>;
+  update: <T>(options: string | DocumentQuery, document?: T) => Promise<string>;
   subcollections: SubCollection[];
   setListener: (options: string | DocumentQuery) => void;
   unsetListener: (options: string | DocumentQuery) => void;

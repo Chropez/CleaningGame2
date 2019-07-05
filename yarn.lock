@@ -9909,6 +9909,11 @@ reduce-reducers@0.4.3:
   resolved "https://registry.npmjs.org/reduce-reducers/-/reduce-reducers-0.4.3.tgz#8e052618801cd8fc2714b4915adaa8937eb6d66c"
   integrity sha512-+CNMnI8QhgVMtAt54uQs3kUxC3Sybpa7Y63HR14uGLgI9/QR5ggHvpxwhGGe3wmx5V91YwqQIblN9k5lspAmGw==
 
+reduce-reducers@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/reduce-reducers/-/reduce-reducers-1.0.4.tgz#fb77e751a9eb0201760ac5a605ca8c9c2d0537f8"
+  integrity sha512-Mb2WZ2bJF597exiqX7owBzrqJ74DHLK3yOQjCyPAaNifRncE8OD0wFIuoMhXxTnHK07+8zZ2SJEKy/qtiyR7vw==
+
 redux-firestore@^0.8.0:
   version "0.8.0"
   resolved "https://registry.npmjs.org/redux-firestore/-/redux-firestore-0.8.0.tgz#ca72e775bb12edb2d8ea11030b9cb2061620f3ef"

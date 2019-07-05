@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 import { Redirect, Route, RouteProps } from 'react-router';
 import { ApplicationState } from 'store/root-reducer';
 
-type IProps = RouteProps;
+type Props = RouteProps;
 
-const AnonymousOnlyRoute: FunctionComponent<IProps> = props => {
+const AnonymousOnlyRoute: FunctionComponent<Props> = props => {
   let isLoggedIn = useSelector(
     (state: ApplicationState) => !state.firebase.auth.isEmpty
   );

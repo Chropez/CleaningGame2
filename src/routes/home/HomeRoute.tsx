@@ -15,7 +15,7 @@ const HomeRoute: FunctionComponent = () => {
     (state: ApplicationState) => state.firebase.auth.photoURL
   );
   let menuIsOpen = useSelector(
-    (state: ApplicationState) => state.home.menuIsOpen
+    (state: ApplicationState) => state.routes.home.menuIsOpen
   );
   let name = useSelector(
     (state: ApplicationState) => state.firebase.auth.displayName

@@ -8,7 +8,7 @@ import React, { FunctionComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import Routes from 'routes';
+import Routes from 'routes/Routes';
 import GlobalTheme from 'themes/global-theme';
 import mainTheme from 'themes/main-theme';
 import { ThemeProvider } from 'themes/styled';
@@ -43,8 +43,8 @@ const render = (RoutesComponent: FunctionComponent) => {
 render(Routes);
 
 if (module.hot) {
-  module.hot.accept('./routes', () => {
-    const NextRoutesComponent = require('./routes').default;
+  module.hot.accept('./routes/Routes', () => {
+    const NextRoutesComponent = require('./routes/Routes').default;
     render(NextRoutesComponent);
   });
 }

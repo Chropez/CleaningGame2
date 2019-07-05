@@ -1,58 +1,80 @@
-import { AppActionCreator } from 'store';
+import { AppActionCreator, AppThunkDispatch } from 'store';
 import Game from 'models/game';
-import { getId, useAnimals, useAdjectives } from 'animal-id';
+import { getId } from 'animal-id';
+import Firestore from 'typings/firestore';
+import { ApplicationState } from 'store/root-reducer';
 
 enum GamesActionTypes {
-  CreateGame = 'GAMES_CREATE_GAME',
-  SubscribeToGames = 'GAMES_SUBSCRIBE_TO_GAMES',
-  UnsubscribeToGames = 'GAMES_UNSUBSCRIBE_TO_GAMES',
-  GetAvailableGameName = 'GAMES_GET_AVAILABLE_GAME_NAME',
-  CheckAvailableNameRequest = 'GAMES_CHECK_AVAILABLE_NAME_REQUEST'
+  CreateGameRequested = 'GAMES/CREATE_GAME_REQUESTED',
+  AllUserGamesSubscribed = 'GAMES/ALL_USER_GAMES_SUBSCRIBED',
+  AllUserGamesUnsubscribed = 'GAMES/ALL_USER_GAMES_UNSUBSCRIBED',
+  GameNameCheckRequested = 'GAMES/GAME_NAME_CHECK_REQUESTED',
+  GameNameWasAvailable = 'GAMES/GAME_NAME_WAS_AVAILABLE',
+  GameNameWasUnavailable = 'GAMES/GAME_NAME_WAS_UNAVAILABLE'
 }
 
+const getGamesQuery = () => ({
+  collection: 'games',
+  orderBy: [['createdAt', 'desc']],
+  populates: [
+    { child: 'createdById', root: 'users' },
+    { child: 'playerIds', root: 'users' }
+  ]
+});
+
 export const subscribeToGames: AppActionCreator = () => (
+  dispatch,
   _,
-  __,
   { getFirestore }
 ) => {
-  getFirestore().setListener({
-    collection: 'games',
-    orderBy: [['createdAt', 'desc']],
-    populates: [{ child: 'createdById', root: 'users' }]
-  });
+  dispatch({ type: GamesActionTypes.AllUserGamesSubscribed });
+  getFirestore().setListener(getGamesQuery());
 };
 
 export const unsubscribeToGames: AppActionCreator = () => (
-  _,
-  __,
-  { getFirestore }
-) => getFirestore().unsetListener({ collection: 'games' });
-
-const getAvailableGameName: AppActionCreator = () => async (
   dispatch,
-  getState,
+  _,
   { getFirestore }
 ) => {
-  let firestore = getFirestore();
+  dispatch({ type: GamesActionTypes.AllUserGamesUnsubscribed });
+  getFirestore().unsetListener(getGamesQuery());
+};
+
+const getAvailableGameName = async (
+  dispatch: AppThunkDispatch,
+  firestore: Firestore
+): Promise<string> => {
   let gameId = getId();
 
   dispatch({
-    type: GamesActionTypes.CheckAvailableNameRequest,
+    type: GamesActionTypes.GameNameCheckRequested,
     payload: { gameId }
   });
 
-  // let game =
-  await firestore.get({
+  let game = await firestore.get({
     collection: 'games',
     doc: gameId,
     storeAs: 'availableGameName'
   });
 
-  // if (game.exists) {
-  //   return await getAvailableGameName(firestore);
-  // }
+  if (game.exists) {
+    dispatch({ type: GamesActionTypes.GameNameWasUnavailable });
+    return await getAvailableGameName(dispatch, firestore);
+  }
 
+  dispatch({ type: GamesActionTypes.GameNameWasAvailable });
   return gameId;
+};
+
+const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+const makeIdHumanReadable = (gameId: string) => {
+  return gameId
+    .split('-')
+    .map(id => capitalizeFirstLetter(id))
+    .join(' ');
 };
 
 export const createGame: AppActionCreator = () => async (
@@ -64,17 +86,28 @@ export const createGame: AppActionCreator = () => async (
   let userId = state.firebase.auth.uid;
 
   let firestore = getFirestore();
-  useAdjectives(['annoying', 'annoying-p']);
-  useAnimals(['parrot']);
-  let id = await getAvailableGameName(firestore);
+  let gameId = await getAvailableGameName(dispatch, firestore);
+  let name = makeIdHumanReadable(gameId);
+
   let game: Game = {
-    name: 'Game',
+    name,
     createdAt: firestore.Timestamp.now().toMillis(),
     createdById: userId,
     playerIds: [userId]
   };
 
-  dispatch({ type: GamesActionTypes.CreateGame, payload: { ...game, id } });
+  dispatch({
+    type: GamesActionTypes.CreateGameRequested,
+    payload: { ...game, documentId: gameId }
+  });
 
-  // firestore.set({ collection: 'games', doc: getId() }, game);
+  firestore.set({ collection: 'games', doc: gameId }, game);
 };
+
+// Selectors
+
+export const selectGames = (state: ApplicationState): Game[] =>
+  state.firestore.ordered.games;
+
+export const selectUsers = (state: ApplicationState) =>
+  state.firestore.data && state.firestore.data.users;

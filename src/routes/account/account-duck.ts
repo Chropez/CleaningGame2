@@ -1,9 +1,9 @@
 import { AppActionCreator } from 'store';
 
 enum AccountActionTypes {
-  LoginWithGoogle = 'ACCOUNT_LOGIN_GOOGLE',
-  LoginWithFacebook = 'ACCOUNT_LOGIN_FACEBOOK',
-  Logout = 'ACCOUNT_LOGOUT'
+  LoginWithGoogle = 'ACCOUNT/LOGIN_GOOGLE',
+  LoginWithFacebook = 'ACCOUNT/LOGIN_FACEBOOK',
+  Logout = 'ACCOUNT/LOGOUT'
 }
 
 // ActionCreators
