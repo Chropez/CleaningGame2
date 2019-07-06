@@ -8,6 +8,10 @@ import { User } from 'firebase';
 import Game from 'models/game';
 import reduceReducers from 'reduce-reducers';
 import firestoreEnhancedReducers from './firestore-enhanced-reducer';
+import {
+  playerReducer,
+  PlayersState
+} from 'routes/games/routes/Game/components/players/players-duck';
 
 interface AppData {
   users: User[];
@@ -31,7 +35,10 @@ export interface ApplicationState {
   routes: {
     home: HomeState;
     games: {
-      game: GameState;
+      game: {
+        main: GameState;
+        players: PlayersState;
+      };
     };
   };
 }
@@ -43,7 +50,10 @@ const combinedReducers = combineReducers<ApplicationState>({
   routes: combineReducers({
     home: homeReducer,
     games: combineReducers({
-      game: gameReducer
+      game: combineReducers({
+        main: gameReducer,
+        players: playerReducer
+      })
     })
   })
 });

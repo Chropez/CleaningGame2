@@ -76,7 +76,7 @@ interface Props {
   players: User[];
 }
 
-const GamePlayersList: FC<Props> = ({
+const PlayerList: FC<Props> = ({
   currentPlayerId,
   onShowAddPlayerDialog,
   onRemovePlayer,
@@ -107,4 +107,4 @@ const GamePlayersList: FC<Props> = ({
   </List>
 );
 
-export default GamePlayersList;
+export default PlayerList;
