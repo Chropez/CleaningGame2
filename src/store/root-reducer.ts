@@ -12,6 +12,10 @@ import {
   playerReducer,
   PlayersState
 } from 'routes/games/routes/Game/components/players/players-duck';
+import {
+  addTasksReducer,
+  AddTasksState
+} from 'routes/games/routes/Game/components/add-tasks/add-tasks-duck';
 
 interface AppData {
   users: User[];
@@ -36,6 +40,7 @@ export interface ApplicationState {
     home: HomeState;
     games: {
       game: {
+        addTasks: AddTasksState;
         main: GameState;
         players: PlayersState;
       };
@@ -51,6 +56,7 @@ const combinedReducers = combineReducers<ApplicationState>({
     home: homeReducer,
     games: combineReducers({
       game: combineReducers({
+        addTasks: addTasksReducer,
         main: gameReducer,
         players: playerReducer
       })

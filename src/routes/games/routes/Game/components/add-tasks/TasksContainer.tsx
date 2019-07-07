@@ -2,54 +2,72 @@ import React, { FC } from 'react';
 import {
   ListSubheader,
   List,
-  TextField,
-  InputAdornment,
+  ListItem,
+  Divider,
+  Box,
+  ListItemText,
+  ListItemSecondaryAction,
   IconButton
 } from '@material-ui/core';
-import SendIcon from 'mdi-material-ui/Send';
+import AddTaskTextField from './AddTaskTextField';
+import Task from 'models/task';
+import DeleteIcon from 'mdi-material-ui/Delete';
+
+interface TaskListItemProps {
+  onRemoveTask: (taskId: string) => void;
+  task: Task;
+}
+
+const TaskListItem: FC<TaskListItemProps> = ({ task, onRemoveTask }) => (
+  <>
+    <ListItem>
+      <ListItemText primary={task.name} />
+      <ListItemSecondaryAction>
+        <IconButton
+          aria-label="Delete"
+          onClick={() => onRemoveTask(task.id || '')}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
+    <Divider variant="fullWidth" component="li" />
+  </>
+);
 
 interface Props {
-  tasks?: string;
+  newTaskText: string;
+  onAddTask: () => void;
+  onChange: (newText: string) => void;
+  onRemoveTask: (taskId: string) => void;
+  tasks: Task[];
 }
 
-function onAddTask(task: string) {
-  console.log('adding task ' + task);
-}
-
-const TasksContainer: FC<Props> = () => (
+const TasksContainer: FC<Props> = ({
+  newTaskText,
+  onAddTask,
+  onRemoveTask,
+  onChange,
+  tasks
+}) => (
   <List
     subheader={
       <ListSubheader>
         <div>Städuppgifter</div>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-            onAddTask('dsdsd');
-          }}
-        >
-          <TextField
-            variant="outlined"
-            label="Lägg till städuppgift"
-            fullWidth={true}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    edge="end"
-                    aria-label="Lägg till städuppgift"
-                    type="submit"
-                    color="primary"
-                  >
-                    <SendIcon />
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-          />
-        </form>
+        <AddTaskTextField
+          value={newTaskText}
+          onChange={onChange}
+          onSubmit={onAddTask}
+        />
       </ListSubheader>
     }
-  ></List>
+  >
+    <Box pl={2}>
+      {tasks.map(task => (
+        <TaskListItem key={task.id} task={task} onRemoveTask={onRemoveTask} />
+      ))}
+    </Box>
+  </List>
 );
 
 export default TasksContainer;

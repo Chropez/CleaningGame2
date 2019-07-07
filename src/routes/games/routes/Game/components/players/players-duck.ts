@@ -6,14 +6,14 @@ import { AppAction } from 'config/redux';
 import User from 'models/user';
 
 enum PlayerActionTypes {
-  ShowAddPlayerDialog = 'GAMES/PLAYERS/SHOW_ADD_PLAYER_DIALOG',
-  HideAddPlayerDialog = 'GAMES/PLAYERS/HIDE_ADD_PLAYER_DIALOG',
-  FetchAvailablePlayersRequested = 'GAMES/PLAYERS/FETCH_AVAILABLE_PLAYERS_REQUESTED',
-  FetchAvailablePlayersSucceeded = 'GAMES/PLAYERS/FETCH_AVAILABLE_PLAYERS_SUCCEEDED',
-  AddPlayerToGameRequested = 'GAMES/PLAYERS/ADD_PLAYER_TO_GAME_REQUESTED',
-  AddPlayerToGameSucceeded = 'GAMES/PLAYERS/ADD_PLAYER_TO_GAME_SUCCEEDED',
-  RemovePlayerFromGameRequested = 'GAMES/PLAYERS/REMOVE_PLAYER_FROM_GAME_REQUESTED',
-  RemovePlayerFromGameSucceeded = 'GAMES/PLAYERS/REMOVE_PLAYER_FROM_GAME_SUCCEEDED'
+  ShowAddPlayerDialog = 'GAMES/GAME/PLAYERS/SHOW_ADD_PLAYER_DIALOG',
+  HideAddPlayerDialog = 'GAMES/GAME/PLAYERS/HIDE_ADD_PLAYER_DIALOG',
+  FetchAvailablePlayersRequested = 'GAMES/GAME/PLAYERS/FETCH_AVAILABLE_PLAYERS_REQUESTED',
+  FetchAvailablePlayersSucceeded = 'GAMES/GAME/PLAYERS/FETCH_AVAILABLE_PLAYERS_SUCCEEDED',
+  AddPlayerToGameRequested = 'GAMES/GAME/PLAYERS/ADD_PLAYER_TO_GAME_REQUESTED',
+  AddPlayerToGameSucceeded = 'GAMES/GAME/PLAYERS/ADD_PLAYER_TO_GAME_SUCCEEDED',
+  RemovePlayerFromGameRequested = 'GAMES/GAME/PLAYERS/REMOVE_PLAYER_FROM_GAME_REQUESTED',
+  RemovePlayerFromGameSucceeded = 'GAMES/GAME/PLAYERS/REMOVE_PLAYER_FROM_GAME_SUCCEEDED'
 }
 
 export const selectGamePlayers = (state: ApplicationState): User[] => {
