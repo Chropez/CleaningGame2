@@ -14,7 +14,7 @@ import {
   Divider,
   Chip
 } from '@material-ui/core';
-import GamePlayerModel from '../game-player-model';
+import GamePlayerModel from './game-player-model';
 import CheckIcon from 'mdi-material-ui/Check';
 
 interface Props {
@@ -25,7 +25,7 @@ interface Props {
   show: boolean;
 }
 
-const GamePlayersAddDialog: FC<Props> = ({
+const PlayersAddDialog: FC<Props> = ({
   availablePlayers,
   isLoadingAvailablePlayers,
   onAddPlayer,
@@ -77,12 +77,6 @@ const GamePlayersAddDialog: FC<Props> = ({
             </Fragment>
           ))}
         </List>
-        {/* 
-            // <div key={player.user.id}>
-            //   {player.user.displayName} <br />
-            //   Added: {player.addedToGame ? 'Ye' : 'Nah'} <br />
-            //   <Button onClick={() => onAddPlayer('someid')}>Add</Button>
-            // </div> */}
       </DialogContent>
       <DialogActions>
         <Button onClick={() => onClose()}>Stäng</Button>
@@ -91,4 +85,4 @@ const GamePlayersAddDialog: FC<Props> = ({
   );
 };
 
-export default GamePlayersAddDialog;
+export default PlayersAddDialog;

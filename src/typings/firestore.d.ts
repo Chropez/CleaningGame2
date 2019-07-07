@@ -13,6 +13,7 @@ export interface DocumentQuery {
   where?: string | string[] | string[][];
   populates?: Populates[];
   storeAs?: string;
+  subcollections?: DocumentQuery[];
 }
 
 interface Timestamp {
@@ -49,9 +50,13 @@ export default interface Firestore extends firebase.firestore.Firestore {
   get: (options: string | DocumentQuery) => Promise<DocumentSnapshot>;
   set: <T>(options: string | DocumentQuery, document?: T) => Promise<string>;
   update: <T>(options: string | DocumentQuery, document?: T) => Promise<string>;
+  delete: <T>(options: string | DocumentQuery) => Promise<string>;
+
   subcollections: SubCollection[];
   setListener: (options: string | DocumentQuery) => void;
+  setListeners: (options: string[] | DocumentQuery[]) => void;
   unsetListener: (options: string | DocumentQuery) => void;
+  unsetListeners: (options: string[] | DocumentQuery[]) => void;
   Timestamp: Timestamp;
   FieldValue: FieldValue;
   storeAs: string;

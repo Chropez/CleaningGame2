@@ -1,12 +1,15 @@
 import React, { FC, useEffect } from 'react';
 import { Container, Typography, Box } from '@material-ui/core';
-import GamePlayersContainer from './GamePlayersContainer';
+import GamePlayersContainer from './players/PlayersContainer';
 import { AppThunkDispatch } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   subscribeToGame,
   unsubscribeToGame,
   selectGame,
+  selectGameTasks
+} from '../game-duck';
+import {
   selectGamePlayers,
   showAddPlayerDialog,
   selectShowAddPlayerModal,
@@ -17,20 +20,32 @@ import {
   addPlayerToGame,
   removePlayerFromGame,
   selectCurrentUserId
-} from '../game-duck';
+} from './players/players-duck';
 import GameAppBar from './GameAppBar';
+import TasksContainer from './add-tasks/TasksContainer';
+import {
+  newTaskTextChanged,
+  selectNewTaskText,
+  addTask,
+  removeTask
+} from './add-tasks/add-tasks-duck';
 
 interface Props {
   gameId: string;
 }
 const GameContainer: FC<Props> = ({ gameId }) => {
   let dispatch: AppThunkDispatch = useDispatch();
+
   let game = useSelector(selectGame);
+
   let gamePlayers = useSelector(selectGamePlayers);
   let showAddPlayerModal = useSelector(selectShowAddPlayerModal);
   let isLoadingAvailablePlayers = useSelector(selectIsLoadingAvailablePlayers);
   let availablePlayers = useSelector(selectAvailablePlayers);
   let currentPlayerId = useSelector(selectCurrentUserId);
+
+  let newTaskText = useSelector(selectNewTaskText);
+  let tasks = useSelector(selectGameTasks);
 
   useEffect(() => {
     dispatch(subscribeToGame(gameId));
@@ -52,7 +67,7 @@ const GameContainer: FC<Props> = ({ gameId }) => {
       <Container maxWidth="md">
         <Box mt={2} mb={2}>
           <Typography>
-            Spelare kan bli inbjudna av dig eller gå med genom att söka på
+            Andra spelare kan bli inbjudna av dig eller gå med genom att söka på
             spelet <strong>{game.name}</strong>.
           </Typography>
         </Box>
@@ -66,6 +81,13 @@ const GameContainer: FC<Props> = ({ gameId }) => {
           onRemovePlayer={id => dispatch(removePlayerFromGame(id))}
           players={gamePlayers}
           showAddPlayerModal={showAddPlayerModal}
+        />
+        <TasksContainer
+          onAddTask={() => dispatch(addTask())}
+          onChange={newText => dispatch(newTaskTextChanged(newText))}
+          onRemoveTask={taskId => dispatch(removeTask(taskId))}
+          newTaskText={newTaskText}
+          tasks={tasks}
         />
       </Container>
     </>

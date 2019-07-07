@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import GamePlayersAddDialog from './GamePlayersAddDialog';
 import User from 'models/user';
-import GamePlayersList from './GamePlayersList';
-import GamePlayerModel from '../game-player-model';
+import GamePlayerModel from './game-player-model';
+import PlayersAddDialog from './PlayersAddDialog';
+import PlayerList from './PlayerList';
 
 interface Props {
   availablePlayers: GamePlayerModel[];
@@ -16,7 +16,7 @@ interface Props {
   players: User[];
 }
 
-const GamePlayersContainer: FC<Props> = ({
+const PlayersContainer: FC<Props> = ({
   availablePlayers,
   currentPlayerId,
   isLoadingAvailablePlayers,
@@ -28,14 +28,14 @@ const GamePlayersContainer: FC<Props> = ({
   players
 }) => (
   <>
-    <GamePlayersAddDialog
+    <PlayersAddDialog
       isLoadingAvailablePlayers={isLoadingAvailablePlayers}
       availablePlayers={availablePlayers}
       onAddPlayer={onAddPlayerToGame}
       onClose={onHidePlayersAddDialog}
       show={showAddPlayerModal}
     />
-    <GamePlayersList
+    <PlayerList
       currentPlayerId={currentPlayerId}
       onRemovePlayer={onRemovePlayer}
       onShowAddPlayerDialog={onShowAddPlayerDialog}
@@ -44,4 +44,4 @@ const GamePlayersContainer: FC<Props> = ({
   </>
 );
 
-export default GamePlayersContainer;
+export default PlayersContainer;
