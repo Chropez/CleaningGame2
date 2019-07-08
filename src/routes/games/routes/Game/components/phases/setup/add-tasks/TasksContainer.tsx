@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, SFC } from 'react';
 import {
   ListSubheader,
   List,
@@ -7,11 +7,15 @@ import {
   Box,
   ListItemText,
   ListItemSecondaryAction,
-  IconButton
+  IconButton,
+  Badge as MuiBadge,
+  Typography
 } from '@material-ui/core';
 import AddTaskTextField from './AddTaskTextField';
 import Task from 'models/task';
 import DeleteIcon from 'mdi-material-ui/Delete';
+import styled from 'themes/styled';
+import { BadgeProps } from '@material-ui/core/Badge';
 
 interface TaskListItemProps {
   onRemoveTask: (taskId: string) => void;
@@ -35,6 +39,14 @@ const TaskListItem: FC<TaskListItemProps> = ({ task, onRemoveTask }) => (
   </>
 );
 
+const Badge = styled(MuiBadge as SFC<BadgeProps>)`
+  && .MuiBadge-badge {
+    right: -${({ theme }) => theme.spacing(2)}px;
+    top: 50%;
+    background-color: ${({ theme }) => theme.palette.grey[300]};
+  }
+`;
+
 interface Props {
   newTaskText: string;
   onAddTask: () => void;
@@ -53,7 +65,12 @@ const TasksContainer: FC<Props> = ({
   <List
     subheader={
       <ListSubheader>
-        <div>Städuppgifter</div>
+        <div>
+          <Badge badgeContent={tasks.length}>
+            <Typography>Städuppgifter</Typography>
+          </Badge>
+        </div>
+
         <AddTaskTextField
           value={newTaskText}
           onChange={onChange}
