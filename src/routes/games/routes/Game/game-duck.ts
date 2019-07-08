@@ -68,15 +68,17 @@ type Actions =
   | AppAction<GameActionTypes.GameUnsubscribed>;
 
 export interface GameState {
-  currentGame: string;
+  currentGameId: string;
   showAddPlayerDialog: boolean;
   isLoadingAvailablePlayers: boolean;
+  isLoadingGame: boolean;
 }
 
 const initialState: GameState = {
   showAddPlayerDialog: false,
-  currentGame: '',
-  isLoadingAvailablePlayers: false
+  currentGameId: '',
+  isLoadingAvailablePlayers: false,
+  isLoadingGame: false
 };
 
 export const gameReducer = (
@@ -85,9 +87,13 @@ export const gameReducer = (
 ) => {
   switch (action.type) {
     case GameActionTypes.GameSubscribed:
-      return { ...state, currentGameId: action.payload.id };
+      return {
+        ...state,
+        currentGameId: action.payload.id,
+        isLoadingGame: true
+      };
     case GameActionTypes.GameUnsubscribed:
-      return { ...state, currentGame: '' };
+      return { ...state, currentGameId: '', isLoadingGame: false };
     default:
       return state;
   }

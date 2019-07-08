@@ -1,5 +1,5 @@
 import { AppActionCreator, AppThunkDispatch } from 'store';
-import Game from 'models/game';
+import Game, { GamePhase } from 'models/game';
 import { getId } from 'animal-id';
 import Firestore from 'typings/firestore';
 import { ApplicationState } from 'store/root-reducer';
@@ -93,7 +93,8 @@ export const createGame: AppActionCreator = () => async (
     name,
     createdAt: firestore.Timestamp.now().toMillis(),
     createdById: userId,
-    playerIds: [userId]
+    playerIds: [userId],
+    phase: GamePhase.Setup
   };
 
   dispatch({

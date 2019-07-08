@@ -62,7 +62,7 @@ const TasksContainer: FC<Props> = ({
       </ListSubheader>
     }
   >
-    <Box pl={2}>
+    <Box mt={1} pl={2}>
       {tasks.map(task => (
         <TaskListItem key={task.id} task={task} onRemoveTask={onRemoveTask} />
       ))}
