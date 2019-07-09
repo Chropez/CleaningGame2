@@ -8,7 +8,7 @@ import DotsVerticalIcon from 'mdi-material-ui/DotsVertical';
 import AccountMultiple from 'mdi-material-ui/AccountMultiple';
 import { FunctionComponent, SFC, useRef } from 'react';
 import * as React from 'react';
-import styled from 'themes/styled';
+import styled from 'styled-components/macro';
 
 const LargeAppBar = styled(AppBar as SFC<AppBarProps>)`
   && {

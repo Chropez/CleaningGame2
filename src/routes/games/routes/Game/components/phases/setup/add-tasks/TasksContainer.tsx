@@ -14,7 +14,7 @@ import {
 import AddTaskTextField from './AddTaskTextField';
 import Task from 'models/task';
 import DeleteIcon from 'mdi-material-ui/Delete';
-import styled from 'themes/styled';
+import styled from 'styled-components/macro';
 import { BadgeProps } from '@material-ui/core/Badge';
 
 interface TaskListItemProps {

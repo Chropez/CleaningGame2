@@ -1,5 +1,4 @@
 import React, { FC, useEffect } from 'react';
-import { Container } from '@material-ui/core';
 import { AppThunkDispatch } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import { subscribeToGame, unsubscribeToGame, selectGame } from '../game-duck';
@@ -27,9 +26,8 @@ const GameContainer: FC<Props> = ({ gameId }) => {
   return (
     <>
       <GameAppBar gameName={game.name} />
-      <Container maxWidth="md">
-        {game.phase === GamePhase.Setup && <SetupPhaseContainer />}
-      </Container>
+
+      {game.phase === GamePhase.Setup && <SetupPhaseContainer />}
     </>
   );
 };

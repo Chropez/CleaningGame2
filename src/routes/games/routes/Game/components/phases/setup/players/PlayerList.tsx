@@ -13,7 +13,7 @@ import {
   Fab
 } from '@material-ui/core';
 import DeleteIcon from 'mdi-material-ui/Delete';
-import styled from 'themes/styled';
+import styled from 'styled-components/macro';
 import { ListSubheaderProps } from '@material-ui/core/ListSubheader';
 import { FabProps } from '@material-ui/core/Fab';
 import User from 'models/user';

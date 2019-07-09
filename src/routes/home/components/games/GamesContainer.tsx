@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import AddIcon from 'mdi-material-ui/Plus';
 import MagnifyIcon from 'mdi-material-ui/Magnify';
-import styled from 'themes/styled';
+import styled from 'styled-components/macro';
 import { FabProps } from '@material-ui/core/Fab';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppThunkDispatch } from 'store';

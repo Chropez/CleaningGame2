@@ -1,7 +1,7 @@
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import * as React from 'react';
 import { FunctionComponent, SFC } from 'react';
-import styled from 'themes/styled';
+import styled from 'styled-components/macro';
 import { Box, Avatar as MuiAvatar } from '@material-ui/core';
 import { AvatarProps } from '@material-ui/core/Avatar';
 

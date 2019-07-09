@@ -9,7 +9,7 @@ import Link from 'components/Link';
 import HomeIcon from 'mdi-material-ui/Home';
 import DotsVerticalIcon from 'mdi-material-ui/DotsVertical';
 import { TypographyProps } from '@material-ui/core/Typography';
-import styled from 'themes/styled';
+import styled from 'styled-components/macro';
 import { AppBarProps } from '@material-ui/core/AppBar';
 
 const ToolbarText = styled(Typography as SFC<TypographyProps>)`

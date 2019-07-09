@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
-import styled from 'themes/styled';
+import styled from 'styled-components/macro';
 
 const H1Component: FC<TypographyProps> = props => (
   <Typography {...props} variant="h6" component={props.component || 'h1'} />

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Typography, Box } from '@material-ui/core';
+import { Typography, Box, Container } from '@material-ui/core';
 import GamePlayersContainer from './players/PlayersContainer';
 import { AppThunkDispatch } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +23,7 @@ import {
   addTask,
   removeTask
 } from './add-tasks/add-tasks-duck';
+import BottomNavigation from 'components/BottomNavigation';
 
 const SetupPhaseContainer: FC = () => {
   let dispatch: AppThunkDispatch = useDispatch();
@@ -49,30 +50,33 @@ const SetupPhaseContainer: FC = () => {
 
   return (
     <>
-      <Box mt={2} mb={2}>
-        <Typography>
-          Andra spelare kan bli inbjudna av dig eller gå med genom att söka på
-          spelet <strong>{game.name}</strong>.
-        </Typography>
-      </Box>
-      <GamePlayersContainer
-        availablePlayers={availablePlayers}
-        currentPlayerId={currentPlayerId}
-        isLoadingAvailablePlayers={isLoadingAvailablePlayers}
-        onAddPlayerToGame={id => dispatch(addPlayerToGame(id))}
-        onShowAddPlayerDialog={loadAddPlayerDialog}
-        onHidePlayersAddDialog={() => dispatch(hideAddPlayerDialog())}
-        onRemovePlayer={id => dispatch(removePlayerFromGame(id))}
-        players={gamePlayers}
-        showAddPlayerModal={showAddPlayerModal}
-      />
-      <TasksContainer
-        onAddTask={() => dispatch(addTask())}
-        onChange={newText => dispatch(newTaskTextChanged(newText))}
-        onRemoveTask={taskId => dispatch(removeTask(taskId))}
-        newTaskText={newTaskText}
-        tasks={tasks}
-      />
+      <Container maxWidth="md">
+        <Box mt={2} mb={2}>
+          <Typography>
+            Andra spelare kan bli inbjudna av dig eller gå med genom att söka på
+            spelet <strong>{game.name}</strong>.
+          </Typography>
+        </Box>
+        <GamePlayersContainer
+          availablePlayers={availablePlayers}
+          currentPlayerId={currentPlayerId}
+          isLoadingAvailablePlayers={isLoadingAvailablePlayers}
+          onAddPlayerToGame={id => dispatch(addPlayerToGame(id))}
+          onShowAddPlayerDialog={loadAddPlayerDialog}
+          onHidePlayersAddDialog={() => dispatch(hideAddPlayerDialog())}
+          onRemovePlayer={id => dispatch(removePlayerFromGame(id))}
+          players={gamePlayers}
+          showAddPlayerModal={showAddPlayerModal}
+        />
+        <TasksContainer
+          onAddTask={() => dispatch(addTask())}
+          onChange={newText => dispatch(newTaskTextChanged(newText))}
+          onRemoveTask={taskId => dispatch(removeTask(taskId))}
+          newTaskText={newTaskText}
+          tasks={tasks}
+        />
+      </Container>
+      <BottomNavigation />
     </>
   );
 };

@@ -1,7 +1,7 @@
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import * as React from 'react';
 import { FunctionComponent, ReactNode, SFC } from 'react';
-import styled from 'themes/styled';
+import styled from 'styled-components/macro';
 
 const IconWrapper = styled.div`
   flex: 0 1 auto;

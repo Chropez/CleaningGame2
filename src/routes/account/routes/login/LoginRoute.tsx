@@ -4,7 +4,7 @@ import * as React from 'react';
 import { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppThunkDispatch } from 'store';
-import styled from 'themes/styled';
+import styled from 'styled-components/macro';
 import { loginWithFacebook, loginWithGoogle } from '../../account-duck';
 import ThirdPartyButton from '../../components/ThirdPartyButton';
 import {

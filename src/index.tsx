@@ -1,6 +1,6 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import Application from 'components/application';
+import Application from 'routes/application';
 import { initializeFirebase } from 'config/firebase';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -11,7 +11,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Routes from 'routes/Routes';
 import GlobalTheme from 'themes/global-theme';
 import mainTheme from 'themes/main-theme';
-import { ThemeProvider } from 'themes/styled';
+import { ThemeProvider } from 'styled-components/macro';
 import 'typeface-leckerli-one'; // Used logo
 import 'typeface-roboto'; // Used by Material Design
 import configureStore from './config/redux';
