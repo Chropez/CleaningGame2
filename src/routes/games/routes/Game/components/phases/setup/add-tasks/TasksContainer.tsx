@@ -1,4 +1,4 @@
-import React, { FC, SFC } from 'react';
+import React, { FC } from 'react';
 import {
   ListSubheader,
   List,
@@ -39,7 +39,7 @@ const TaskListItem: FC<TaskListItemProps> = ({ task, onRemoveTask }) => (
   </>
 );
 
-const Badge = styled(MuiBadge as SFC<BadgeProps>)`
+const Badge = styled(MuiBadge as FC<BadgeProps>)`
   && .MuiBadge-badge {
     right: -${({ theme }) => theme.spacing(2)}px;
     top: 50%;

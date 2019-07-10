@@ -1,4 +1,4 @@
-import React, { FC, SFC, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import {
   Fab as MuiFab,
   Container,
@@ -23,7 +23,7 @@ import User from 'models/user';
 import Link from 'components/Link';
 import { LinkProps } from '@material-ui/core/Link';
 
-const AddFab = styled(MuiFab as SFC<FabProps>)`
+const AddFab = styled(MuiFab as FC<FabProps>)`
   && {
     position: fixed;
     right: 25px;
@@ -31,7 +31,7 @@ const AddFab = styled(MuiFab as SFC<FabProps>)`
   }
 `;
 
-const SearchFab = styled(MuiFab as SFC<FabProps>)`
+const SearchFab = styled(MuiFab as FC<FabProps>)`
   && {
     position: fixed;
     right: 32px;
@@ -39,7 +39,7 @@ const SearchFab = styled(MuiFab as SFC<FabProps>)`
   }
 `;
 
-const StyledLink = styled(Link as SFC<LinkProps>)`
+const StyledLink = styled(Link as FC<LinkProps>)`
   &&:hover {
     text-decoration: none;
   }

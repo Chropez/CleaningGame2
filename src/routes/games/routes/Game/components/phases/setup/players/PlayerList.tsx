@@ -1,4 +1,4 @@
-import React, { FC, SFC } from 'react';
+import React, { FC } from 'react';
 import PlusIcon from 'mdi-material-ui/Plus';
 import {
   List,
@@ -51,7 +51,7 @@ const PlayerListItem: FC<PlayerListItemProps> = ({
     <Divider variant="inset" component="li" />
   </>
 );
-const ListSubheader = styled(MuiListSubheader as SFC<ListSubheaderProps>)`
+const ListSubheader = styled(MuiListSubheader as FC<ListSubheaderProps>)`
   display: flex;
 `;
 
@@ -59,7 +59,7 @@ const SubHeaderTitle = styled.div`
   flex: 1;
 `;
 
-const AddPlayerButton = styled(Fab as SFC<FabProps>)`
+const AddPlayerButton = styled(Fab as FC<FabProps>)`
   && {
     margin-right: 8px;
     width: 30px;

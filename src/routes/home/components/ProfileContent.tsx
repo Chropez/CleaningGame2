@@ -1,6 +1,6 @@
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import * as React from 'react';
-import { FunctionComponent, SFC } from 'react';
+import { FunctionComponent, FC } from 'react';
 import styled from 'styled-components/macro';
 import { Box, Avatar as MuiAvatar } from '@material-ui/core';
 import { AvatarProps } from '@material-ui/core/Avatar';
@@ -12,7 +12,7 @@ const AvatarContent = styled.div`
   height: 100%;
 `;
 
-const AvatarName = styled(Typography as SFC<TypographyProps>)`
+const AvatarName = styled(Typography as FC<TypographyProps>)`
   && {
     flex: 0;
     color: ${props => props.theme.palette.blue[100]};
@@ -20,7 +20,7 @@ const AvatarName = styled(Typography as SFC<TypographyProps>)`
   }
 `;
 
-const Avatar = styled(MuiAvatar as SFC<AvatarProps>)`
+const Avatar = styled(MuiAvatar as FC<AvatarProps>)`
   && {
     height: 80px;
     width: 80px;

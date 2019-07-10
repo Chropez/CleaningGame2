@@ -1,4 +1,4 @@
-import React, { FC, SFC } from 'react';
+import React, { FC } from 'react';
 import {
   AppBar as MuiAppBar,
   Toolbar,
@@ -12,14 +12,14 @@ import { TypographyProps } from '@material-ui/core/Typography';
 import styled from 'styled-components/macro';
 import { AppBarProps } from '@material-ui/core/AppBar';
 
-const ToolbarText = styled(Typography as SFC<TypographyProps>)`
+const ToolbarText = styled(Typography as FC<TypographyProps>)`
   && {
     flex-grow: 1;
     margin-left: ${({ theme }) => theme.spacing(2)}px;
   }
 `;
 
-const AppBar = styled(MuiAppBar as SFC<AppBarProps>)`
+const AppBar = styled(MuiAppBar as FC<AppBarProps>)`
   && {
     top: 0;
     position: sticky;

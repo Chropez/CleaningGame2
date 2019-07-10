@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Typography, Box, Container } from '@material-ui/core';
+import { Typography, Box, Button } from '@material-ui/core';
 import GamePlayersContainer from './players/PlayersContainer';
 import { AppThunkDispatch } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +24,8 @@ import {
   removeTask
 } from './add-tasks/add-tasks-duck';
 import BottomNavigation from 'components/BottomNavigation';
+import GamePhaseContentWrapper from '../../GamePhaseContentWrapper';
+import GamePhaseWrapper from '../../GamePhaseWrapper';
 
 const SetupPhaseContainer: FC = () => {
   let dispatch: AppThunkDispatch = useDispatch();
@@ -48,9 +50,14 @@ const SetupPhaseContainer: FC = () => {
     return null;
   }
 
+  let canGoToNextStep =
+    tasks.length > 1 &&
+    gamePlayers.length > 1 &&
+    tasks.length >= gamePlayers.length;
+
   return (
-    <>
-      <Container maxWidth="md">
+    <GamePhaseWrapper>
+      <GamePhaseContentWrapper>
         <Box mt={2} mb={2}>
           <Typography>
             Andra spelare kan bli inbjudna av dig eller gå med genom att söka på
@@ -75,9 +82,21 @@ const SetupPhaseContainer: FC = () => {
           newTaskText={newTaskText}
           tasks={tasks}
         />
-      </Container>
-      <BottomNavigation />
-    </>
+      </GamePhaseContentWrapper>
+      <BottomNavigation>
+        <Box p={2}>
+          <Button
+            disabled={!canGoToNextStep}
+            color="primary"
+            variant="contained"
+            fullWidth={true}
+            aria-label="Next step"
+          >
+            Nästa
+          </Button>
+        </Box>
+      </BottomNavigation>
+    </GamePhaseWrapper>
   );
 };
 
