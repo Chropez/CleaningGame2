@@ -16,6 +16,10 @@ import {
   PlayersState,
   playerReducer
 } from 'routes/games/routes/Game/components/phases/setup/players/players-duck';
+import {
+  ApplicationRouteState,
+  applicationRouteReducer
+} from 'routes/application/application-duck';
 
 interface AppData {
   users: User[];
@@ -37,6 +41,7 @@ export interface ApplicationState {
     greet: string;
   };
   routes: {
+    application: ApplicationRouteState;
     home: HomeState;
     games: {
       game: {
@@ -53,6 +58,7 @@ const combinedReducers = combineReducers<ApplicationState>({
   firestore: firestoreReducer,
   test: testReducer,
   routes: combineReducers({
+    application: applicationRouteReducer,
     home: homeReducer,
     games: combineReducers({
       game: combineReducers({

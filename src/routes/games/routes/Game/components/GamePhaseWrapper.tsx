@@ -1,14 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components/macro';
 
 const StyledGamePhaseWrapper = styled.div`
   && {
-    min-height: calc(100vh - 56px);
+    min-height: calc((var(--vh, 1vh) * 100) - 56px);
     display: flex;
     flex-direction: column;
 
     @media (min-width: 600px) {
-      min-height: calc(100vh - 64px);
+      min-height: calc((var(--vh, 1vh) * 100) - 64px);
     }
 
     @media (min-height: 1000px) {
@@ -22,7 +22,7 @@ const StyledGamePhaseWrapper = styled.div`
 `;
 
 interface Props {
-  children: JSX.Element[] | JSX.Element;
+  children: ReactNode;
 }
 const GamePhaseWrapper: FC<Props> = props => (
   <StyledGamePhaseWrapper {...props} />

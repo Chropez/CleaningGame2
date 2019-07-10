@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { FC } from 'react';
 import styled from 'styled-components/macro';
 import Box, { BoxProps } from '@material-ui/core/Box';
@@ -15,7 +15,7 @@ const StyledBottomNavigation = styled(Box as FC<BoxProps>)`
 `;
 
 interface Props {
-  children?: JSX.Element[] | JSX.Element | string;
+  children?: ReactNode;
 }
 const BottomNavigation: FC<Props> = props => (
   <StyledBottomNavigation mt={4} {...props} />

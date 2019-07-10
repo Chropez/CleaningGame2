@@ -1,6 +1,7 @@
 import React from 'react';
 import { FunctionComponent } from 'react';
 import styled from 'styled-components/macro';
+import useRealVh from 'utils/useRealVh';
 
 const Container = styled.div`
   display: flex;
@@ -8,8 +9,10 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Application: FunctionComponent = ({ children }) => (
-  <Container>{children}</Container>
-);
+const Application: FunctionComponent = ({ children }) => {
+  useRealVh();
+
+  return <Container>{children}</Container>;
+};
 
 export default Application;

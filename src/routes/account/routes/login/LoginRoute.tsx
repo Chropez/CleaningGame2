@@ -17,7 +17,7 @@ const Wrapper = styled(SecondaryBackground)`
   flex: 1 1 auto;
   flex-direction: column;
   align-items: stretch;
-  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
 `;
 
 const Header = styled.div`
