@@ -26,6 +26,7 @@ import {
 import BottomNavigation from 'components/BottomNavigation';
 import GamePhaseContentWrapper from '../../GamePhaseContentWrapper';
 import GamePhaseWrapper from '../../GamePhaseWrapper';
+import { goToNextStep } from './setup-phase-duck';
 
 const SetupPhaseContainer: FC = () => {
   let dispatch: AppThunkDispatch = useDispatch();
@@ -91,6 +92,7 @@ const SetupPhaseContainer: FC = () => {
             variant="contained"
             fullWidth={true}
             aria-label="Next step"
+            onClick={() => dispatch(goToNextStep())}
           >
             Nästa
           </Button>

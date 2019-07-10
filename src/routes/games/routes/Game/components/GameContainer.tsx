@@ -28,6 +28,7 @@ const GameContainer: FC<Props> = ({ gameId }) => {
       <GameAppBar gameName={game.name} />
 
       {game.phase === GamePhase.Setup && <SetupPhaseContainer />}
+      {game.phase === GamePhase.Estimate && <div>To estimate...</div>}
     </>
   );
 };
