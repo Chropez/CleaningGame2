@@ -9,14 +9,16 @@ import {
   Divider,
   ListItemSecondaryAction,
   IconButton,
-  ListSubheader as MuiListSubheader,
-  Fab
+  Fab,
+  Typography
 } from '@material-ui/core';
 import DeleteIcon from 'mdi-material-ui/Delete';
 import styled from 'styled-components/macro';
 import { ListSubheaderProps } from '@material-ui/core/ListSubheader';
 import { FabProps } from '@material-ui/core/Fab';
 import User from 'models/user';
+import StickyListSubHeader from 'components/StickyListSubHeader';
+import { TypographyProps } from '@material-ui/core/Typography';
 
 interface PlayerListItemProps {
   canBeRemoved: boolean;
@@ -51,12 +53,16 @@ const PlayerListItem: FC<PlayerListItemProps> = ({
     <Divider variant="inset" component="li" />
   </>
 );
-const ListSubheader = styled(MuiListSubheader as FC<ListSubheaderProps>)`
+
+const ListSubheader = styled(StickyListSubHeader as FC<ListSubheaderProps>)`
   display: flex;
 `;
 
-const SubHeaderTitle = styled.div`
-  flex: 1;
+const SubHeaderTitle = styled(Typography as FC<TypographyProps>)`
+  && {
+    flex: 1;
+    line-height: 48px;
+  }
 `;
 
 const AddPlayerButton = styled(Fab as FC<FabProps>)`

@@ -63,6 +63,12 @@ export const unsubscribeToGame: AppActionCreator = (gameId: string) => (
   firestore.unsetListeners(listenToGameQueries(gameId));
 };
 
+export const goToNextStep: AppActionCreator = () => (
+  dispatch,
+  getState,
+  { getFirestore }
+) => {};
+
 type Actions =
   | AppAction<GameActionTypes.GameSubscribed, { id: string }>
   | AppAction<GameActionTypes.GameUnsubscribed>;

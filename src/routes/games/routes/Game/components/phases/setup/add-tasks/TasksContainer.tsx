@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import {
-  ListSubheader,
   List,
   ListItem,
   Divider,
@@ -16,6 +15,7 @@ import Task from 'models/task';
 import DeleteIcon from 'mdi-material-ui/Delete';
 import styled from 'styled-components/macro';
 import { BadgeProps } from '@material-ui/core/Badge';
+import StickyListSubHeader from 'components/StickyListSubHeader';
 
 interface TaskListItemProps {
   onRemoveTask: (taskId: string) => void;
@@ -64,7 +64,7 @@ const TasksContainer: FC<Props> = ({
 }) => (
   <List
     subheader={
-      <ListSubheader>
+      <StickyListSubHeader>
         <div>
           <Badge badgeContent={tasks.length}>
             <Typography>Städuppgifter</Typography>
@@ -76,7 +76,7 @@ const TasksContainer: FC<Props> = ({
           onChange={onChange}
           onSubmit={onAddTask}
         />
-      </ListSubheader>
+      </StickyListSubHeader>
     }
   >
     <Box mt={1} pl={2}>
