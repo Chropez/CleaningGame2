@@ -4,7 +4,7 @@ import * as React from 'react';
 import { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppThunkDispatch } from 'store';
-import styled from 'themes/styled';
+import styled from 'styled-components/macro';
 import { loginWithFacebook, loginWithGoogle } from '../../account-duck';
 import ThirdPartyButton from '../../components/ThirdPartyButton';
 import {
@@ -17,7 +17,7 @@ const Wrapper = styled(SecondaryBackground)`
   flex: 1 1 auto;
   flex-direction: column;
   align-items: stretch;
-  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
 `;
 
 const Header = styled.div`

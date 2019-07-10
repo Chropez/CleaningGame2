@@ -6,17 +6,17 @@ import Toolbar, { ToolbarProps } from '@material-ui/core/Toolbar/Toolbar';
 import Logo from 'components/Logo';
 import DotsVerticalIcon from 'mdi-material-ui/DotsVertical';
 import AccountMultiple from 'mdi-material-ui/AccountMultiple';
-import { FunctionComponent, SFC, useRef } from 'react';
+import { FunctionComponent, FC, useRef } from 'react';
 import * as React from 'react';
-import styled from 'themes/styled';
+import styled from 'styled-components/macro';
 
-const LargeAppBar = styled(AppBar as SFC<AppBarProps>)`
+const LargeAppBar = styled(AppBar as FC<AppBarProps>)`
   && {
     background-image: ${props => props.theme.secondaryBackground.bgImage};
   }
 `;
 
-const LargeToolbar = styled(Toolbar as SFC<ToolbarProps>)`
+const LargeToolbar = styled(Toolbar as FC<ToolbarProps>)`
   flex-direction: column;
 `;
 
@@ -38,7 +38,7 @@ const AppBarLogo = styled(Logo)`
   }
 `;
 
-const TopRightMenu = styled(Menu as SFC<MenuProps>)`
+const TopRightMenu = styled(Menu as FC<MenuProps>)`
   && .top-right-menu {
     min-width: 150px;
   }

@@ -1,8 +1,8 @@
 import React from 'react';
 import { FunctionComponent } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import AnonymousOnlyRoute from 'utils/AnonymousOnlyRoute';
-import ProtectedRoute from 'utils/ProtectedRoute';
+import AnonymousOnlyRoute from 'utils/routes/AnonymousOnlyRoute';
+import ProtectedRoute from 'utils/routes/ProtectedRoute';
 import AccountRoute from './account';
 import HomeRoute from './home';
 import TestRouteComponent from './test';

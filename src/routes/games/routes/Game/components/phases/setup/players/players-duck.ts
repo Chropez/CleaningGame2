@@ -1,9 +1,9 @@
 import { ApplicationState } from 'store/root-reducer';
-import { selectGame } from '../../game-duck';
 import GamePlayerModel from './game-player-model';
 import { AppActionCreator } from 'store';
 import { AppAction } from 'config/redux';
 import User from 'models/user';
+import { selectGame } from 'routes/games/routes/Game/game-duck';
 
 enum PlayerActionTypes {
   ShowAddPlayerDialog = 'GAMES/GAME/PLAYERS/SHOW_ADD_PLAYER_DIALOG',

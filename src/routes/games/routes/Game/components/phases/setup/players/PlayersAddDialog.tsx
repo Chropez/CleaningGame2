@@ -56,7 +56,7 @@ const PlayersAddDialog: FC<Props> = ({
                     <Chip
                       label={
                         <>
-                          Added <CheckIcon fontSize="small" />
+                          Tillagd <CheckIcon fontSize="small" />
                         </>
                       }
                       variant="outlined"

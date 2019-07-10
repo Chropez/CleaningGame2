@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FunctionComponent } from 'react';
-import styled from 'themes/styled';
+import styled from 'styled-components/macro';
 
 const StyledLogo = styled.h1`
   color: ${({

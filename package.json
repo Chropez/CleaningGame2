@@ -54,6 +54,7 @@
     "@types/webpack-env": "^1.13.9",
     "@typescript-eslint/eslint-plugin": "^1.10.2",
     "@typescript-eslint/parser": "^1.10.2",
+    "babel-plugin-macros": "^2.6.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^5.0.0",
     "eslint-config-react": "^1.1.7",

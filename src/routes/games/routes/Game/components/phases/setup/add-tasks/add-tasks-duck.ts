@@ -1,9 +1,9 @@
 import { AppAction } from 'config/redux';
 import { AppActionCreator } from 'store';
 import { ApplicationState } from 'store/root-reducer';
-import { selectGame } from '../../game-duck';
 import Task from 'models/task';
 import { selectCurrentUserId } from '../players/players-duck';
+import { selectGame } from 'routes/games/routes/Game/game-duck';
 
 enum AddTasksActionTypes {
   NewTaskTextChanged = 'GAMES/GAME/ADD_TASK/NEW_TASK_TEXT_CHANGED',
