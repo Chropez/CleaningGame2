@@ -3,7 +3,6 @@ import { Typography, Box, Button } from '@material-ui/core';
 import GamePlayersContainer from './players/PlayersContainer';
 import { AppThunkDispatch } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectGame, selectGameTasks } from '../../../game-duck';
 import {
   selectGamePlayers,
   showAddPlayerDialog,
@@ -24,9 +23,10 @@ import {
   removeTask
 } from './add-tasks/add-tasks-duck';
 import BottomNavigation from 'components/BottomNavigation';
-import GamePhaseContentWrapper from '../../GamePhaseContentWrapper';
-import GamePhaseWrapper from '../../GamePhaseWrapper';
+import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
+import GamePhaseWrapper from '../../components/GamePhaseWrapper';
 import { goToNextStep } from './setup-phase-duck';
+import { selectGameTasks, selectGame } from '../../game-duck';
 
 const SetupPhaseContainer: FC = () => {
   let dispatch: AppThunkDispatch = useDispatch();

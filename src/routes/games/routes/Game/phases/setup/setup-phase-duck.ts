@@ -1,7 +1,7 @@
 import { AppActionCreator } from 'store';
 import { AppAction } from 'config/redux';
-import { selectGame } from '../../../game-duck';
 import { GamePhase } from 'models/game';
+import { selectGame } from '../../game-duck';
 
 enum SetupPhaseTypes {
   NextGamePhaseRequested = 'GAMES/GAME/SETUP_PHASE/NEXTT_GAME_PHASE_REQUESTED',
@@ -15,7 +15,6 @@ export const goToNextStep: AppActionCreator = () => (
 ) => {
   let state = getState();
   let game = selectGame(state);
-  let { id: gameId } = selectGame(state);
 
   if (game.phase !== GamePhase.Setup) {
     throw new Error(
@@ -27,7 +26,7 @@ export const goToNextStep: AppActionCreator = () => (
 
   dispatch({ type: SetupPhaseTypes.NextGamePhaseRequested });
   firestore.update(
-    { collection: 'games', doc: gameId },
+    { collection: 'games', doc: game.id },
     { phase: GamePhase.Estimate }
   );
 };

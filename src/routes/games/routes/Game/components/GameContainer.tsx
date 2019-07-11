@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { subscribeToGame, unsubscribeToGame, selectGame } from '../game-duck';
 import GameAppBar from './GameAppBar';
 import { GamePhase } from 'models/game';
-import SetupPhaseContainer from './phases/setup/SetupPhaseContainer';
+import SetupPhaseContainer from '../phases/setup/SetupPhaseContainer';
 
 interface Props {
   gameId: string;
