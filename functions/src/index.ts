@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as functions from 'firebase-functions';
 
 // // Start writing Firebase Functions
@@ -6,3 +7,9 @@ import * as functions from 'firebase-functions';
 // export const helloWorld = functions.https.onRequest((request, response) => {
 //  response.send("Hello from Firebase!");
 // });
+export const updateTaskAverage = functions.firestore
+  .document('games/{gameId}/task-estimations/{taskEstimationId}')
+  .onWrite((change, context) => {
+    console.log(change);
+    console.log(context);
+  });
