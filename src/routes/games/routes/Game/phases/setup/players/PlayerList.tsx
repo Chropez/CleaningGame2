@@ -16,14 +16,14 @@ import DeleteIcon from 'mdi-material-ui/Delete';
 import styled from 'styled-components/macro';
 import { ListSubheaderProps } from '@material-ui/core/ListSubheader';
 import { FabProps } from '@material-ui/core/Fab';
-import User from 'models/user';
 import StickyListSubHeader from 'components/StickyListSubHeader';
 import { TypographyProps } from '@material-ui/core/Typography';
+import { GamePlayerViewModel } from '../../../game-player-view-model';
 
 interface PlayerListItemProps {
   canBeRemoved: boolean;
   onRemovePlayer: (playerId: string) => void;
-  player: User;
+  player: GamePlayerViewModel;
 }
 
 const PlayerListItem: FC<PlayerListItemProps> = ({
@@ -34,15 +34,15 @@ const PlayerListItem: FC<PlayerListItemProps> = ({
   <>
     <ListItem>
       <ListItemAvatar>
-        <Avatar alt={player.displayName} src={player.avatarUrl} />
+        <Avatar alt={player.user.displayName} src={player.user.avatarUrl} />
       </ListItemAvatar>
-      <ListItemText primary={player.displayName} />
+      <ListItemText primary={player.user.displayName} />
 
       {canBeRemoved && (
         <ListItemSecondaryAction>
           <IconButton
             aria-label="Delete"
-            onClick={() => onRemovePlayer(player.id)}
+            onClick={() => onRemovePlayer(player.user.id)}
           >
             <DeleteIcon />
           </IconButton>
@@ -79,7 +79,7 @@ interface Props {
   currentPlayerId: string;
   onShowAddPlayerDialog: () => void;
   onRemovePlayer: (playerId: string) => void;
-  players: User[];
+  players: GamePlayerViewModel[];
 }
 
 const PlayerList: FC<Props> = ({
@@ -102,14 +102,17 @@ const PlayerList: FC<Props> = ({
       </ListSubheader>
     }
   >
-    {players.map(player => (
-      <PlayerListItem
-        key={player.id}
-        canBeRemoved={currentPlayerId !== player.id}
-        onRemovePlayer={onRemovePlayer}
-        player={player}
-      />
-    ))}
+    {players.map(
+      player =>
+        player.user && (
+          <PlayerListItem
+            key={player.id}
+            canBeRemoved={currentPlayerId !== player.id}
+            onRemovePlayer={onRemovePlayer}
+            player={player}
+          />
+        )
+    )}
   </List>
 );
 

@@ -20,7 +20,7 @@ const GameContainer: FC<Props> = ({ gameId }) => {
     return () => dispatch(unsubscribeToGame(gameId));
   }, [dispatch, gameId]);
 
-  if (!game) {
+  if (game === undefined) {
     return null;
   }
 

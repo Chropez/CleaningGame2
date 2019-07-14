@@ -4,7 +4,6 @@ import GamePlayersContainer from './players/PlayersContainer';
 import { AppThunkDispatch } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  selectGamePlayers,
   showAddPlayerDialog,
   selectShowAddPlayerModal,
   hideAddPlayerDialog,
@@ -31,7 +30,7 @@ import {
   subscribeToGameTasks,
   unsubscribeToGameTasks
 } from './setup-phase-duck';
-import { selectGame } from '../../game-duck';
+import { selectGame, selectGamePlayersViewModel } from '../../game-duck';
 
 const SetupPhaseContainer: FC = () => {
   let dispatch: AppThunkDispatch = useDispatch();
@@ -39,7 +38,7 @@ const SetupPhaseContainer: FC = () => {
   let game = useSelector(selectGame);
   let gameId = game.id;
 
-  let gamePlayers = useSelector(selectGamePlayers);
+  let gamePlayers = useSelector(selectGamePlayersViewModel);
   let showAddPlayerModal = useSelector(selectShowAddPlayerModal);
   let isLoadingAvailablePlayers = useSelector(selectIsLoadingAvailablePlayers);
   let availablePlayers = useSelector(selectAvailablePlayers);
@@ -80,10 +79,12 @@ const SetupPhaseContainer: FC = () => {
           availablePlayers={availablePlayers}
           currentPlayerId={currentPlayerId}
           isLoadingAvailablePlayers={isLoadingAvailablePlayers}
-          onAddPlayerToGame={id => dispatch(addPlayerToGame(id))}
+          onAddPlayerToGame={userId =>
+            dispatch(addPlayerToGame(gameId, userId))
+          }
           onShowAddPlayerDialog={loadAddPlayerDialog}
           onHidePlayersAddDialog={() => dispatch(hideAddPlayerDialog())}
-          onRemovePlayer={id => dispatch(removePlayerFromGame(id))}
+          onRemovePlayer={userId => dispatch(removePlayerFromGame(userId))}
           players={gamePlayers}
           showAddPlayerModal={showAddPlayerModal}
         />

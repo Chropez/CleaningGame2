@@ -11,8 +11,5 @@ export default interface Game {
   name: string;
   createdAt: number;
   createdById: string;
-
-  playerIds?: string[];
-
   phase: GamePhase;
 }

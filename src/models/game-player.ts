@@ -1,6 +1,6 @@
 export default interface GamePlayer {
-  id: string;
+  id?: string;
   userId: string;
-
+  createdAt: number;
   isDoneEstimating: boolean;
 }

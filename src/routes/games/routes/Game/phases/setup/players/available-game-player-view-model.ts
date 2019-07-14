@@ -1,6 +1,6 @@
 import User from 'models/user';
 
-export default interface GamePlayerModel {
+export default interface AvailableGamePlayerModel {
   user: User;
   addedToGame: boolean;
 }

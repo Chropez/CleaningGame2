@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import User from 'models/user';
-import GamePlayerModel from './game-player-model';
+import AvailableGamePlayerModel from './available-game-player-view-model';
 import PlayersAddDialog from './PlayersAddDialog';
 import PlayerList from './PlayerList';
+import { GamePlayerViewModel } from '../../../game-player-view-model';
 
 interface Props {
-  availablePlayers: GamePlayerModel[];
+  availablePlayers: AvailableGamePlayerModel[];
   currentPlayerId: string;
   isLoadingAvailablePlayers: boolean;
   onShowAddPlayerDialog: () => void;
@@ -13,7 +13,7 @@ interface Props {
   onHidePlayersAddDialog: () => void;
   onRemovePlayer: (playerId: string) => void;
   showAddPlayerModal: boolean;
-  players: User[];
+  players: GamePlayerViewModel[];
 }
 
 const PlayersContainer: FC<Props> = ({
