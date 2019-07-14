@@ -72,7 +72,7 @@ const SetupPhaseContainer: FC = () => {
       <GamePhaseContentWrapper>
         <Box mt={2} mb={2}>
           <Typography>
-            Glöm inte att bjuda in dina städkompanjoner till spelet eller be de
+            Glöm inte att bjuda in dina städkompanjoner till spelet eller be dem
             att söka på spelet <strong>{game.name}</strong>.
           </Typography>
         </Box>

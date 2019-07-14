@@ -1,6 +1,7 @@
 export default interface TaskEstimation {
   id?: string;
-  userId: string;
+  taskId: string;
+  playerId: string;
   lastModified: number;
   estimate: number;
 }

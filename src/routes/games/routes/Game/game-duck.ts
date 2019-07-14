@@ -18,7 +18,7 @@ export const selectGame = (state: ApplicationState): Game =>
 export const selectGameId = (state: ApplicationState): string =>
   selectGame(state).id || '';
 
-// Actions
+// Queries
 
 const getGameByIdQuery = (gameId: string) => ({
   collection: 'games',
@@ -28,6 +28,8 @@ const getGameByIdQuery = (gameId: string) => ({
 });
 
 const listenToGameQueries = (gameId: string) => [getGameByIdQuery(gameId)];
+
+// Actions
 
 export const subscribeToGame: AppActionCreator = (gameId: string) => (
   dispatch,

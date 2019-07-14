@@ -4,7 +4,7 @@ import styled from 'styled-components/macro';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import { Box, Typography } from '@material-ui/core';
 
-const estimates: number[] = [1, 2, 3, 4, 5];
+const estimateOptions: number[] = [1, 2, 3, 4, 5];
 
 const EstimationPointContainer = styled.div`
   display: flex;
@@ -16,6 +16,10 @@ const EstimationPointContainer = styled.div`
 const StyledEstimationButton = styled(Button as FC<ButtonProps>)`
   && {
     min-width: initial;
+
+    .MuiButton-containedPrimary {
+      border: 1px solid transparent;
+    }
   }
 `;
 
@@ -40,23 +44,28 @@ const EstimationButton: FC<EstimationButtonProps> = ({
 );
 
 interface TaskEstimateProps {
-  taskName: string;
+  estimate?: number;
   onEstimate: (estimate: number) => void;
+  taskName: string;
 }
 
-const TaskEstimate: FC<TaskEstimateProps> = ({ taskName, onEstimate }) => (
+const TaskEstimate: FC<TaskEstimateProps> = ({
+  estimate,
+  onEstimate,
+  taskName
+}) => (
   <>
     <Box mb={2}>
       <Typography>{taskName}</Typography>
     </Box>
 
     <EstimationPointContainer>
-      {estimates.map((estimate, index) => (
+      {estimateOptions.map((estimateOption, index) => (
         <EstimationButton
           key={`estimation-point-${index}-${estimate}`}
-          isSelected={estimate === 3}
-          point={estimate}
-          onClick={() => onEstimate(estimate)}
+          isSelected={estimateOption === estimate}
+          point={estimateOption}
+          onClick={() => onEstimate(estimateOption)}
         />
       ))}
     </EstimationPointContainer>

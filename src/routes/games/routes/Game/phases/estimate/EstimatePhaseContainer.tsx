@@ -1,15 +1,21 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { AppThunkDispatch } from 'store';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import GamePhaseWrapper from '../../components/GamePhaseWrapper';
 import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
 import { Button, Box, Typography } from '@material-ui/core';
 import BottomButtonBar from 'components/BottomButtonBar';
-import { goToPreviousStep, estimateTask } from './estimate-phase-duck';
+import {
+  goToPreviousStep,
+  estimateTask,
+  subscribeToEstimatePhase,
+  unsubscribeToEstimatePhase,
+  selectTasksWithEstimation
+} from './estimate-phase-duck';
 import EstimationBoard from './EstimationBoard';
 import { TypographyProps } from '@material-ui/core/Typography';
 import styled from 'styled-components/macro';
-import Task from 'models/task';
+import { selectGameId } from '../../game-duck';
 
 const ButtonMessage = styled(Typography as FC<TypographyProps>)`
   && {
@@ -20,17 +26,29 @@ const ButtonMessage = styled(Typography as FC<TypographyProps>)`
 const EstimatePhaseContainer: FC = () => {
   let dispatch: AppThunkDispatch = useDispatch();
   // let tasks = useSelector(selectGameTasks);
+  let gameId = useSelector(selectGameId);
+  let tasksWithEstimation = useSelector(selectTasksWithEstimation);
 
-  let canGoToNextStep = false;
   let totalPlayers = 3;
   let playersDoneEstimating = 2;
-  let tasksEstimated = 5;
-  let tasksLength = 5;
+
+  let tasksEstimated = tasksWithEstimation.filter(
+    taskWithEstimation => taskWithEstimation.estimation !== undefined
+  ).length;
+
+  let tasksLength = tasksWithEstimation.length;
   let playerIsDoneEstimating = tasksEstimated === tasksLength;
+
+  // let allPlayersAreDoneEstimating = false;
 
   let disabledButtonMessage = playerIsDoneEstimating
     ? `(${playersDoneEstimating}/${totalPlayers} spelare)`
     : `(${tasksEstimated}/${tasksLength})`;
+
+  useEffect(() => {
+    dispatch(subscribeToEstimatePhase(gameId));
+    return () => dispatch(unsubscribeToEstimatePhase(gameId));
+  }, [dispatch, gameId]);
 
   return (
     <GamePhaseWrapper>
@@ -41,9 +59,9 @@ const EstimatePhaseContainer: FC = () => {
             Den som är snabbast får välja uppgifter först!
           </Typography>
           <EstimationBoard
-            tasks={[] as Task[]}
-            onEstimate={(taskId, estimate) =>
-              dispatch(estimateTask(taskId, estimate))
+            tasksWithEstimation={tasksWithEstimation}
+            onEstimate={(taskId, estimate, estimationId) =>
+              dispatch(estimateTask(taskId, estimate, estimationId))
             }
           />
         </Box>
@@ -58,14 +76,14 @@ const EstimatePhaseContainer: FC = () => {
           Tillbaka
         </Button>
         <Button
-          disabled={!canGoToNextStep}
+          disabled={!playerIsDoneEstimating}
           color="primary"
           variant="contained"
           aria-label="Next stage"
           // onClick={() => dispatch(goToNextStep())}
         >
           Fortsätt <br />
-          {!canGoToNextStep && (
+          {!playerIsDoneEstimating && (
             <ButtonMessage>{disabledButtonMessage}</ButtonMessage>
           )}
         </Button>

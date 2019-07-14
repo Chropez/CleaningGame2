@@ -26,30 +26,30 @@ const getGameTasksQuery = (gameId: string) => ({
   storeAs: 'currentGameTasks'
 });
 
-export const subscribeToGameTasks: AppActionCreator = (gameId: string) => (
-  dispatch,
-  _,
-  { getFirestore }
-) => {
+export const subscribeToGameTasks: AppActionCreator = (
+  gameId: string
+) => async (dispatch, _, { getFirestore }) => {
+  let firestore = getFirestore();
+
+  await firestore.setListener(getGameTasksQuery(gameId));
+
   dispatch({
     type: SetupPhaseTypes.GameTasksSubscribed,
     payload: { id: gameId }
   });
-  let firestore = getFirestore();
-  firestore.setListener(getGameTasksQuery(gameId));
 };
 
-export const unsubscribeToGameTasks: AppActionCreator = (gameId: string) => (
-  dispatch,
-  _,
-  { getFirestore }
-) => {
+export const unsubscribeToGameTasks: AppActionCreator = (
+  gameId: string
+) => async (dispatch, _, { getFirestore }) => {
+  let firestore = getFirestore();
+
+  await firestore.unsetListener(getGameTasksQuery(gameId));
+
   dispatch({
     type: SetupPhaseTypes.GameTasksSubscribed,
     payload: { id: gameId }
   });
-  let firestore = getFirestore();
-  firestore.unsetListener(getGameTasksQuery(gameId));
 };
 
 export const goToNextStep: AppActionCreator = () => async (
