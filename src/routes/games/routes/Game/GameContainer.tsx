@@ -1,10 +1,11 @@
 import React, { FC, useEffect } from 'react';
 import { AppThunkDispatch } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
-import { subscribeToGame, unsubscribeToGame, selectGame } from '../game-duck';
-import GameAppBar from './GameAppBar';
+import { subscribeToGame, unsubscribeToGame, selectGame } from './game-duck';
+import GameAppBar from './components/GameAppBar';
 import { GamePhase } from 'models/game';
 import SetupPhaseContainer from './phases/setup/SetupPhaseContainer';
+import EstimatePhaseContainer from './phases/estimate/EstimatePhaseContainer';
 
 interface Props {
   gameId: string;
@@ -28,7 +29,7 @@ const GameContainer: FC<Props> = ({ gameId }) => {
       <GameAppBar gameName={game.name} />
 
       {game.phase === GamePhase.Setup && <SetupPhaseContainer />}
-      {game.phase === GamePhase.Estimate && <div>To estimate...</div>}
+      {game.phase === GamePhase.Estimate && <EstimatePhaseContainer />}
     </>
   );
 };

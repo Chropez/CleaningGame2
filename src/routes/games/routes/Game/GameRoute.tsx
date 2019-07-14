@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import GameContainer from './components/GameContainer';
+import GameContainer from './GameContainer';
 
 interface GamesParams {
   gameId: string;

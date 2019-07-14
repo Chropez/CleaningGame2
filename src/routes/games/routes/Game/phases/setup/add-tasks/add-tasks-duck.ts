@@ -48,7 +48,8 @@ export const addTask: AppActionCreator = () => async (
   let task: Task = {
     name,
     createdBy: selectCurrentUserId(state),
-    createdAt: firestore.Timestamp.now().toMillis()
+    createdAt: firestore.Timestamp.now().toMillis(),
+    averageEstimate: 0
   };
 
   dispatch({ type: AddTasksActionTypes.AddTaskRequested, payload: task });

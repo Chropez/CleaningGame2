@@ -2,7 +2,6 @@ import { AppActionCreator } from 'store';
 import Game from 'models/game';
 import { ApplicationState } from 'store/root-reducer';
 import { AppAction } from 'config/redux';
-import Task from 'models/task';
 
 enum GameActionTypes {
   GameSubscribed = 'GAMES/GAME/GAME_SUBSCRIBED',
@@ -19,10 +18,7 @@ export const selectGame = (state: ApplicationState): Game =>
 export const selectGameId = (state: ApplicationState): string =>
   selectGame(state).id || '';
 
-export const selectGameTasks = (state: ApplicationState): Task[] =>
-  state.firestore.ordered.currentGameTasks || [];
-
-// Actions
+// Queries
 
 const getGameByIdQuery = (gameId: string) => ({
   collection: 'games',
@@ -31,17 +27,9 @@ const getGameByIdQuery = (gameId: string) => ({
   populates: [{ child: 'playerIds', root: 'users' }]
 });
 
-const getGameTasksQuery = (gameId: string) => ({
-  collection: 'games',
-  doc: gameId,
-  subcollections: [{ collection: 'tasks', orderBy: [['createdAt', 'desc']] }],
-  storeAs: 'currentGameTasks'
-});
+const listenToGameQueries = (gameId: string) => [getGameByIdQuery(gameId)];
 
-const listenToGameQueries = (gameId: string) => [
-  getGameByIdQuery(gameId),
-  getGameTasksQuery(gameId)
-];
+// Actions
 
 export const subscribeToGame: AppActionCreator = (gameId: string) => (
   dispatch,

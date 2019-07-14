@@ -11,15 +11,19 @@ import firestoreEnhancedReducers from './firestore-enhanced-reducer';
 import {
   AddTasksState,
   addTasksReducer
-} from 'routes/games/routes/Game/components/phases/setup/add-tasks/add-tasks-duck';
+} from 'routes/games/routes/Game/phases/setup/add-tasks/add-tasks-duck';
 import {
   PlayersState,
   playerReducer
-} from 'routes/games/routes/Game/components/phases/setup/players/players-duck';
+} from 'routes/games/routes/Game/phases/setup/players/players-duck';
 import {
   ApplicationRouteState,
   applicationRouteReducer
 } from 'routes/application/application-duck';
+import {
+  setupPhaseReducer,
+  SetupPhaseState
+} from 'routes/games/routes/Game/phases/setup/setup-phase-duck';
 
 interface AppData {
   users: User[];
@@ -48,6 +52,7 @@ export interface ApplicationState {
         addTasks: AddTasksState;
         main: GameState;
         players: PlayersState;
+        setupPhase: SetupPhaseState;
       };
     };
   };
@@ -64,7 +69,8 @@ const combinedReducers = combineReducers<ApplicationState>({
       game: combineReducers({
         addTasks: addTasksReducer,
         main: gameReducer,
-        players: playerReducer
+        players: playerReducer,
+        setupPhase: setupPhaseReducer
       })
     })
   })
