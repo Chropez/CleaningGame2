@@ -12,4 +12,9 @@ export const updateTaskAverage = functions.firestore
   .onWrite((change, context) => {
     console.log(change);
     console.log(context);
+
+    // Check if all players
+    // Get amount of players
+    // Get tasks
+    //
   });

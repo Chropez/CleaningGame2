@@ -2,13 +2,57 @@ import { AppActionCreator } from 'store';
 import { AppAction } from 'config/redux';
 import { GamePhase } from 'models/game';
 import { selectGame } from '../../game-duck';
+import { ApplicationState } from 'store/root-reducer';
+import Task from 'models/task';
 
 enum SetupPhaseTypes {
-  NextGamePhaseRequested = 'GAMES/GAME/SETUP_PHASE/NEXTT_GAME_PHASE_REQUESTED',
-  NextGamePhaseSucceeded = 'GAMES/GAME/SETUP_PHASE/NEXTT_GAME_PHASE_SUCCEEDED'
+  GameTasksSubscribed = 'GAMES/GAME/SETUP_PHASE/TASKS_SUBSCRIBED',
+  GameTasksUnsubscribed = 'GAMES/GAME/SETUP_PHASE/TASKS_UNSUBSCRIBED',
+  NextGamePhaseRequested = 'GAMES/GAME/SETUP_PHASE/NEXT_GAME_PHASE_REQUESTED',
+  NextGamePhaseSucceeded = 'GAMES/GAME/SETUP_PHASE/NEXT_GAME_PHASE_SUCCEEDED'
 }
 
-export const goToNextStep: AppActionCreator = () => (
+// Selectors
+
+export const selectGameTasks = (state: ApplicationState): Task[] =>
+  state.firestore.ordered.currentGameTasks || [];
+
+// Actions
+
+const getGameTasksQuery = (gameId: string) => ({
+  collection: 'games',
+  doc: gameId,
+  subcollections: [{ collection: 'tasks', orderBy: [['createdAt', 'desc']] }],
+  storeAs: 'currentGameTasks'
+});
+
+export const subscribeToGameTasks: AppActionCreator = (gameId: string) => (
+  dispatch,
+  _,
+  { getFirestore }
+) => {
+  dispatch({
+    type: SetupPhaseTypes.GameTasksSubscribed,
+    payload: { id: gameId }
+  });
+  let firestore = getFirestore();
+  firestore.setListener(getGameTasksQuery(gameId));
+};
+
+export const unsubscribeToGameTasks: AppActionCreator = (gameId: string) => (
+  dispatch,
+  _,
+  { getFirestore }
+) => {
+  dispatch({
+    type: SetupPhaseTypes.GameTasksSubscribed,
+    payload: { id: gameId }
+  });
+  let firestore = getFirestore();
+  firestore.unsetListener(getGameTasksQuery(gameId));
+};
+
+export const goToNextStep: AppActionCreator = () => async (
   dispatch,
   getState,
   { getFirestore }
@@ -25,10 +69,11 @@ export const goToNextStep: AppActionCreator = () => (
   let firestore = getFirestore();
 
   dispatch({ type: SetupPhaseTypes.NextGamePhaseRequested });
-  firestore.update(
+  await firestore.update(
     { collection: 'games', doc: game.id },
     { phase: GamePhase.Estimate }
   );
+  dispatch({ type: SetupPhaseTypes.NextGamePhaseSucceeded });
 };
 
 // Reducer

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Typography, Box, Button } from '@material-ui/core';
 import GamePlayersContainer from './players/PlayersContainer';
 import { AppThunkDispatch } from 'store';
@@ -22,16 +22,22 @@ import {
   addTask,
   removeTask
 } from './add-tasks/add-tasks-duck';
-import BottomNavigation from 'components/BottomNavigation';
+import BottomButtonBar from 'components/BottomButtonBar';
 import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
 import GamePhaseWrapper from '../../components/GamePhaseWrapper';
-import { goToNextStep } from './setup-phase-duck';
-import { selectGameTasks, selectGame } from '../../game-duck';
+import {
+  goToNextStep,
+  selectGameTasks,
+  subscribeToGameTasks,
+  unsubscribeToGameTasks
+} from './setup-phase-duck';
+import { selectGame } from '../../game-duck';
 
 const SetupPhaseContainer: FC = () => {
   let dispatch: AppThunkDispatch = useDispatch();
 
   let game = useSelector(selectGame);
+  let gameId = game.id;
 
   let gamePlayers = useSelector(selectGamePlayers);
   let showAddPlayerModal = useSelector(selectShowAddPlayerModal);
@@ -41,6 +47,11 @@ const SetupPhaseContainer: FC = () => {
 
   let newTaskText = useSelector(selectNewTaskText);
   let tasks = useSelector(selectGameTasks);
+
+  useEffect(() => {
+    dispatch(subscribeToGameTasks(gameId));
+    return () => dispatch(unsubscribeToGameTasks(gameId));
+  }, [dispatch, gameId]);
 
   async function loadAddPlayerDialog() {
     dispatch(getAvailablePlayers());
@@ -61,8 +72,8 @@ const SetupPhaseContainer: FC = () => {
       <GamePhaseContentWrapper>
         <Box mt={2} mb={2}>
           <Typography>
-            Andra spelare kan bli inbjudna av dig eller gå med genom att söka på
-            spelet <strong>{game.name}</strong>.
+            Glöm inte att bjuda in dina städkompanjoner till spelet eller be de
+            att söka på spelet <strong>{game.name}</strong>.
           </Typography>
         </Box>
         <GamePlayersContainer
@@ -84,20 +95,18 @@ const SetupPhaseContainer: FC = () => {
           tasks={tasks}
         />
       </GamePhaseContentWrapper>
-      <BottomNavigation>
-        <Box p={2}>
-          <Button
-            disabled={!canGoToNextStep}
-            color="primary"
-            variant="contained"
-            fullWidth={true}
-            aria-label="Next step"
-            onClick={() => dispatch(goToNextStep())}
-          >
-            Nästa
-          </Button>
-        </Box>
-      </BottomNavigation>
+      <BottomButtonBar>
+        <Button
+          disabled={!canGoToNextStep}
+          color="primary"
+          variant="contained"
+          fullWidth={true}
+          aria-label="Next stage"
+          onClick={() => dispatch(goToNextStep())}
+        >
+          Nästa
+        </Button>
+      </BottomButtonBar>
     </GamePhaseWrapper>
   );
 };

@@ -1,7 +1,8 @@
 export enum GamePhase {
   Setup = 'setup',
   Estimate = 'estimate',
-  Choose = 'choose',
+  ChoosePlayerOrder = 'choose-player-order',
+  ChooseTasks = 'choose-tasks',
   Clean = 'clean'
 }
 
