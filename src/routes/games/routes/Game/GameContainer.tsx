@@ -1,11 +1,12 @@
 import React, { FC, useEffect } from 'react';
 import { AppThunkDispatch } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
-import { subscribeToGame, unsubscribeToGame, selectGame } from './game-duck';
+import { subscribeToGame, unsubscribeFromGame, selectGame } from './game-duck';
 import GameAppBar from './components/GameAppBar';
 import { GamePhase } from 'models/game';
 import SetupPhaseContainer from './phases/setup/SetupPhaseContainer';
 import EstimatePhaseContainer from './phases/estimate/EstimatePhaseContainer';
+import ChoosePlayerOrderPhaseContainer from './phases/choose-player-order/ChoosePlayerOrderPhaseContainer';
 
 interface Props {
   gameId: string;
@@ -17,10 +18,10 @@ const GameContainer: FC<Props> = ({ gameId }) => {
 
   useEffect(() => {
     dispatch(subscribeToGame(gameId));
-    return () => dispatch(unsubscribeToGame(gameId));
+    return () => dispatch(unsubscribeFromGame(gameId));
   }, [dispatch, gameId]);
 
-  if (!game) {
+  if (game === undefined) {
     return null;
   }
 
@@ -30,6 +31,9 @@ const GameContainer: FC<Props> = ({ gameId }) => {
 
       {game.phase === GamePhase.Setup && <SetupPhaseContainer />}
       {game.phase === GamePhase.Estimate && <EstimatePhaseContainer />}
+      {game.phase === GamePhase.ChoosePlayerOrder && (
+        <ChoosePlayerOrderPhaseContainer />
+      )}
     </>
   );
 };

@@ -3,15 +3,28 @@ import Game, { GamePhase } from 'models/game';
 import { getId } from 'animal-id';
 import Firestore from 'typings/firestore';
 import { ApplicationState } from 'store/root-reducer';
+import { addPlayerToGame } from 'routes/games/routes/Game/phases/setup/players/players-duck';
+import { timestamp } from 'utils/firestore';
 
 enum GamesActionTypes {
   CreateGameRequested = 'GAMES/CREATE_GAME_REQUESTED',
+  CreateGameSucceeded = 'GAMES/CREATE_GAME_SUCCEEDED',
   AllUserGamesSubscribed = 'GAMES/ALL_USER_GAMES_SUBSCRIBED',
   AllUserGamesUnsubscribed = 'GAMES/ALL_USER_GAMES_UNSUBSCRIBED',
   GameNameCheckRequested = 'GAMES/GAME_NAME_CHECK_REQUESTED',
   GameNameWasAvailable = 'GAMES/GAME_NAME_WAS_AVAILABLE',
   GameNameWasUnavailable = 'GAMES/GAME_NAME_WAS_UNAVAILABLE'
 }
+
+// Selectors
+
+export const selectGames = (state: ApplicationState): Game[] =>
+  state.firestore.ordered.games;
+
+export const selectUsers = (state: ApplicationState) =>
+  state.firestore.data && state.firestore.data.users;
+
+// Queries
 
 const getGamesQuery = () => ({
   collection: 'games',
@@ -22,6 +35,8 @@ const getGamesQuery = () => ({
   ]
 });
 
+// Actions
+
 export const subscribeToGames: AppActionCreator = () => (
   dispatch,
   _,
@@ -31,7 +46,7 @@ export const subscribeToGames: AppActionCreator = () => (
   getFirestore().setListener(getGamesQuery());
 };
 
-export const unsubscribeToGames: AppActionCreator = () => (
+export const unsubscribeFromGames: AppActionCreator = () => (
   dispatch,
   _,
   { getFirestore }
@@ -91,9 +106,8 @@ export const createGame: AppActionCreator = () => async (
 
   let game: Game = {
     name,
-    createdAt: firestore.Timestamp.now().toMillis(),
+    createdAt: timestamp(firestore),
     createdById: userId,
-    playerIds: [userId],
     phase: GamePhase.Setup
   };
 
@@ -102,13 +116,11 @@ export const createGame: AppActionCreator = () => async (
     payload: { ...game, documentId: gameId }
   });
 
-  firestore.set({ collection: 'games', doc: gameId }, game);
+  await firestore.set({ collection: 'games', doc: gameId }, game);
+
+  dispatch({
+    type: GamesActionTypes.CreateGameSucceeded
+  });
+
+  dispatch(addPlayerToGame(gameId, userId));
 };
-
-// Selectors
-
-export const selectGames = (state: ApplicationState): Game[] =>
-  state.firestore.ordered.games;
-
-export const selectUsers = (state: ApplicationState) =>
-  state.firestore.data && state.firestore.data.users;

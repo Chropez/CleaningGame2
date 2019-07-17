@@ -33,6 +33,7 @@ interface FieldValue {
   serverTimestamp: () => FirebaseTimestamp;
   arrayUnion: <T>(arrayUnion: T) => T;
   arrayRemove: <T>(arrayUnion: T) => T;
+  delete: <T>() => T;
 }
 interface SnapshotMetadata {
   fromCache: boolean;

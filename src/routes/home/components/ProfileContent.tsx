@@ -15,7 +15,7 @@ const AvatarContent = styled.div`
 const AvatarName = styled(Typography as FC<TypographyProps>)`
   && {
     flex: 0;
-    color: ${props => props.theme.palette.blue[100]};
+    color: ${props => props.theme.secondaryBackground.secondaryTextColor};
     font-weight: ${props => props.theme.typography.fontWeightBold};
   }
 `;

@@ -4,7 +4,6 @@ import GamePlayersContainer from './players/PlayersContainer';
 import { AppThunkDispatch } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  selectGamePlayers,
   showAddPlayerDialog,
   selectShowAddPlayerModal,
   hideAddPlayerDialog,
@@ -12,8 +11,7 @@ import {
   selectIsLoadingAvailablePlayers,
   selectAvailablePlayers,
   addPlayerToGame,
-  removePlayerFromGame,
-  selectCurrentUserId
+  removePlayerFromGame
 } from './players/players-duck';
 import TasksContainer from './add-tasks/TasksContainer';
 import {
@@ -29,9 +27,13 @@ import {
   goToNextStep,
   selectGameTasks,
   subscribeToGameTasks,
-  unsubscribeToGameTasks
+  unsubscribeFromGameTasks
 } from './setup-phase-duck';
-import { selectGame } from '../../game-duck';
+import {
+  selectGame,
+  selectGamePlayersViewModel,
+  selectCurrentUserId
+} from '../../game-duck';
 
 const SetupPhaseContainer: FC = () => {
   let dispatch: AppThunkDispatch = useDispatch();
@@ -39,7 +41,7 @@ const SetupPhaseContainer: FC = () => {
   let game = useSelector(selectGame);
   let gameId = game.id;
 
-  let gamePlayers = useSelector(selectGamePlayers);
+  let gamePlayers = useSelector(selectGamePlayersViewModel);
   let showAddPlayerModal = useSelector(selectShowAddPlayerModal);
   let isLoadingAvailablePlayers = useSelector(selectIsLoadingAvailablePlayers);
   let availablePlayers = useSelector(selectAvailablePlayers);
@@ -50,7 +52,7 @@ const SetupPhaseContainer: FC = () => {
 
   useEffect(() => {
     dispatch(subscribeToGameTasks(gameId));
-    return () => dispatch(unsubscribeToGameTasks(gameId));
+    return () => dispatch(unsubscribeFromGameTasks(gameId));
   }, [dispatch, gameId]);
 
   async function loadAddPlayerDialog() {
@@ -70,7 +72,7 @@ const SetupPhaseContainer: FC = () => {
   return (
     <GamePhaseWrapper>
       <GamePhaseContentWrapper>
-        <Box mt={2} mb={2}>
+        <Box p={2}>
           <Typography>
             Glöm inte att bjuda in dina städkompanjoner till spelet eller be dem
             att söka på spelet <strong>{game.name}</strong>.
@@ -80,10 +82,12 @@ const SetupPhaseContainer: FC = () => {
           availablePlayers={availablePlayers}
           currentPlayerId={currentPlayerId}
           isLoadingAvailablePlayers={isLoadingAvailablePlayers}
-          onAddPlayerToGame={id => dispatch(addPlayerToGame(id))}
+          onAddPlayerToGame={userId =>
+            dispatch(addPlayerToGame(gameId, userId))
+          }
           onShowAddPlayerDialog={loadAddPlayerDialog}
           onHidePlayersAddDialog={() => dispatch(hideAddPlayerDialog())}
-          onRemovePlayer={id => dispatch(removePlayerFromGame(id))}
+          onRemovePlayer={userId => dispatch(removePlayerFromGame(userId))}
           players={gamePlayers}
           showAddPlayerModal={showAddPlayerModal}
         />

@@ -19,7 +19,7 @@ const BottomBarContainer = styled(Container as FC<ContainerProps>)`
 
 const StyledBottomButtonBar = styled(Box as FC<BoxProps>)`
   && {
-    background-color: ${({ theme }) => theme.palette.common.white};
+    background-color: ${({ theme }) => theme.palette.background.paper};
     display: flex;
     flex-direction: row;
     & button {

@@ -3,7 +3,7 @@ import { AppActionCreator } from 'store';
 import { ApplicationState } from 'store/root-reducer';
 
 enum ApplicationActionTypes {
-  realViewHeightUnitUpdated = 'APPLICATION/REAL_VIEW_UNIT_UPDATED'
+  realViewHeightUnitUpdated = 'APPLICATION/REAL_VIEW_HEIGHT_UNIT_UPDATED'
 }
 
 // Selectors

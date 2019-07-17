@@ -1,6 +1,6 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
-import { Palette } from '@material-ui/core/styles/createPalette';
-import { Color } from '@material-ui/core';
+import { Palette, PaletteColor } from '@material-ui/core/styles/createPalette';
+import { blue, green } from '@material-ui/core/colors';
 
 const muiTheme = createMuiTheme({
   typography: {
@@ -24,11 +24,12 @@ const muiTheme = createMuiTheme({
       primary: '#555',
       secondary: '#555'
     }
-  }
+  },
+  overrides: {}
 });
 
 interface ExtendedPalette extends Palette {
-  blue: Color;
+  success: PaletteColor;
 }
 
 export interface MainTheme extends Theme {
@@ -36,14 +37,20 @@ export interface MainTheme extends Theme {
     bgImage: string;
     linkColor: string;
     textColor: string;
+    secondaryTextColor: string;
   };
   palette: ExtendedPalette;
+  // components: {
+  //   BottomButtonBar: {
+
+  //   }
+  // }
 }
 
 const mainTheme: MainTheme = {
   ...muiTheme,
   secondaryBackground: {
-    bgImage: ` linear-gradient(
+    bgImage: `linear-gradient(
       to right bottom,
       #62a3ff,
       #579af6,
@@ -59,25 +66,16 @@ const mainTheme: MainTheme = {
       #004a9f
     );`,
     linkColor: '#90ff7e',
-    textColor: '#fff'
+    textColor: '#fff',
+    secondaryTextColor: blue[100]
   },
   palette: {
     ...muiTheme.palette,
-    blue: {
-      50: '#e6edf5',
-      100: '#b3c9e2',
-      200: '#80a5cf	',
-      300: '#4d80bc',
-      400: '#1a5ca9',
-      500: '#004a9f',
-      600: '#003b7f',
-      700: '#002c5f',
-      800: '#001e40',
-      900: '#000f20',
-      A100: '#d5d5d5',
-      A200: '#aaaaaa',
-      A400: '#303030',
-      A700: '#616161'
+    success: {
+      main: green[600],
+      light: green[100],
+      dark: green[800],
+      contrastText: muiTheme.palette.common.white
     }
   }
 };

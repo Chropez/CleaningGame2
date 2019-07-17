@@ -14,11 +14,11 @@ import {
   Divider,
   Chip
 } from '@material-ui/core';
-import GamePlayerModel from './game-player-model';
+import AvailableGamePlayerModel from './available-game-player-view-model';
 import CheckIcon from 'mdi-material-ui/Check';
 
 interface Props {
-  availablePlayers: GamePlayerModel[];
+  availablePlayers: AvailableGamePlayerModel[];
   isLoadingAvailablePlayers: boolean;
   onClose: () => void;
   onAddPlayer: (playerId: string) => void;

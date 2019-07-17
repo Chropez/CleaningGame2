@@ -1,7 +1,7 @@
 import { AppActionCreator } from 'store';
 import { AppAction } from 'config/redux';
 import { GamePhase } from 'models/game';
-import { selectGame } from '../../game-duck';
+import { selectGame, updateGameByIdQuery } from '../../game-duck';
 import { ApplicationState } from 'store/root-reducer';
 import Task from 'models/task';
 
@@ -39,7 +39,7 @@ export const subscribeToGameTasks: AppActionCreator = (
   });
 };
 
-export const unsubscribeToGameTasks: AppActionCreator = (
+export const unsubscribeFromGameTasks: AppActionCreator = (
   gameId: string
 ) => async (dispatch, _, { getFirestore }) => {
   let firestore = getFirestore();
@@ -69,10 +69,9 @@ export const goToNextStep: AppActionCreator = () => async (
   let firestore = getFirestore();
 
   dispatch({ type: SetupPhaseTypes.NextGamePhaseRequested });
-  await firestore.update(
-    { collection: 'games', doc: game.id },
-    { phase: GamePhase.Estimate }
-  );
+  await firestore.update(updateGameByIdQuery(game.id!), {
+    phase: GamePhase.Estimate
+  });
   dispatch({ type: SetupPhaseTypes.NextGamePhaseSucceeded });
 };
 
