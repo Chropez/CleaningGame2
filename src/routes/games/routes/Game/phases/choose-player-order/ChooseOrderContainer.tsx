@@ -75,6 +75,7 @@ const ChooseOrderContainer: FC<Props> = ({ onChangeOrder, players }) => (
                   <ListItemSecondaryAction>
                     <CompoundButtons>
                       <IconButton
+                        disabled={order === 1}
                         color="primary"
                         aria-label="Move up the order"
                         component="span"
@@ -83,6 +84,7 @@ const ChooseOrderContainer: FC<Props> = ({ onChangeOrder, players }) => (
                         <ChevronUpIcon />
                       </IconButton>
                       <IconButton
+                        disabled={order === players.length}
                         color="primary"
                         aria-label="Move up the order"
                         component="span"

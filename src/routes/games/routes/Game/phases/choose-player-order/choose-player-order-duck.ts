@@ -4,51 +4,27 @@ import { GamePhase } from 'models/game';
 import {
   selectGame,
   updateGameByIdQuery,
-  selectGamePlayersViewModel
+  selectGamePlayersViewModel,
+  selectGameId,
+  selectGamePlayers
 } from '../../game-duck';
 import { DocumentQuery } from 'typings/firestore';
 import { ApplicationState } from 'store/root-reducer';
 import { GamePlayerViewModel } from '../../game-player-view-model';
+import GamePlayer from 'models/game-player';
 
 enum ChoosePlayerOrderActionTypes {
   NextGamePhaseRequested = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/NEXT_GAME_PHASE_REQUESTED',
   NextGamePhaseSucceeded = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/NEXT_GAME_PHASE_SUCCEEDED',
   PreviousGamePhaseRequested = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/PREVIOUS_GAME_PHASE_REQUESTED',
   PreviousGamePhaseSucceeded = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/PREVIOUS_GAME_PHASE_SUCCEEDED',
+  ChangePlayerOrderRequested = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHANGE_PLAYER_ORDER_REQUESTED',
+  ChangePlayerOrderSucceeded = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHANGE_PLAYER_ORDER_SUCCEEDED',
   ChoosePlayerOrderPhaseSubscribed = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHOOSE_PLAYER_ORDER_PHASE_SUBSCRIBED',
   ChoosePlayerOrderPhaseUnsubscribed = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHOOSE_PLAYER_ORDER_PHASE_UNSUBSCRIBED'
 }
 
 // Selectors
-
-// export const selectCurrentPlayerTaskEstimations = (
-//   state: ApplicationState
-// ): TaskEstimation[] =>
-//   state.firestore.ordered.currentPlayerTaskEstimations || [];
-
-// export const selectGameTasks = (state: ApplicationState): Task[] =>
-//   state.firestore.ordered.currentGameTasks || [];
-
-// export const selectEstimationByTaskId = (
-//   state: ApplicationState,
-//   taskId: string
-// ) =>
-//   selectCurrentPlayerTaskEstimations(state).find(
-//     estimation => estimation.taskId === taskId
-//   );
-
-// export const selectTasksWithEstimation = (
-//   state: ApplicationState
-// ): TaskWithEstimationViewModel[] => {
-//   let tasks = selectGameTasks(state);
-
-//   return tasks.map(task => {
-//     return {
-//       task: task,
-//       estimation: selectEstimationByTaskId(state, task.id!)
-//     };
-//   });
-// };
 
 export const selectOrderedPlayersViewModel = (
   state: ApplicationState
@@ -77,6 +53,16 @@ const getChoosePlayerOrderPhaseQueries = (gameId: string): DocumentQuery[] => [
   getAllPlayersTaskEstimationsQuery(gameId),
   getGameTasksQuery(gameId)
 ];
+
+const updatePlayerOrderQuery = (
+  gameId: string,
+  playerId: string
+): DocumentQuery => ({
+  collection: 'games',
+  doc: gameId,
+  storeAs: 'updatePlayerOrderId',
+  subcollections: [{ collection: 'players', doc: playerId }]
+});
 
 // Actions
 
@@ -127,6 +113,66 @@ export const goToPreviousStep: AppActionCreator = () => async (
   });
   await firestore.update(updateGameByIdQuery(game.id!), phase);
   dispatch({ type: ChoosePlayerOrderActionTypes.PreviousGamePhaseSucceeded });
+};
+
+export const changePlayerPickingOrder: AppActionCreator = (
+  playerId: string,
+  destinationPickOrder: number
+) => (dispatch, getState, { getFirestore }) => {
+  let state = getState();
+  let gameId = selectGameId(state);
+  let players = selectGamePlayers(state);
+
+  let selectedPlayerPickOrder = players.find(player => player.id === playerId)!
+    .pickOrder!;
+
+  if (destinationPickOrder === selectedPlayerPickOrder) {
+    return;
+  }
+
+  let firestore = getFirestore();
+
+  players.forEach(player => {
+    let currentPlayerOrder = player.pickOrder!;
+
+    let minOrderToChange = Math.min(
+      selectedPlayerPickOrder,
+      destinationPickOrder
+    );
+    let maxOrderToChange = Math.max(
+      selectedPlayerPickOrder,
+      destinationPickOrder
+    );
+
+    // Player does not need to change order
+    if (
+      currentPlayerOrder < minOrderToChange ||
+      currentPlayerOrder > maxOrderToChange
+    ) {
+      return;
+    }
+
+    let newPickOrder = currentPlayerOrder;
+
+    if (currentPlayerOrder === selectedPlayerPickOrder) {
+      newPickOrder = destinationPickOrder;
+    } else if (selectedPlayerPickOrder < destinationPickOrder) {
+      newPickOrder--;
+    } else {
+      newPickOrder++;
+    }
+
+    let updatedPlayer: Partial<GamePlayer> = {
+      pickOrder: newPickOrder
+    };
+
+    dispatch({
+      type: ChoosePlayerOrderActionTypes.ChangePlayerOrderRequested,
+      payload: { player, updatedPlayer }
+    });
+
+    firestore.update(updatePlayerOrderQuery(gameId, player.id!), updatedPlayer);
+  });
 };
 
 export const subscribeToChoosePlayerOrderPhase: AppActionCreator = (

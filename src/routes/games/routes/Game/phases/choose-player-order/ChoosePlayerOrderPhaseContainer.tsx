@@ -9,7 +9,8 @@ import {
   goToNextStep,
   subscribeToChoosePlayerOrderPhase,
   unsubscribeFromChoosePlayerOrderPhase,
-  selectOrderedPlayersViewModel
+  selectOrderedPlayersViewModel,
+  changePlayerPickingOrder
 } from './choose-player-order-duck';
 import ChooseOrderContainer from './ChooseOrderContainer';
 import { selectGameId } from '../../game-duck';
@@ -41,7 +42,12 @@ const ChoosePlayerOrderPhaseContainer: FC = () => {
               </Small> */}
             </Typography>
           </Box>
-          <ChooseOrderContainer players={players} onChangeOrder={() => {}} />
+          <ChooseOrderContainer
+            players={players}
+            onChangeOrder={(playerId, newOrder) =>
+              dispatch(changePlayerPickingOrder(playerId, newOrder))
+            }
+          />
         </GamePhaseContentWrapper>
 
         <BottomButtonBar>
