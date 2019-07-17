@@ -1,94 +1,76 @@
 import React, { FC, useEffect } from 'react';
 import { AppThunkDispatch } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
-import GamePhaseWrapper from '../../components/GamePhaseWrapper';
-import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
-import { Button, Box, Typography } from '@material-ui/core';
-import BottomButtonBar from 'components/BottomButtonBar';
 import {
   goToPreviousStep,
   estimateTask,
   subscribeToEstimatePhase,
-  unsubscribeToEstimatePhase,
-  selectTasksWithEstimation
+  unsubscribeFromEstimatePhase,
+  selectTasksWithEstimation,
+  updateCurrentPlayerIsDoneEstimating,
+  goToNextStep
 } from './estimate-phase-duck';
-import EstimationBoard from './EstimationBoard';
-import { TypographyProps } from '@material-ui/core/Typography';
-import styled from 'styled-components/macro';
-import { selectGameId } from '../../game-duck';
-
-const ButtonMessage = styled(Typography as FC<TypographyProps>)`
-  && {
-    font-size: 0.6rem;
-  }
-`;
+import {
+  selectGameId,
+  selectGamePlayersViewModel,
+  selectCurrentPlayer
+} from '../../game-duck';
+import EstimationBoardContainer from './EstimationBoardContainer';
+import PlayerEstimationWaitList from './PlayerEstimationWaitList';
 
 const EstimatePhaseContainer: FC = () => {
   let dispatch: AppThunkDispatch = useDispatch();
-  // let tasks = useSelector(selectGameTasks);
   let gameId = useSelector(selectGameId);
   let tasksWithEstimation = useSelector(selectTasksWithEstimation);
+  let players = useSelector(selectGamePlayersViewModel);
+  let currentPlayer = useSelector(selectCurrentPlayer);
 
-  let totalPlayers = 3;
-  let playersDoneEstimating = 2;
+  let totalPlayers = players.length;
+  let playersDoneEstimating = players.filter(player => player.isDoneEstimating)
+    .length;
+  let allPlayersAreDoneEstimating = playersDoneEstimating === totalPlayers;
 
   let tasksEstimated = tasksWithEstimation.filter(
     taskWithEstimation => taskWithEstimation.estimation !== undefined
   ).length;
 
   let tasksLength = tasksWithEstimation.length;
-  let playerIsDoneEstimating = tasksEstimated === tasksLength;
-
-  // let allPlayersAreDoneEstimating = false;
-
-  let disabledButtonMessage = playerIsDoneEstimating
-    ? `(${playersDoneEstimating}/${totalPlayers} spelare)`
-    : `(${tasksEstimated}/${tasksLength})`;
+  let allTasksEstimated = tasksEstimated === tasksLength;
 
   useEffect(() => {
     dispatch(subscribeToEstimatePhase(gameId));
-    return () => dispatch(unsubscribeToEstimatePhase(gameId));
+    return () => dispatch(unsubscribeFromEstimatePhase(gameId));
   }, [dispatch, gameId]);
 
   return (
-    <GamePhaseWrapper>
-      <GamePhaseContentWrapper>
-        <Box mt={2} mb={2}>
-          <Typography>
-            Nu ska städuppgifterna betygsättas. 1 är lättast, 5 är jobbigast.
-            Den som är snabbast får välja uppgifter först!
-          </Typography>
-          <EstimationBoard
-            tasksWithEstimation={tasksWithEstimation}
-            onEstimate={(taskId, estimate, estimationId) =>
-              dispatch(estimateTask(taskId, estimate, estimationId))
-            }
-          />
-        </Box>
-      </GamePhaseContentWrapper>
-      <BottomButtonBar>
-        <Button
-          color="default"
-          variant="outlined"
-          aria-label="Previous stage"
-          onClick={() => dispatch(goToPreviousStep())}
-        >
-          Tillbaka
-        </Button>
-        <Button
-          disabled={!playerIsDoneEstimating}
-          color="primary"
-          variant="contained"
-          aria-label="Next stage"
-          // onClick={() => dispatch(goToNextStep())}
-        >
-          Fortsätt <br />
-          {!playerIsDoneEstimating && (
-            <ButtonMessage>{disabledButtonMessage}</ButtonMessage>
-          )}
-        </Button>
-      </BottomButtonBar>
-    </GamePhaseWrapper>
+    <>
+      {currentPlayer && !currentPlayer.isDoneEstimating && (
+        <EstimationBoardContainer
+          canContinue={allTasksEstimated}
+          cantContinueButtonMessage={`(${tasksEstimated}/${tasksLength})`}
+          onBackClick={() => dispatch(goToPreviousStep())}
+          onContinueClick={() =>
+            dispatch(updateCurrentPlayerIsDoneEstimating(true))
+          }
+          onEstimate={(taskId, estimate, estimationId) =>
+            dispatch(estimateTask(taskId, estimate, estimationId))
+          }
+          tasksWithEstimation={tasksWithEstimation}
+        />
+      )}
+
+      {currentPlayer && currentPlayer.isDoneEstimating && (
+        <PlayerEstimationWaitList
+          canContinue={allPlayersAreDoneEstimating}
+          cantContinueButtonMessage={`(${playersDoneEstimating}/${totalPlayers} spelare)`}
+          onBackClick={() =>
+            dispatch(updateCurrentPlayerIsDoneEstimating(false))
+          }
+          onContinueClick={() => dispatch(goToNextStep(true))}
+          players={players}
+        />
+      )}
+    </>
   );
 };
 

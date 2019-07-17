@@ -14,7 +14,7 @@ import { AppThunkDispatch } from 'store';
 import {
   createGame,
   subscribeToGames,
-  unsubscribeToGames,
+  unsubscribeFromGames,
   selectGames,
   selectUsers
 } from './games-duck';
@@ -52,7 +52,7 @@ const GamesContainer: FC = () => {
 
   useEffect(() => {
     dispatch(subscribeToGames());
-    return () => dispatch(unsubscribeToGames());
+    return () => dispatch(unsubscribeFromGames());
   }, [dispatch]);
 
   return (

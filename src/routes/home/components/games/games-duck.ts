@@ -4,6 +4,7 @@ import { getId } from 'animal-id';
 import Firestore from 'typings/firestore';
 import { ApplicationState } from 'store/root-reducer';
 import { addPlayerToGame } from 'routes/games/routes/Game/phases/setup/players/players-duck';
+import { timestamp } from 'utils/firestore';
 
 enum GamesActionTypes {
   CreateGameRequested = 'GAMES/CREATE_GAME_REQUESTED',
@@ -45,7 +46,7 @@ export const subscribeToGames: AppActionCreator = () => (
   getFirestore().setListener(getGamesQuery());
 };
 
-export const unsubscribeToGames: AppActionCreator = () => (
+export const unsubscribeFromGames: AppActionCreator = () => (
   dispatch,
   _,
   { getFirestore }
@@ -105,7 +106,7 @@ export const createGame: AppActionCreator = () => async (
 
   let game: Game = {
     name,
-    createdAt: firestore.Timestamp.now().toMillis(),
+    createdAt: timestamp(firestore),
     createdById: userId,
     phase: GamePhase.Setup
   };

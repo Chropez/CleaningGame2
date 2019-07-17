@@ -5,10 +5,12 @@ import { AppAction } from 'config/redux';
 import User from 'models/user';
 import {
   selectGamePlayers,
-  selectGameId
+  selectGameId,
+  selectCurrentUserId
 } from 'routes/games/routes/Game/game-duck';
 import { DocumentQuery } from 'typings/firestore';
 import GamePlayer from 'models/game-player';
+import { timestamp } from 'utils/firestore';
 
 enum PlayerActionTypes {
   ShowAddPlayerDialog = 'GAMES/GAME/PLAYERS/SHOW_ADD_PLAYER_DIALOG',
@@ -33,9 +35,6 @@ const selectUsers = (state: ApplicationState): User[] =>
   state.firestore.ordered && state.firestore.ordered.currentGameAvailablePlayers
     ? state.firestore.ordered.currentGameAvailablePlayers
     : [];
-
-export const selectCurrentUserId = (state: ApplicationState): string =>
-  state.firebase.auth.uid;
 
 export const selectAvailablePlayers = (
   state: ApplicationState
@@ -112,8 +111,7 @@ export const addPlayerToGame: AppActionCreator = (
 
   let player: GamePlayer = {
     userId,
-    isDoneEstimating: false,
-    createdAt: firestore.Timestamp.now().toMillis()
+    createdAt: timestamp(firestore)
   };
 
   dispatch({

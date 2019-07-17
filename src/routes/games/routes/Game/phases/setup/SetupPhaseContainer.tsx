@@ -11,8 +11,7 @@ import {
   selectIsLoadingAvailablePlayers,
   selectAvailablePlayers,
   addPlayerToGame,
-  removePlayerFromGame,
-  selectCurrentUserId
+  removePlayerFromGame
 } from './players/players-duck';
 import TasksContainer from './add-tasks/TasksContainer';
 import {
@@ -28,9 +27,13 @@ import {
   goToNextStep,
   selectGameTasks,
   subscribeToGameTasks,
-  unsubscribeToGameTasks
+  unsubscribeFromGameTasks
 } from './setup-phase-duck';
-import { selectGame, selectGamePlayersViewModel } from '../../game-duck';
+import {
+  selectGame,
+  selectGamePlayersViewModel,
+  selectCurrentUserId
+} from '../../game-duck';
 
 const SetupPhaseContainer: FC = () => {
   let dispatch: AppThunkDispatch = useDispatch();
@@ -49,7 +52,7 @@ const SetupPhaseContainer: FC = () => {
 
   useEffect(() => {
     dispatch(subscribeToGameTasks(gameId));
-    return () => dispatch(unsubscribeToGameTasks(gameId));
+    return () => dispatch(unsubscribeFromGameTasks(gameId));
   }, [dispatch, gameId]);
 
   async function loadAddPlayerDialog() {
@@ -69,7 +72,7 @@ const SetupPhaseContainer: FC = () => {
   return (
     <GamePhaseWrapper>
       <GamePhaseContentWrapper>
-        <Box mt={2} mb={2}>
+        <Box p={2}>
           <Typography>
             Glöm inte att bjuda in dina städkompanjoner till spelet eller be dem
             att söka på spelet <strong>{game.name}</strong>.

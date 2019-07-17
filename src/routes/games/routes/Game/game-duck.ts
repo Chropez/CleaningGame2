@@ -6,6 +6,7 @@ import { DocumentQuery } from 'typings/firestore';
 import GamePlayer from 'models/game-player';
 import User from 'models/user';
 import { GamePlayerViewModel } from './game-player-view-model';
+import { timestamp } from 'utils/firestore';
 
 enum GameActionTypes {
   GameSubscribed = 'GAMES/GAME/GAME_SUBSCRIBED',
@@ -15,6 +16,9 @@ enum GameActionTypes {
 }
 
 // Selectors
+
+export const selectCurrentUserId = (state: ApplicationState): string =>
+  state.firebase.auth.uid;
 
 export const selectGame = (state: ApplicationState): Game =>
   state.firestore.ordered.currentGame
@@ -35,20 +39,27 @@ export const selectGamePlayersViewModel = (
 ): GamePlayerViewModel[] =>
   state.firestore.ordered.currentGamePlayers
     ? state.firestore.ordered.currentGamePlayers.map(
-        (currentGamePlayer: GamePlayer) => ({
-          ...currentGamePlayer,
-          user: selectUserById(state, currentGamePlayer.userId)
+        (gamePlayer: GamePlayer) => ({
+          ...gamePlayer,
+          user: selectUserById(state, gamePlayer.userId)
         })
       )
     : [];
+
+export const selectCurrentPlayer = (state: ApplicationState): GamePlayer => {
+  let currentUserId = selectCurrentUserId(state);
+  return state.firestore.data.currentGamePlayers
+    ? state.firestore.data.currentGamePlayers[currentUserId]
+    : undefined;
+};
 
 // Queries
 
 const getGameByIdQuery = (gameId: string): DocumentQuery => ({
   collection: 'games',
   doc: gameId,
-  storeAs: 'currentGame',
-  populates: [{ child: 'createdById', root: 'users' }]
+  storeAs: 'currentGame'
+  // populates: [{ child: 'createdById', root: 'users' }]
 });
 
 const getGamePlayersByGameIdQuery = (gameId: string): DocumentQuery => ({
@@ -74,6 +85,12 @@ const setGamePlayerQuery = (
   ]
 });
 
+export const updateGameByIdQuery = (gameId: string): DocumentQuery => ({
+  collection: 'games',
+  doc: gameId,
+  storeAs: 'updateGameId'
+});
+
 const listenToGameQueries = (gameId: string) => [
   getGameByIdQuery(gameId),
   getGamePlayersByGameIdQuery(gameId)
@@ -91,7 +108,7 @@ export const subscribeToGame: AppActionCreator = (gameId: string) => (
   firestore.setListeners(listenToGameQueries(gameId));
 };
 
-export const unsubscribeToGame: AppActionCreator = (gameId: string) => (
+export const unsubscribeFromGame: AppActionCreator = (gameId: string) => (
   dispatch,
   _,
   { getFirestore }
@@ -113,8 +130,7 @@ export const addGamePlayer: AppActionCreator = (userId: string) => async (
 
   let player: GamePlayer = {
     userId,
-    createdAt: firestore.Timestamp.now().toMillis(),
-    isDoneEstimating: false
+    createdAt: timestamp(firestore)
   };
 
   dispatch({

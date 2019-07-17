@@ -2,8 +2,11 @@ import { AppAction } from 'config/redux';
 import { AppActionCreator } from 'store';
 import { ApplicationState } from 'store/root-reducer';
 import Task from 'models/task';
-import { selectCurrentUserId } from '../players/players-duck';
-import { selectGame } from 'routes/games/routes/Game/game-duck';
+import {
+  selectGame,
+  selectCurrentUserId
+} from 'routes/games/routes/Game/game-duck';
+import { timestamp } from 'utils/firestore';
 
 enum AddTasksActionTypes {
   NewTaskTextChanged = 'GAMES/GAME/ADD_TASK/NEW_TASK_TEXT_CHANGED',
@@ -48,7 +51,7 @@ export const addTask: AppActionCreator = () => async (
   let task: Task = {
     name,
     createdBy: selectCurrentUserId(state),
-    createdAt: firestore.Timestamp.now().toMillis(),
+    createdAt: timestamp(firestore),
     averageEstimate: 0
   };
 
