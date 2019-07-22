@@ -10,8 +10,10 @@ import {
 } from '../../game-duck';
 import { DocumentQuery } from 'typings/firestore';
 import { ApplicationState } from 'store/root-reducer';
-import { GamePlayerViewModel } from '../../game-player-view-model';
+import { GamePlayerViewModel } from '../../view-models/game-player-view-model';
 import GamePlayer from 'models/game-player';
+import TasksViewModel from '../../view-models/tasks-view-model';
+import TaskEstimation from 'models/task-estimation';
 
 enum ChoosePlayerOrderActionTypes {
   NextGamePhaseRequested = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/NEXT_GAME_PHASE_REQUESTED',
@@ -33,7 +35,73 @@ export const selectOrderedPlayersViewModel = (
   return [...players].sort((a, b) => a.pickOrder! - b.pickOrder!);
 };
 
+export const selectTasksViewModel = (
+  state: ApplicationState
+): TasksViewModel[] => {
+  if (
+    !state.firestore.data.currentGameTasks ||
+    !state.firestore.ordered.allPlayersTaskEstimations ||
+    !state.firestore.data.currentGameTasks
+  ) {
+    return [];
+  }
+
+  let tasks: { [key: string]: TasksViewModel } = JSON.parse(
+    JSON.stringify(state.firestore.data.currentGameTasks)
+  );
+
+  let allPlayersTaskEstimations: TaskEstimation[] =
+    state.firestore.ordered.allPlayersTaskEstimations || [];
+
+  allPlayersTaskEstimations.forEach(taskEstimation => {
+    let task = tasks[taskEstimation.taskId!];
+    if (task === undefined) {
+      return;
+    }
+
+    if (task.estimations) {
+      task.estimations.push(taskEstimation);
+      return;
+    }
+
+    task.estimations = [taskEstimation];
+  });
+
+  let orderedTasks: TasksViewModel[] = state.firestore.ordered.currentGameTasks;
+
+  return orderedTasks
+    .filter(orderedTask => tasks[orderedTask.id!] !== undefined)
+    .map(orderedTask => {
+      let taskVM = tasks[orderedTask.id!];
+
+      taskVM.id = orderedTask.id!;
+      if (taskVM.estimations === undefined) {
+        taskVM.averageEstimate = 0;
+        return taskVM;
+      }
+
+      let sum = taskVM.estimations.reduce(
+        (accumulator, task) => accumulator + task.estimate,
+        0
+      );
+
+      taskVM.averageEstimate = sum > 0 ? sum / taskVM.estimations.length : 0;
+
+      return taskVM;
+    });
+};
+
 // Queries
+
+const updatePlayerOrderQuery = (
+  gameId: string,
+  playerId: string
+): DocumentQuery => ({
+  collection: 'games',
+  doc: gameId,
+  storeAs: 'updatePlayerOrderId',
+  subcollections: [{ collection: 'players', doc: playerId }]
+});
 
 const getAllPlayersTaskEstimationsQuery = (gameId: string) => ({
   collection: 'games',
@@ -53,16 +121,6 @@ const getChoosePlayerOrderPhaseQueries = (gameId: string): DocumentQuery[] => [
   getAllPlayersTaskEstimationsQuery(gameId),
   getGameTasksQuery(gameId)
 ];
-
-const updatePlayerOrderQuery = (
-  gameId: string,
-  playerId: string
-): DocumentQuery => ({
-  collection: 'games',
-  doc: gameId,
-  storeAs: 'updatePlayerOrderId',
-  subcollections: [{ collection: 'players', doc: playerId }]
-});
 
 // Actions
 

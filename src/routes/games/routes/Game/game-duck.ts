@@ -5,7 +5,7 @@ import { AppAction } from 'config/redux';
 import { DocumentQuery } from 'typings/firestore';
 import GamePlayer from 'models/game-player';
 import User from 'models/user';
-import { GamePlayerViewModel } from './game-player-view-model';
+import { GamePlayerViewModel } from './view-models/game-player-view-model';
 import { timestamp } from 'utils/firestore';
 
 enum GameActionTypes {

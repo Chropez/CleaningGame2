@@ -10,15 +10,18 @@ import {
   subscribeToChoosePlayerOrderPhase,
   unsubscribeFromChoosePlayerOrderPhase,
   selectOrderedPlayersViewModel,
-  changePlayerPickingOrder
+  changePlayerPickingOrder,
+  selectTasksViewModel
 } from './choose-player-order-duck';
 import ChooseOrderContainer from './ChooseOrderContainer';
 import { selectGameId } from '../../game-duck';
+import TaskSummaryContainer from './task-summary/TaskSummaryContainer';
 
 const ChoosePlayerOrderPhaseContainer: FC = () => {
   let dispatch = useDispatch();
   let gameId = useSelector(selectGameId);
   let players = useSelector(selectOrderedPlayersViewModel);
+  let tasks = useSelector(selectTasksViewModel);
 
   useEffect(() => {
     dispatch(subscribeToChoosePlayerOrderPhase(gameId));
@@ -35,19 +38,26 @@ const ChoosePlayerOrderPhaseContainer: FC = () => {
           <Box p={2}>
             <Typography>
               Innan ni börjar välja städuppgifter måste ni bestämma vem som
-              börjar.
+              börjar. Klunsa om det om ni inte gillar ordningen!
               {/* <Small>
                 Den som betygsatte snabbast är nu först men om ni tycker att det
                 är orättvist kan ni klunsa om det och ändra ordningen!
               </Small> */}
             </Typography>
           </Box>
-          <ChooseOrderContainer
-            players={players}
-            onChangeOrder={(playerId, newOrder) =>
-              dispatch(changePlayerPickingOrder(playerId, newOrder))
-            }
-          />
+
+          <Box p={2} pt={0}>
+            <ChooseOrderContainer
+              players={players}
+              onChangeOrder={(playerId, newOrder) =>
+                dispatch(changePlayerPickingOrder(playerId, newOrder))
+              }
+            />
+          </Box>
+
+          <Box p={2} pt={0}>
+            <TaskSummaryContainer tasks={tasks} totalPlayers={players.length} />
+          </Box>
         </GamePhaseContentWrapper>
 
         <BottomButtonBar>

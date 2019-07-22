@@ -1,12 +1,19 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { Palette, PaletteColor } from '@material-ui/core/styles/createPalette';
-import { blue, green } from '@material-ui/core/colors';
+import { blue, green, grey } from '@material-ui/core/colors';
+
+const SPACING = 8;
 
 const muiTheme = createMuiTheme({
   typography: {
     fontSize: 14,
-    htmlFontSize: 16
+    htmlFontSize: 16,
+    h2: {
+      color: grey[600],
+      fontSize: '1.8rem'
+    }
   },
+  spacing: SPACING,
   palette: {
     primary: {
       main: '#1e88e5',
@@ -25,7 +32,23 @@ const muiTheme = createMuiTheme({
       secondary: '#555'
     }
   },
-  overrides: {}
+  breakpoints: {
+    values: {
+      xs: 320,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920
+    }
+  },
+  overrides: {
+    MuiTypography: {
+      h2: {
+        marginBottom: `${SPACING * 2}px`,
+        marginTop: `${SPACING * 2}px`
+      }
+    }
+  }
 });
 
 interface ExtendedPalette extends Palette {

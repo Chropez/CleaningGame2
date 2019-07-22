@@ -26,21 +26,30 @@ import {
 } from 'routes/games/routes/Game/phases/setup/setup-phase-duck';
 
 interface AppData {
-  users: User[];
-  currentGame: Game;
+  users?: User[];
+  currentGame?: Game;
 }
 export interface FirestoreState {
   status: {
     requesting: AppData;
   };
-  data: {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ordered: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  listeners: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  errors: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  queries: any;
 }
 
 export interface ApplicationState {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   firebase: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  firestore: any;
+  firestore: FirestoreState;
   test: {
     greet: string;
   };
@@ -58,9 +67,21 @@ export interface ApplicationState {
   };
 }
 
+let fireStoreInitialState: FirestoreState = {
+  status: {
+    requesting: {}
+  },
+  data: {},
+  ordered: {},
+  listeners: {},
+  errors: {},
+  queries: {}
+};
+
 const combinedReducers = combineReducers<ApplicationState>({
   firebase: firebaseReducer,
-  firestore: firestoreReducer,
+  firestore: (state = fireStoreInitialState, action) =>
+    firestoreReducer(state, action),
   test: testReducer,
   routes: combineReducers({
     application: applicationRouteReducer,

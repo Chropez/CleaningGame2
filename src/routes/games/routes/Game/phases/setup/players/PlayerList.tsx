@@ -18,7 +18,7 @@ import { ListSubheaderProps } from '@material-ui/core/ListSubheader';
 import { FabProps } from '@material-ui/core/Fab';
 import StickyListSubHeader from 'components/StickyListSubHeader';
 import { TypographyProps } from '@material-ui/core/Typography';
-import { GamePlayerViewModel } from '../../../game-player-view-model';
+import { GamePlayerViewModel } from '../../../view-models/game-player-view-model';
 
 interface PlayerListItemProps {
   canBeRemoved: boolean;

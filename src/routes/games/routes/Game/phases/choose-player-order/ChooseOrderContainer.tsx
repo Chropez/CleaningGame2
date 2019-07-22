@@ -10,7 +10,7 @@ import {
   ListItemSecondaryAction,
   IconButton
 } from '@material-ui/core';
-import { GamePlayerViewModel } from '../../game-player-view-model';
+import { GamePlayerViewModel } from '../../view-models/game-player-view-model';
 import styled from 'styled-components/macro';
 import { ListItemTextProps } from '@material-ui/core/ListItemText';
 import { ListProps } from '@material-ui/core/List';
@@ -35,8 +35,7 @@ const OrderNumber = styled(ListItemText as FC<ListItemTextProps>)`
 
     .MuiTypography-root {
       font-size: 1.2rem;
-      font-weight: bold;
-      color: ${({ theme }) => theme.palette.secondary.dark};
+      color: ${({ theme }) => theme.palette.primary.light};
     }
   }
 `;
@@ -95,8 +94,9 @@ const ChooseOrderContainer: FC<Props> = ({ onChangeOrder, players }) => (
                     </CompoundButtons>
                   </ListItemSecondaryAction>
                 </ListItem>
-
-                <Divider variant="fullWidth" component="li" />
+                {index + 1 < players.length && (
+                  <Divider variant="fullWidth" component="li" />
+                )}
               </>
             )}
           </Fragment>
