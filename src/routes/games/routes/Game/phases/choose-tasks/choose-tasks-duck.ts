@@ -27,14 +27,14 @@ export const goToNextStep: AppActionCreator = () => async (
   let state = getState();
   let game = selectGame(state);
 
-  if (game.phase !== GamePhase.ChoosePlayerOrder) {
+  if (game.phase !== GamePhase.ChooseTasks) {
     throw new Error(
       'Ops! Time to "phase" the truth... Your game is in an impossible phase'
     );
   }
 
   let firestore = getFirestore();
-  let phase = { phase: GamePhase.ChoosePlayerOrder }; // todo next
+  let phase = { phase: GamePhase.Clean }; // todo next
 
   dispatch({
     type: ChooseTasksActionTypes.NextGamePhaseRequested,
@@ -52,7 +52,7 @@ export const goToPreviousStep: AppActionCreator = () => async (
   let state = getState();
   let game = selectGame(state);
 
-  if (game.phase !== GamePhase.ChoosePlayerOrder) {
+  if (game.phase !== GamePhase.Clean) {
     throw new Error(
       'Ops! Time to "phase" the truth... Your game is in an impossible phase'
     );
@@ -86,7 +86,7 @@ export const unsubscribeFromChoosePlayerOrderPhase: AppActionCreator = (
 ) => async (dispatch, getState, { getFirestore }) => {
   let firestore = getFirestore();
 
-  await firestore.unsetListeners(getChoosePlayerOrderPhaseQueries(gameId));
+  // await firestore.unsetListeners(getChoosePlayerOrderPhaseQueries(gameId));
 
   dispatch({
     type: ChooseTasksActionTypes.ChooseTasksPhaseUnsubscribed

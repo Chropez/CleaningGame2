@@ -139,7 +139,7 @@ export const goToNextStep: AppActionCreator = () => async (
   }
 
   let firestore = getFirestore();
-  let phase = { phase: GamePhase.ChoosePlayerOrder }; // todo next
+  let phase = { phase: GamePhase.ChooseTasks }; // todo next
 
   dispatch({
     type: ChoosePlayerOrderActionTypes.NextGamePhaseRequested,
