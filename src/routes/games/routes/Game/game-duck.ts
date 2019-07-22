@@ -4,9 +4,9 @@ import { ApplicationState } from 'store/root-reducer';
 import { AppAction } from 'config/redux';
 import { DocumentQuery } from 'typings/firestore';
 import GamePlayer from 'models/game-player';
-import User from 'models/user';
 import { GamePlayerViewModel } from './view-models/game-player-view-model';
 import { timestamp } from 'utils/firestore';
+import { createSelector } from 'reselect';
 
 enum GameActionTypes {
   GameSubscribed = 'GAMES/GAME/GAME_SUBSCRIBED',
@@ -20,38 +20,46 @@ enum GameActionTypes {
 export const selectCurrentUserId = (state: ApplicationState): string =>
   state.firebase.auth.uid;
 
-export const selectGame = (state: ApplicationState): Game =>
+export const selectGame = (state: ApplicationState): Game | undefined =>
   state.firestore.ordered.currentGame
     ? state.firestore.ordered.currentGame[0]
-    : {};
+    : undefined;
 
-export const selectGameId = (state: ApplicationState): string =>
-  selectGame(state).id || '';
+export const selectGameId = (state: ApplicationState): string => {
+  let game = selectGame(state);
+  return game !== undefined && game.id !== undefined ? game.id : '';
+};
 
-export const selectUserById = (state: ApplicationState, userId: string): User =>
-  state.firestore.data.users[userId];
+export const selectUsers = (state: ApplicationState) =>
+  state.firestore.data.users;
 
-export const selectGamePlayers = (state: ApplicationState): GamePlayer[] =>
+export const selectUserById = (state: ApplicationState, userId: string) =>
+  selectUsers[userId];
+
+export const selectGamePlayers = (state: ApplicationState) =>
   state.firestore.ordered.currentGamePlayers;
 
-export const selectGamePlayersViewModel = (
-  state: ApplicationState
-): GamePlayerViewModel[] =>
-  state.firestore.ordered.currentGamePlayers
-    ? state.firestore.ordered.currentGamePlayers.map(
-        (gamePlayer: GamePlayer) => ({
+export const selectGamePlayersViewModel = createSelector(
+  [selectGamePlayers, selectUsers],
+  (currentGamePlayers, users): GamePlayerViewModel[] =>
+    currentGamePlayers === undefined || users === undefined
+      ? []
+      : currentGamePlayers.map(gamePlayer => ({
           ...gamePlayer,
-          user: selectUserById(state, gamePlayer.userId)
-        })
-      )
-    : [];
+          user: users[gamePlayer.userId]!
+        }))
+);
 
-export const selectCurrentPlayer = (state: ApplicationState): GamePlayer => {
-  let currentUserId = selectCurrentUserId(state);
-  return state.firestore.data.currentGamePlayers
-    ? state.firestore.data.currentGamePlayers[currentUserId]
-    : undefined;
-};
+const selectCurrentGamePlayersData = (state: ApplicationState) =>
+  state.firestore.data.currentGamePlayers;
+
+export const selectCurrentPlayer = createSelector(
+  [selectCurrentGamePlayersData, selectCurrentUserId],
+  (currentGamePlayersData, currentUserId) =>
+    currentGamePlayersData !== undefined
+      ? currentGamePlayersData[currentUserId]
+      : undefined
+);
 
 // Queries
 

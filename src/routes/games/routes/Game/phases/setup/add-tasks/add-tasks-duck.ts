@@ -3,8 +3,8 @@ import { AppActionCreator } from 'store';
 import { ApplicationState } from 'store/root-reducer';
 import Task from 'models/task';
 import {
-  selectGame,
-  selectCurrentUserId
+  selectCurrentUserId,
+  selectGameId
 } from 'routes/games/routes/Game/game-duck';
 import { timestamp } from 'utils/firestore';
 
@@ -41,7 +41,7 @@ export const addTask: AppActionCreator = () => async (
   let firestore = getFirestore();
   let state = getState();
 
-  let gameId = selectGame(state).id;
+  let gameId = selectGameId(state);
   let name = selectNewTaskText(state);
   if (!name) {
     // Todo show error message
@@ -76,7 +76,7 @@ export const removeTask: AppActionCreator = (taskId: string) => async (
   let firestore = getFirestore();
   let state = getState();
 
-  let gameId = selectGame(state).id;
+  let gameId = selectGameId(state);
 
   dispatch({ type: AddTasksActionTypes.RemoveTaskRequested, payload: taskId });
 

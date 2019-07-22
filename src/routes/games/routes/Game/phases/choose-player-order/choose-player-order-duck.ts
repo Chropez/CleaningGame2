@@ -40,8 +40,7 @@ export const selectTasksViewModel = (
 ): TasksViewModel[] => {
   if (
     !state.firestore.data.currentGameTasks ||
-    !state.firestore.ordered.allPlayersTaskEstimations ||
-    !state.firestore.data.currentGameTasks
+    !state.firestore.ordered.allPlayersTaskEstimations
   ) {
     return [];
   }
@@ -67,12 +66,12 @@ export const selectTasksViewModel = (
     task.estimations = [taskEstimation];
   });
 
-  let orderedTasks: TasksViewModel[] = state.firestore.ordered.currentGameTasks;
+  let orderedTasks = state.firestore.ordered.currentGameTasks!;
 
   return orderedTasks
     .filter(orderedTask => tasks[orderedTask.id!] !== undefined)
     .map(orderedTask => {
-      let taskVM = tasks[orderedTask.id!];
+      let taskVM = tasks[orderedTask.id!] as TasksViewModel;
 
       taskVM.id = orderedTask.id!;
       if (taskVM.estimations === undefined) {
@@ -130,7 +129,7 @@ export const goToNextStep: AppActionCreator = () => async (
   { getFirestore }
 ) => {
   let state = getState();
-  let game = selectGame(state);
+  let game = selectGame(state)!;
 
   if (game.phase !== GamePhase.ChoosePlayerOrder) {
     throw new Error(
@@ -154,7 +153,7 @@ export const goToPreviousStep: AppActionCreator = () => async (
   { getFirestore }
 ) => {
   let state = getState();
-  let game = selectGame(state);
+  let game = selectGame(state)!;
 
   if (game.phase !== GamePhase.ChoosePlayerOrder) {
     throw new Error(

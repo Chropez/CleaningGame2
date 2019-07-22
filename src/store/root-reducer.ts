@@ -4,7 +4,6 @@ import { firestoreReducer } from 'redux-firestore';
 import { homeReducer, HomeState } from 'routes/home/home-duck';
 import { testReducer } from 'routes/test/duck';
 import { GameState, gameReducer } from 'routes/games/routes/Game/game-duck';
-import { User } from 'firebase';
 import Game from 'models/game';
 import reduceReducers from 'reduce-reducers';
 import firestoreEnhancedReducers from './firestore-enhanced-reducer';
@@ -24,19 +23,39 @@ import {
   setupPhaseReducer,
   SetupPhaseState
 } from 'routes/games/routes/Game/phases/setup/setup-phase-duck';
+import GamePlayer from 'models/game-player';
+import Task from 'models/task';
+import TaskEstimation from 'models/task-estimation';
+import User from 'models/user';
+
+type Collection<T> = T;
 
 interface AppData {
-  users?: User[];
-  currentGame?: Game;
+  users: Collection<User>;
+  games: Collection<Game>;
+  currentGame: Game;
+  currentGamePlayers: Collection<GamePlayer>;
+  currentGameTasks: Collection<Task>;
+  allPlayersTaskEstimations: Collection<TaskEstimation>;
+  currentPlayerTaskEstimations: Collection<TaskEstimation>;
+  currentGameAvailablePlayers: Collection<User>;
 }
+
+type FirestoreRecordData<T> = {
+  [K in keyof T]: T[K] extends Collection<T[K]>
+    ? Record<string, T[K] | undefined> | undefined
+    : T[K] | undefined;
+};
+type FirestoreOrderedData<T> = { [K in keyof T]: T[K][] };
+
 export interface FirestoreState {
   status: {
-    requesting: AppData;
+    requesting: AppData | undefined;
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+  data: FirestoreRecordData<AppData>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ordered: any;
+  ordered: FirestoreOrderedData<AppData>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   listeners: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -69,10 +88,28 @@ export interface ApplicationState {
 
 let fireStoreInitialState: FirestoreState = {
   status: {
-    requesting: {}
+    requesting: undefined
   },
-  data: {},
-  ordered: {},
+  data: {
+    users: undefined,
+    games: undefined,
+    currentGame: undefined,
+    currentGamePlayers: undefined,
+    currentGameTasks: undefined,
+    allPlayersTaskEstimations: undefined,
+    currentPlayerTaskEstimations: undefined,
+    currentGameAvailablePlayers: undefined
+  },
+  ordered: {
+    users: [],
+    games: [],
+    currentGame: [],
+    currentGamePlayers: [],
+    currentGameTasks: [],
+    allPlayersTaskEstimations: [],
+    currentPlayerTaskEstimations: [],
+    currentGameAvailablePlayers: []
+  },
   listeners: {},
   errors: {},
   queries: {}

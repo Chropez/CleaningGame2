@@ -127,7 +127,7 @@ export const goToPreviousStep: AppActionCreator = () => async (
   { getFirestore }
 ) => {
   let state = getState();
-  let game = selectGame(state);
+  let game = selectGame(state)!;
 
   if (game.phase !== GamePhase.Estimate) {
     throw new Error(
@@ -199,7 +199,7 @@ export const goToNextStep: AppActionCreator = () => async (
   { getFirestore }
 ) => {
   let state = getState();
-  let game = selectGame(state);
+  let game = selectGame(state)!;
   let firestore = getFirestore();
 
   setNextPhase(game, dispatch, firestore);
@@ -212,7 +212,7 @@ export const estimateTask: AppActionCreator = (
   estimationId?: string
 ) => async (dispatch, getState, { getFirestore }) => {
   let state = getState();
-  let gameId = selectGameId(state);
+  let gameId = selectGameId(state)!;
   let userId = selectCurrentUserId(state);
 
   let firestore = getFirestore();
