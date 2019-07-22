@@ -67,7 +67,6 @@ const getGameByIdQuery = (gameId: string): DocumentQuery => ({
   collection: 'games',
   doc: gameId,
   storeAs: 'currentGame'
-  // populates: [{ child: 'createdById', root: 'users' }]
 });
 
 const getGamePlayersByGameIdQuery = (gameId: string): DocumentQuery => ({

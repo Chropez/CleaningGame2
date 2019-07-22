@@ -10,10 +10,9 @@ import {
 } from '../../game-duck';
 import { DocumentQuery } from 'typings/firestore';
 import { ApplicationState } from 'store/root-reducer';
-import { GamePlayerViewModel } from '../../view-models/game-player-view-model';
 import GamePlayer from 'models/game-player';
 import TasksViewModel from '../../view-models/tasks-view-model';
-import TaskEstimation from 'models/task-estimation';
+import { createSelector } from 'reselect';
 
 enum ChoosePlayerOrderActionTypes {
   NextGamePhaseRequested = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/NEXT_GAME_PHASE_REQUESTED',
@@ -27,68 +26,71 @@ enum ChoosePlayerOrderActionTypes {
 }
 
 // Selectors
+export const selectOrderedPlayersViewModel = createSelector(
+  selectGamePlayersViewModel,
+  players => [...players].sort((a, b) => a.pickOrder! - b.pickOrder!)
+);
 
-export const selectOrderedPlayersViewModel = (
-  state: ApplicationState
-): GamePlayerViewModel[] => {
-  let players = selectGamePlayersViewModel(state);
-  return [...players].sort((a, b) => a.pickOrder! - b.pickOrder!);
-};
+const selectCurrentGameTasks = (state: ApplicationState) =>
+  state.firestore.data.currentGameTasks;
 
-export const selectTasksViewModel = (
-  state: ApplicationState
-): TasksViewModel[] => {
-  if (
-    !state.firestore.data.currentGameTasks ||
-    !state.firestore.ordered.allPlayersTaskEstimations
-  ) {
-    return [];
-  }
+const selectOrderedCurrentGameTasks = (state: ApplicationState) =>
+  state.firestore.ordered.currentGameTasks;
 
-  let tasks: { [key: string]: TasksViewModel } = JSON.parse(
-    JSON.stringify(state.firestore.data.currentGameTasks)
-  );
+const selectAllPlayersTaskEstimations = (state: ApplicationState) =>
+  state.firestore.ordered.allPlayersTaskEstimations;
 
-  let allPlayersTaskEstimations: TaskEstimation[] =
-    state.firestore.ordered.allPlayersTaskEstimations || [];
-
-  allPlayersTaskEstimations.forEach(taskEstimation => {
-    let task = tasks[taskEstimation.taskId!];
-    if (task === undefined) {
-      return;
+export const selectTasksViewModel = createSelector(
+  [
+    selectCurrentGameTasks,
+    selectAllPlayersTaskEstimations,
+    selectOrderedCurrentGameTasks
+  ],
+  (gameTasks, allPlayersTaskEstimations, orderedTasks) => {
+    if (gameTasks === undefined || allPlayersTaskEstimations === undefined) {
+      return [];
     }
 
-    if (task.estimations) {
-      task.estimations.push(taskEstimation);
-      return;
-    }
+    let tasks: Record<string, TasksViewModel | undefined> = JSON.parse(
+      JSON.stringify(gameTasks)
+    );
 
-    task.estimations = [taskEstimation];
-  });
-
-  let orderedTasks = state.firestore.ordered.currentGameTasks!;
-
-  return orderedTasks
-    .filter(orderedTask => tasks[orderedTask.id!] !== undefined)
-    .map(orderedTask => {
-      let taskVM = tasks[orderedTask.id!] as TasksViewModel;
-
-      taskVM.id = orderedTask.id!;
-      if (taskVM.estimations === undefined) {
-        taskVM.averageEstimate = 0;
-        return taskVM;
+    allPlayersTaskEstimations.forEach(taskEstimation => {
+      let task = tasks[taskEstimation.taskId!]!;
+      if (task === undefined) {
+        return;
       }
 
-      let sum = taskVM.estimations.reduce(
-        (accumulator, task) => accumulator + task.estimate,
-        0
-      );
+      if (task.estimations) {
+        task.estimations.push(taskEstimation);
+        return;
+      }
 
-      taskVM.averageEstimate = sum > 0 ? sum / taskVM.estimations.length : 0;
-
-      return taskVM;
+      task.estimations = [taskEstimation];
     });
-};
+
+    return orderedTasks
+      .filter(orderedTask => tasks[orderedTask.id!] !== undefined)
+      .map(orderedTask => {
+        let taskVM = tasks[orderedTask.id!] as TasksViewModel;
+
+        taskVM.id = orderedTask.id!;
+        if (taskVM.estimations === undefined) {
+          taskVM.averageEstimate = 0;
+          return taskVM;
+        }
+
+        let sum = taskVM.estimations.reduce(
+          (accumulator, task) => accumulator + task.estimate,
+          0
+        );
+
+        taskVM.averageEstimate = sum > 0 ? sum / taskVM.estimations.length : 0;
+
+        return taskVM;
+      });
+  }
+);
 
 // Queries
 
