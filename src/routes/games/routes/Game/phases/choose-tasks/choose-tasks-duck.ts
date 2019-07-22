@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { AppActionCreator } from 'store';
 import { AppAction } from 'config/redux';
 import { GamePhase } from 'models/game';
@@ -52,14 +51,14 @@ export const goToPreviousStep: AppActionCreator = () => async (
   let state = getState();
   let game = selectGame(state);
 
-  if (game.phase !== GamePhase.Clean) {
+  if (game.phase !== GamePhase.ChooseTasks) {
     throw new Error(
       'Ops! Time to "phase" the truth... Your game is in an impossible phase'
     );
   }
 
   let firestore = getFirestore();
-  let phase = { phase: GamePhase.Estimate };
+  let phase = { phase: GamePhase.ChoosePlayerOrder };
 
   dispatch({
     type: ChooseTasksActionTypes.PreviousGamePhaseRequested,
@@ -73,7 +72,7 @@ export const subscribeToChoosePlayerOrderPhase: AppActionCreator = (
   gameId: string
 ) => async (dispatch, getState, { getFirestore }) => {
   let firestore = getFirestore();
-
+  console.log(firestore, gameId);
   // await firestore.setListeners(getChoosePlayerOrderPhaseQueries(gameId));
 
   dispatch({
@@ -85,7 +84,7 @@ export const unsubscribeFromChoosePlayerOrderPhase: AppActionCreator = (
   gameId: string
 ) => async (dispatch, getState, { getFirestore }) => {
   let firestore = getFirestore();
-
+  console.log(firestore, gameId);
   // await firestore.unsetListeners(getChoosePlayerOrderPhaseQueries(gameId));
 
   dispatch({
