@@ -1,5 +1,3 @@
-import GamePlayer from './game-player';
-
 export default interface Task {
   id?: string;
   name: string;
@@ -7,5 +5,5 @@ export default interface Task {
   createdBy: string;
   createdAt: number;
 
-  assignee?: GamePlayer;
+  assigneePlayerId?: string;
 }

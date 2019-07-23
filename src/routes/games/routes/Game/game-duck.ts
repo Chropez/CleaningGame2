@@ -39,6 +39,9 @@ export const selectUserById = (state: ApplicationState, userId: string) =>
 export const selectGamePlayers = (state: ApplicationState) =>
   state.firestore.ordered.currentGamePlayers;
 
+export const selectGamePlayersData = (state: ApplicationState) =>
+  state.firestore.data.currentGamePlayers;
+
 export const selectGamePlayersViewModel = createSelector(
   [selectGamePlayers, selectUsers],
   (currentGamePlayers, users): GamePlayerViewModel[] =>

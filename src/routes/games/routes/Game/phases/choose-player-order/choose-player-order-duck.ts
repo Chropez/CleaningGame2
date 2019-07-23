@@ -6,7 +6,8 @@ import {
   updateGameByIdQuery,
   selectGamePlayersViewModel,
   selectGameId,
-  selectGamePlayers
+  selectGamePlayers,
+  selectGamePlayersData
 } from '../../game-duck';
 import { DocumentQuery } from 'typings/firestore';
 import { ApplicationState } from 'store/root-reducer';
@@ -44,10 +45,15 @@ export const selectTasksViewModel = createSelector(
   [
     selectCurrentGameTasks,
     selectAllPlayersTaskEstimations,
-    selectOrderedCurrentGameTasks
+    selectOrderedCurrentGameTasks,
+    selectGamePlayersData
   ],
-  (gameTasks, allPlayersTaskEstimations, orderedTasks) => {
-    if (gameTasks === undefined || allPlayersTaskEstimations === undefined) {
+  (gameTasks, allPlayersTaskEstimations, orderedTasks, gamePlayersData) => {
+    if (
+      gameTasks === undefined ||
+      allPlayersTaskEstimations === undefined ||
+      gamePlayersData === undefined
+    ) {
       return [];
     }
 
@@ -64,6 +70,10 @@ export const selectTasksViewModel = createSelector(
       if (task.estimations) {
         task.estimations.push(taskEstimation);
         return;
+      }
+
+      if (task.assigneePlayerId) {
+        task.assignee = gamePlayersData[task.assigneePlayerId];
       }
 
       task.estimations = [taskEstimation];

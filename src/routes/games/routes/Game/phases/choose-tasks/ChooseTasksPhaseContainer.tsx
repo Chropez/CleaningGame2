@@ -5,19 +5,28 @@ import { Box, Typography, Button } from '@material-ui/core';
 import BottomButtonBar from 'components/BottomButtonBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGameId } from '../../game-duck';
-import { goToPreviousStep, goToNextStep } from './choose-tasks-duck';
+import {
+  goToPreviousStep,
+  goToNextStep,
+  subscribeToChooseTasksPhase,
+  unsubscribeFromChooseTasksPhase,
+  selectPlayerTurn
+} from './choose-tasks-duck';
+import TaskCard from '../../components/TaskCard';
+import { selectTasksViewModel } from '../choose-player-order/choose-player-order-duck';
 
 const ChooseTasksPhaseContainer: FC = () => {
   let dispatch = useDispatch();
   let gameId = useSelector(selectGameId);
   //   let players = useSelector(selectOrderedPlayersViewModel);
-  //   let tasks = useSelector(selectTasksViewModel);
+  let tasks = useSelector(selectTasksViewModel);
+  let playerTurn = useSelector(selectPlayerTurn);
 
   useEffect(() => {
-    // dispatch(subscribeToChoosePlayerOrderPhase(gameId));
-    // return () => {
-    //   dispatch(unsubscribeFromChoosePlayerOrderPhase(gameId));
-    // };
+    dispatch(subscribeToChooseTasksPhase(gameId));
+    return () => {
+      dispatch(unsubscribeFromChooseTasksPhase(gameId));
+    };
   }, [dispatch, gameId]);
 
   return (
@@ -25,11 +34,19 @@ const ChooseTasksPhaseContainer: FC = () => {
       <GamePhaseWrapper>
         <GamePhaseContentWrapper>
           <Box p={2}>
-            <Typography>Nu ska ni</Typography>
+            <Typography>Nu är det dags att välja uppgifter</Typography>
           </Box>
+          <Box p={2}>{playerTurn && playerTurn.user.displayName}</Box>
 
           <Box p={2} pt={0}>
             Content
+            {tasks.map(task => (
+              <TaskCard
+                key={task.id}
+                taskName={task.name}
+                estimate={task.averageEstimate}
+              />
+            ))}
           </Box>
         </GamePhaseContentWrapper>
 

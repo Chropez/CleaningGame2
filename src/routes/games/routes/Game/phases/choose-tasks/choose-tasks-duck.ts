@@ -1,7 +1,15 @@
 import { AppActionCreator } from 'store';
 import { AppAction } from 'config/redux';
 import { GamePhase } from 'models/game';
-import { selectGame, updateGameByIdQuery } from '../../game-duck';
+import {
+  selectGame,
+  updateGameByIdQuery,
+  selectGamePlayersViewModel
+} from '../../game-duck';
+import { DocumentQuery } from 'typings/firestore';
+import { createSelector } from 'reselect';
+import { selectTasksViewModel } from '../choose-player-order/choose-player-order-duck';
+import { GamePlayerViewModel } from '../../view-models/game-player-view-model';
 
 enum ChooseTasksActionTypes {
   NextGamePhaseRequested = 'GAMES/GAME/CHOOSE_TASKS/NEXT_GAME_PHASE_REQUESTED',
@@ -13,8 +21,40 @@ enum ChooseTasksActionTypes {
 }
 
 // Selectors
+export const selectPlayerTurn = createSelector(
+  [selectTasksViewModel, selectGamePlayersViewModel],
+  (tasks, players): GamePlayerViewModel => {
+    // let chosenTasks = tasks.filter(task => task.assigneePlayerId);
+    let playerTurn = (2 + 1) % players.length;
+    // let playerTurn = (chosenTasks.length + 1) % players.length;
+
+    if (playerTurn === 0) {
+      return players.find(player => player.pickOrder === players.length)!;
+    }
+
+    return players.find(player => player.pickOrder === playerTurn)!;
+  }
+);
 
 // Queries
+const getGameTasksQuery = (gameId: string) => ({
+  collection: 'games',
+  doc: gameId,
+  subcollections: [{ collection: 'tasks', orderBy: [['createdAt', 'desc']] }],
+  storeAs: 'currentGameTasks'
+});
+
+const getAllPlayersTaskEstimationsQuery = (gameId: string) => ({
+  collection: 'games',
+  doc: gameId,
+  subcollections: [{ collection: 'task-estimations' }],
+  storeAs: 'allPlayersTaskEstimations'
+});
+
+const getChooseTasksQueries = (gameId: string): DocumentQuery[] => [
+  getGameTasksQuery(gameId),
+  getAllPlayersTaskEstimationsQuery(gameId)
+];
 
 // Actions
 
@@ -33,7 +73,7 @@ export const goToNextStep: AppActionCreator = () => async (
   }
 
   let firestore = getFirestore();
-  let phase = { phase: GamePhase.Clean }; // todo next
+  let phase = { phase: GamePhase.ChooseTasks }; // todo next
 
   dispatch({
     type: ChooseTasksActionTypes.NextGamePhaseRequested,
@@ -68,24 +108,22 @@ export const goToPreviousStep: AppActionCreator = () => async (
   dispatch({ type: ChooseTasksActionTypes.PreviousGamePhaseSucceeded });
 };
 
-export const subscribeToChoosePlayerOrderPhase: AppActionCreator = (
+export const subscribeToChooseTasksPhase: AppActionCreator = (
   gameId: string
 ) => async (dispatch, getState, { getFirestore }) => {
   let firestore = getFirestore();
-  console.log(firestore, gameId);
-  // await firestore.setListeners(getChoosePlayerOrderPhaseQueries(gameId));
+  await firestore.setListeners(getChooseTasksQueries(gameId));
 
   dispatch({
     type: ChooseTasksActionTypes.ChooseTasksPhaseSubscribed
   });
 };
 
-export const unsubscribeFromChoosePlayerOrderPhase: AppActionCreator = (
+export const unsubscribeFromChooseTasksPhase: AppActionCreator = (
   gameId: string
 ) => async (dispatch, getState, { getFirestore }) => {
   let firestore = getFirestore();
-  console.log(firestore, gameId);
-  // await firestore.unsetListeners(getChoosePlayerOrderPhaseQueries(gameId));
+  await firestore.unsetListeners(getChooseTasksQueries(gameId));
 
   dispatch({
     type: ChooseTasksActionTypes.ChooseTasksPhaseUnsubscribed
