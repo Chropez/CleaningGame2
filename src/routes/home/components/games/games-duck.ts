@@ -19,7 +19,7 @@ enum GamesActionTypes {
 // Selectors
 
 export const selectGames = (state: ApplicationState): Game[] =>
-  state.firestore.ordered.games;
+  state.firestore.ordered.games || [];
 
 export const selectUsers = (state: ApplicationState) =>
   state.firestore.data && state.firestore.data.users;

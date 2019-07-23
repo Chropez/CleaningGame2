@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import BottomButtonBar from 'components/BottomButtonBar';
 import { Small } from 'components/typography';
-import { GamePlayerViewModel } from '../../game-player-view-model';
+import { GamePlayerViewModel } from '../../view-models/game-player-view-model';
 import CheckIcon from 'mdi-material-ui/Check';
 import styled from 'styled-components/macro';
 import { ListItemProps } from '@material-ui/core/ListItem';
@@ -45,7 +45,7 @@ const PlayerEstimationWaitList: FC<Props> = ({
   <GamePhaseWrapper>
     <GamePhaseContentWrapper>
       <Box p={2}>
-        <Typography>Väntar på att alla långsamma...</Typography>
+        <Typography>Väntar på de långsamma...</Typography>
       </Box>
       <List>
         {players.map(player => (

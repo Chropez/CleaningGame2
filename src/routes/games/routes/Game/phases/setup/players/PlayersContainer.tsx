@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import AvailableGamePlayerModel from './available-game-player-view-model';
 import PlayersAddDialog from './PlayersAddDialog';
 import PlayerList from './PlayerList';
-import { GamePlayerViewModel } from '../../../game-player-view-model';
+import { GamePlayerViewModel } from '../../../view-models/game-player-view-model';
 
 interface Props {
   availablePlayers: AvailableGamePlayerModel[];

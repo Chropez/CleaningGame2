@@ -5,5 +5,5 @@ export default interface Task {
   createdBy: string;
   createdAt: number;
 
-  averageEstimate: number;
+  assigneePlayerId?: string;
 }

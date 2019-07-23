@@ -7,6 +7,7 @@ import { GamePhase } from 'models/game';
 import SetupPhaseContainer from './phases/setup/SetupPhaseContainer';
 import EstimatePhaseContainer from './phases/estimate/EstimatePhaseContainer';
 import ChoosePlayerOrderPhaseContainer from './phases/choose-player-order/ChoosePlayerOrderPhaseContainer';
+import ChooseTasksPhaseContainer from './phases/choose-tasks/ChooseTasksPhaseContainer';
 
 interface Props {
   gameId: string;
@@ -34,6 +35,7 @@ const GameContainer: FC<Props> = ({ gameId }) => {
       {game.phase === GamePhase.ChoosePlayerOrder && (
         <ChoosePlayerOrderPhaseContainer />
       )}
+      {game.phase === GamePhase.ChooseTasks && <ChooseTasksPhaseContainer />}
     </>
   );
 };

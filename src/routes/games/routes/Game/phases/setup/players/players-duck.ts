@@ -32,7 +32,7 @@ export const selectIsLoadingAvailablePlayers = (state: ApplicationState) =>
   state.routes.games.game.players.isLoadingAvailablePlayers;
 
 const selectUsers = (state: ApplicationState): User[] =>
-  state.firestore.ordered && state.firestore.ordered.currentGameAvailablePlayers
+  state.firestore.ordered.currentGameAvailablePlayers !== undefined
     ? state.firestore.ordered.currentGameAvailablePlayers
     : [];
 

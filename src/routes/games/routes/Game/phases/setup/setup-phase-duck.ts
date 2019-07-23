@@ -58,7 +58,7 @@ export const goToNextStep: AppActionCreator = () => async (
   { getFirestore }
 ) => {
   let state = getState();
-  let game = selectGame(state);
+  let game = selectGame(state)!;
 
   if (game.phase !== GamePhase.Setup) {
     throw new Error(

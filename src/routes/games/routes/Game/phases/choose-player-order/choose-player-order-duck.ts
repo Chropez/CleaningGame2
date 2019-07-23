@@ -4,60 +4,115 @@ import { GamePhase } from 'models/game';
 import {
   selectGame,
   updateGameByIdQuery,
-  selectGamePlayersViewModel
+  selectGamePlayersViewModel,
+  selectGameId,
+  selectGamePlayers,
+  selectGamePlayersData
 } from '../../game-duck';
 import { DocumentQuery } from 'typings/firestore';
 import { ApplicationState } from 'store/root-reducer';
-import { GamePlayerViewModel } from '../../game-player-view-model';
+import GamePlayer from 'models/game-player';
+import TasksViewModel from '../../view-models/tasks-view-model';
+import { createSelector } from 'reselect';
 
 enum ChoosePlayerOrderActionTypes {
   NextGamePhaseRequested = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/NEXT_GAME_PHASE_REQUESTED',
   NextGamePhaseSucceeded = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/NEXT_GAME_PHASE_SUCCEEDED',
   PreviousGamePhaseRequested = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/PREVIOUS_GAME_PHASE_REQUESTED',
   PreviousGamePhaseSucceeded = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/PREVIOUS_GAME_PHASE_SUCCEEDED',
+  ChangePlayerOrderRequested = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHANGE_PLAYER_ORDER_REQUESTED',
+  ChangePlayerOrderSucceeded = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHANGE_PLAYER_ORDER_SUCCEEDED',
   ChoosePlayerOrderPhaseSubscribed = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHOOSE_PLAYER_ORDER_PHASE_SUBSCRIBED',
   ChoosePlayerOrderPhaseUnsubscribed = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHOOSE_PLAYER_ORDER_PHASE_UNSUBSCRIBED'
 }
 
 // Selectors
+export const selectOrderedPlayersViewModel = createSelector(
+  selectGamePlayersViewModel,
+  players => [...players].sort((a, b) => a.pickOrder! - b.pickOrder!)
+);
 
-// export const selectCurrentPlayerTaskEstimations = (
-//   state: ApplicationState
-// ): TaskEstimation[] =>
-//   state.firestore.ordered.currentPlayerTaskEstimations || [];
+const selectCurrentGameTasks = (state: ApplicationState) =>
+  state.firestore.data.currentGameTasks;
 
-// export const selectGameTasks = (state: ApplicationState): Task[] =>
-//   state.firestore.ordered.currentGameTasks || [];
+const selectOrderedCurrentGameTasks = (state: ApplicationState) =>
+  state.firestore.ordered.currentGameTasks;
 
-// export const selectEstimationByTaskId = (
-//   state: ApplicationState,
-//   taskId: string
-// ) =>
-//   selectCurrentPlayerTaskEstimations(state).find(
-//     estimation => estimation.taskId === taskId
-//   );
+const selectAllPlayersTaskEstimations = (state: ApplicationState) =>
+  state.firestore.ordered.allPlayersTaskEstimations;
 
-// export const selectTasksWithEstimation = (
-//   state: ApplicationState
-// ): TaskWithEstimationViewModel[] => {
-//   let tasks = selectGameTasks(state);
+export const selectTasksViewModel = createSelector(
+  [
+    selectCurrentGameTasks,
+    selectAllPlayersTaskEstimations,
+    selectOrderedCurrentGameTasks,
+    selectGamePlayersData
+  ],
+  (gameTasks, allPlayersTaskEstimations, orderedTasks, gamePlayersData) => {
+    if (
+      gameTasks === undefined ||
+      allPlayersTaskEstimations === undefined ||
+      gamePlayersData === undefined
+    ) {
+      return [];
+    }
 
-//   return tasks.map(task => {
-//     return {
-//       task: task,
-//       estimation: selectEstimationByTaskId(state, task.id!)
-//     };
-//   });
-// };
+    let tasks: Record<string, TasksViewModel | undefined> = JSON.parse(
+      JSON.stringify(gameTasks)
+    );
 
-export const selectOrderedPlayersViewModel = (
-  state: ApplicationState
-): GamePlayerViewModel[] => {
-  let players = selectGamePlayersViewModel(state);
-  return [...players].sort((a, b) => a.pickOrder! - b.pickOrder!);
-};
+    allPlayersTaskEstimations.forEach(taskEstimation => {
+      let task = tasks[taskEstimation.taskId!]!;
+      if (task === undefined) {
+        return;
+      }
+
+      if (task.estimations) {
+        task.estimations.push(taskEstimation);
+        return;
+      }
+
+      if (task.assigneePlayerId) {
+        task.assignee = gamePlayersData[task.assigneePlayerId];
+      }
+
+      task.estimations = [taskEstimation];
+    });
+
+    return orderedTasks
+      .filter(orderedTask => tasks[orderedTask.id!] !== undefined)
+      .map(orderedTask => {
+        let taskVM = tasks[orderedTask.id!] as TasksViewModel;
+
+        taskVM.id = orderedTask.id!;
+        if (taskVM.estimations === undefined) {
+          taskVM.averageEstimate = 0;
+          return taskVM;
+        }
+
+        let sum = taskVM.estimations.reduce(
+          (accumulator, task) => accumulator + task.estimate,
+          0
+        );
+
+        taskVM.averageEstimate = sum > 0 ? sum / taskVM.estimations.length : 0;
+
+        return taskVM;
+      });
+  }
+);
 
 // Queries
+
+const updatePlayerOrderQuery = (
+  gameId: string,
+  playerId: string
+): DocumentQuery => ({
+  collection: 'games',
+  doc: gameId,
+  storeAs: 'updatePlayerOrderId',
+  subcollections: [{ collection: 'players', doc: playerId }]
+});
 
 const getAllPlayersTaskEstimationsQuery = (gameId: string) => ({
   collection: 'games',
@@ -86,7 +141,7 @@ export const goToNextStep: AppActionCreator = () => async (
   { getFirestore }
 ) => {
   let state = getState();
-  let game = selectGame(state);
+  let game = selectGame(state)!;
 
   if (game.phase !== GamePhase.ChoosePlayerOrder) {
     throw new Error(
@@ -95,7 +150,7 @@ export const goToNextStep: AppActionCreator = () => async (
   }
 
   let firestore = getFirestore();
-  let phase = { phase: GamePhase.ChoosePlayerOrder }; // todo next
+  let phase = { phase: GamePhase.ChooseTasks }; // todo next
 
   dispatch({
     type: ChoosePlayerOrderActionTypes.NextGamePhaseRequested,
@@ -110,7 +165,7 @@ export const goToPreviousStep: AppActionCreator = () => async (
   { getFirestore }
 ) => {
   let state = getState();
-  let game = selectGame(state);
+  let game = selectGame(state)!;
 
   if (game.phase !== GamePhase.ChoosePlayerOrder) {
     throw new Error(
@@ -127,6 +182,66 @@ export const goToPreviousStep: AppActionCreator = () => async (
   });
   await firestore.update(updateGameByIdQuery(game.id!), phase);
   dispatch({ type: ChoosePlayerOrderActionTypes.PreviousGamePhaseSucceeded });
+};
+
+export const changePlayerPickingOrder: AppActionCreator = (
+  playerId: string,
+  destinationPickOrder: number
+) => (dispatch, getState, { getFirestore }) => {
+  let state = getState();
+  let gameId = selectGameId(state);
+  let players = selectGamePlayers(state);
+
+  let selectedPlayerPickOrder = players.find(player => player.id === playerId)!
+    .pickOrder!;
+
+  if (destinationPickOrder === selectedPlayerPickOrder) {
+    return;
+  }
+
+  let firestore = getFirestore();
+
+  players.forEach(player => {
+    let currentPlayerOrder = player.pickOrder!;
+
+    let minOrderToChange = Math.min(
+      selectedPlayerPickOrder,
+      destinationPickOrder
+    );
+    let maxOrderToChange = Math.max(
+      selectedPlayerPickOrder,
+      destinationPickOrder
+    );
+
+    // Player does not need to change order
+    if (
+      currentPlayerOrder < minOrderToChange ||
+      currentPlayerOrder > maxOrderToChange
+    ) {
+      return;
+    }
+
+    let newPickOrder = currentPlayerOrder;
+
+    if (currentPlayerOrder === selectedPlayerPickOrder) {
+      newPickOrder = destinationPickOrder;
+    } else if (selectedPlayerPickOrder < destinationPickOrder) {
+      newPickOrder--;
+    } else {
+      newPickOrder++;
+    }
+
+    let updatedPlayer: Partial<GamePlayer> = {
+      pickOrder: newPickOrder
+    };
+
+    dispatch({
+      type: ChoosePlayerOrderActionTypes.ChangePlayerOrderRequested,
+      payload: { player, updatedPlayer }
+    });
+
+    firestore.update(updatePlayerOrderQuery(gameId, player.id!), updatedPlayer);
+  });
 };
 
 export const subscribeToChoosePlayerOrderPhase: AppActionCreator = (

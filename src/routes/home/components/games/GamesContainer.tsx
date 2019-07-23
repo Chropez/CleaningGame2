@@ -48,7 +48,7 @@ const StyledLink = styled(Link as FC<LinkProps>)`
 const GamesContainer: FC = () => {
   const dispatch: AppThunkDispatch = useDispatch();
   let games = useSelector(selectGames);
-  let users = useSelector(selectUsers);
+  let users = useSelector(selectUsers)!;
 
   useEffect(() => {
     dispatch(subscribeToGames());
