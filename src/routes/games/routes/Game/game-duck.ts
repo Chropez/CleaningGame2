@@ -64,6 +64,11 @@ export const selectCurrentPlayer = createSelector(
       : undefined
 );
 
+export const selectOrderedPlayersViewModel = createSelector(
+  selectGamePlayersViewModel,
+  players => [...players].sort((a, b) => a.pickOrder! - b.pickOrder!)
+);
+
 // Queries
 
 const getGameByIdQuery = (gameId: string): DocumentQuery => ({

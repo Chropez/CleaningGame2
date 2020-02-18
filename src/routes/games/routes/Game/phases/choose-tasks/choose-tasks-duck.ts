@@ -6,13 +6,18 @@ import {
   updateGameByIdQuery,
   selectGamePlayersViewModel,
   selectCurrentPlayer,
-  selectGameId
+  selectGameId,
+  selectGamePlayersData
 } from '../../game-duck';
 import { DocumentQuery } from 'typings/firestore';
 import { createSelector } from 'reselect';
-import { selectTasksViewModel } from '../choose-player-order/choose-player-order-duck';
 import { GamePlayerViewModel } from '../../view-models/game-player-view-model';
 import Task from 'models/task';
+import {
+  getGameTasksQuery,
+  selectTasksViewModel as selectTasksFromCurrentGameTask
+} from '../../duck-helpers/current-game-tasks';
+import PlayerTasksViewModel from '../../view-models/player-tasks-view-model';
 
 enum ChooseTasksActionTypes {
   NextGamePhaseRequested = 'GAMES/GAME/CHOOSE_TASKS/NEXT_GAME_PHASE_REQUESTED',
@@ -26,6 +31,25 @@ enum ChooseTasksActionTypes {
 }
 
 // Selectors
+
+export const selectTasksViewModel = selectTasksFromCurrentGameTask(
+  selectGamePlayersData
+);
+
+export const selectAvailableTasksViewModel = createSelector(
+  selectTasksViewModel,
+  tasks => tasks.filter(task => !task.assigneePlayerId)
+);
+
+export const selectTasksForPlayer = createSelector(
+  [selectTasksViewModel, selectGamePlayersViewModel],
+  (tasks, players): PlayerTasksViewModel[] =>
+    players.map(player => ({
+      ...player,
+      tasks: tasks.filter(task => task.assigneePlayerId === player.id)
+    }))
+);
+
 export const selectPlayerTurn = createSelector(
   [selectTasksViewModel, selectGamePlayersViewModel],
   (tasks, players): GamePlayerViewModel => {
@@ -41,12 +65,6 @@ export const selectPlayerTurn = createSelector(
 );
 
 // Queries
-const getGameTasksQuery = (gameId: string) => ({
-  collection: 'games',
-  doc: gameId,
-  subcollections: [{ collection: 'tasks', orderBy: [['createdAt', 'desc']] }],
-  storeAs: 'currentGameTasks'
-});
 
 const getAllPlayersTaskEstimationsQuery = (gameId: string) => ({
   collection: 'games',

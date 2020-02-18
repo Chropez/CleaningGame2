@@ -3,19 +3,22 @@ import GamePhaseWrapper from '../../components/GamePhaseWrapper';
 import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
 import BottomButtonBar from 'components/BottomButtonBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectGameId, selectCurrentUserId } from '../../game-duck';
+import {
+  selectGameId,
+  selectCurrentUserId,
+  selectOrderedPlayersViewModel
+} from '../../game-duck';
 import {
   goToPreviousStep,
   goToNextStep,
   subscribeToChooseTasksPhase,
   unsubscribeFromChooseTasksPhase,
   selectPlayerTurn,
+  selectAvailableTasksViewModel,
+  selectTasksForPlayer,
+  selectTasksViewModel,
   chooseTask
 } from './choose-tasks-duck';
-import {
-  selectAvailableTasksViewModel,
-  selectTasksForPlayer
-} from '../choose-player-order/choose-player-order-duck';
 import ChooseTasksContainer from './ChooseTaskContainer';
 import { Button } from '@material-ui/core';
 import ChooseTasksSummary from './ChooseTasksSummary';
@@ -28,6 +31,8 @@ const ChooseTasksPhaseContainer: FC = () => {
   let currentUserId = useSelector(selectCurrentUserId);
   let playerWithTasks = useSelector(selectTasksForPlayer);
   let playersAreChoosingTasks = availableTasks.length > 0;
+  let tasks = useSelector(selectTasksViewModel);
+  let players = useSelector(selectOrderedPlayersViewModel);
 
   let isCurrentPlayerTurn =
     playerTurn && playerTurn.user && playerTurn.user.id === currentUserId;
@@ -52,7 +57,7 @@ const ChooseTasksPhaseContainer: FC = () => {
               onChooseTask={taskId => dispatch(chooseTask(taskId))}
             />
           ) : (
-            <ChooseTasksSummary />
+            <ChooseTasksSummary tasks={tasks} totalPlayers={players.length} />
           )}
         </GamePhaseContentWrapper>
 

@@ -9,13 +9,12 @@ import {
   goToNextStep,
   subscribeToChoosePlayerOrderPhase,
   unsubscribeFromChoosePlayerOrderPhase,
-  selectOrderedPlayersViewModel,
   changePlayerPickingOrder,
   selectTasksViewModel
 } from './choose-player-order-duck';
 import ChooseOrderContainer from './ChooseOrderContainer';
-import { selectGameId } from '../../game-duck';
-import TaskSummaryContainer from '../../components/task-summary/TaskSummaryContainer';
+import { selectGameId, selectOrderedPlayersViewModel } from '../../game-duck';
+import TaskSummaryContainer from './TaskSummaryContainer';
 
 const ChoosePlayerOrderPhaseContainer: FC = () => {
   let dispatch = useDispatch();
