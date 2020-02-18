@@ -6,6 +6,7 @@ import PlayerTasksViewModel from '../../view-models/player-tasks-view-model';
 import TaskChooser from './TaskChooser';
 import PlayerTasks from './PlayerTasks';
 import { Box } from '@material-ui/core';
+import EstimationSummary from '../../components/task-summary/EstimationSummary';
 
 interface Props {
   availableTasks: TasksViewModel[];
@@ -13,6 +14,8 @@ interface Props {
   playerTurn: GamePlayerViewModel;
   playerWithTasks: PlayerTasksViewModel[];
   onChooseTask: (taskId: string) => void;
+  tasks: TasksViewModel[];
+  totalPlayers: number;
 }
 
 const ChooseTasksContainer: FC<Props> = ({
@@ -20,7 +23,9 @@ const ChooseTasksContainer: FC<Props> = ({
   isCurrentPlayerTurn,
   playerTurn,
   playerWithTasks,
-  onChooseTask
+  onChooseTask,
+  tasks,
+  totalPlayers
 }) => (
   <>
     <Box p={2}>
@@ -42,6 +47,10 @@ const ChooseTasksContainer: FC<Props> = ({
         </Typography>
       </Box>
     )}
+
+    <Box p={2}>
+      <EstimationSummary tasks={tasks} totalPlayers={totalPlayers} />
+    </Box>
 
     {playerWithTasks.map(
       player =>

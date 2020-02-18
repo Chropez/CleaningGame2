@@ -1,12 +1,7 @@
 import React, { FC } from 'react';
 import { Box, Typography } from '@material-ui/core';
-import TasksViewModel from '../../view-models/tasks-view-model';
-import EstimationSummary from '../../components/task-summary/EstimationSummary';
-interface Props {
-  tasks: TasksViewModel[];
-  totalPlayers: number;
-}
-const ChooseTasksSummary: FC<Props> = ({ tasks, totalPlayers }) => (
+
+const ChooseTasksSummary: FC = () => (
   <>
     <Box p={2}>
       <Typography>
@@ -15,9 +10,6 @@ const ChooseTasksSummary: FC<Props> = ({ tasks, totalPlayers }) => (
         <br />
         Tips! Det är roligare att städa om det är rättvist!
       </Typography>
-    </Box>
-    <Box p={2}>
-      <EstimationSummary tasks={tasks} totalPlayers={totalPlayers} />
     </Box>
   </>
 );

@@ -55,9 +55,11 @@ const ChooseTasksPhaseContainer: FC = () => {
               playerWithTasks={playerWithTasks}
               availableTasks={availableTasks}
               onChooseTask={taskId => dispatch(chooseTask(taskId))}
+              tasks={tasks}
+              totalPlayers={players.length}
             />
           ) : (
-            <ChooseTasksSummary tasks={tasks} totalPlayers={players.length} />
+            <ChooseTasksSummary />
           )}
         </GamePhaseContentWrapper>
 
