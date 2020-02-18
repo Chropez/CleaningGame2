@@ -17,11 +17,13 @@ const firebaseEnhancers = [
   })
 ];
 
-interface WindowWithReduxDevtools extends Window {
-  __REDUX_DEVTOOLS_EXTENSION__: () => void;
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION__: () => void;
+  }
 }
-const reduxDevToolsExtension = (window as WindowWithReduxDevtools)
-  .__REDUX_DEVTOOLS_EXTENSION__;
+
+const reduxDevToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
 
 if (
   process.env.NODE_ENV === 'development' &&
