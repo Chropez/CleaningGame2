@@ -13,6 +13,7 @@ import { CardProps } from '@material-ui/core/Card';
 interface Props {
   taskName: string;
   estimate: number;
+  onClickCard?: () => void;
   showActions?: boolean;
 }
 
@@ -27,8 +28,13 @@ const Avatar = styled(MuiAvatar as FC<AvatarProps>)`
   }
 `;
 
-const TaskCard: FC<Props> = ({ estimate, taskName, showActions = false }) => (
-  <Card>
+const TaskCard: FC<Props> = ({
+  estimate,
+  taskName,
+  onClickCard,
+  showActions = false
+}) => (
+  <Card onClick={() => onClickCard && onClickCard()}>
     <CardHeader
       avatar={
         <Avatar sizes="small" aria-label="estimate">

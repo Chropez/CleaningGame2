@@ -1,26 +1,36 @@
 import React, { FC, useEffect } from 'react';
 import GamePhaseWrapper from '../../components/GamePhaseWrapper';
 import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
-import { Box, Typography, Button } from '@material-ui/core';
 import BottomButtonBar from 'components/BottomButtonBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectGameId } from '../../game-duck';
+import { selectGameId, selectCurrentUserId } from '../../game-duck';
 import {
   goToPreviousStep,
   goToNextStep,
   subscribeToChooseTasksPhase,
   unsubscribeFromChooseTasksPhase,
-  selectPlayerTurn
+  selectPlayerTurn,
+  chooseTask
 } from './choose-tasks-duck';
-import TaskCard from '../../components/TaskCard';
-import { selectTasksViewModel } from '../choose-player-order/choose-player-order-duck';
+import {
+  selectAvailableTasksViewModel,
+  selectTasksForPlayer
+} from '../choose-player-order/choose-player-order-duck';
+import ChooseTasksContainer from './ChooseTaskContainer';
+import { Button } from '@material-ui/core';
+import ChooseTasksSummary from './ChooseTasksSummary';
 
 const ChooseTasksPhaseContainer: FC = () => {
   let dispatch = useDispatch();
   let gameId = useSelector(selectGameId);
-  //   let players = useSelector(selectOrderedPlayersViewModel);
-  let tasks = useSelector(selectTasksViewModel);
+  let availableTasks = useSelector(selectAvailableTasksViewModel);
   let playerTurn = useSelector(selectPlayerTurn);
+  let currentUserId = useSelector(selectCurrentUserId);
+  let playerWithTasks = useSelector(selectTasksForPlayer);
+  let playersAreChoosingTasks = availableTasks.length > 0;
+
+  let isCurrentPlayerTurn =
+    playerTurn && playerTurn.user && playerTurn.user.id === currentUserId;
 
   useEffect(() => {
     dispatch(subscribeToChooseTasksPhase(gameId));
@@ -33,21 +43,17 @@ const ChooseTasksPhaseContainer: FC = () => {
     <>
       <GamePhaseWrapper>
         <GamePhaseContentWrapper>
-          <Box p={2}>
-            <Typography>Nu är det dags att välja uppgifter</Typography>
-          </Box>
-          <Box p={2}>{playerTurn && playerTurn.user.displayName}</Box>
-
-          <Box p={2} pt={0}>
-            Content
-            {tasks.map(task => (
-              <TaskCard
-                key={task.id}
-                taskName={task.name}
-                estimate={task.averageEstimate}
-              />
-            ))}
-          </Box>
+          {playersAreChoosingTasks ? (
+            <ChooseTasksContainer
+              isCurrentPlayerTurn={isCurrentPlayerTurn}
+              playerTurn={playerTurn}
+              playerWithTasks={playerWithTasks}
+              availableTasks={availableTasks}
+              onChooseTask={taskId => dispatch(chooseTask(taskId))}
+            />
+          ) : (
+            <ChooseTasksSummary />
+          )}
         </GamePhaseContentWrapper>
 
         <BottomButtonBar>

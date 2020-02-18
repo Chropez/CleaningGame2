@@ -15,7 +15,7 @@ import {
 } from './choose-player-order-duck';
 import ChooseOrderContainer from './ChooseOrderContainer';
 import { selectGameId } from '../../game-duck';
-import TaskSummaryContainer from './task-summary/TaskSummaryContainer';
+import TaskSummaryContainer from '../../components/task-summary/TaskSummaryContainer';
 
 const ChoosePlayerOrderPhaseContainer: FC = () => {
   let dispatch = useDispatch();

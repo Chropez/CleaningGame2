@@ -14,6 +14,7 @@ import { ApplicationState } from 'store/root-reducer';
 import GamePlayer from 'models/game-player';
 import TasksViewModel from '../../view-models/tasks-view-model';
 import { createSelector } from 'reselect';
+import PlayerTasksViewModel from '../../view-models/player-tasks-view-model';
 
 enum ChoosePlayerOrderActionTypes {
   NextGamePhaseRequested = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/NEXT_GAME_PHASE_REQUESTED',
@@ -100,6 +101,20 @@ export const selectTasksViewModel = createSelector(
         return taskVM;
       });
   }
+);
+
+export const selectAvailableTasksViewModel = createSelector(
+  selectTasksViewModel,
+  tasks => tasks.filter(task => !task.assigneePlayerId)
+);
+
+export const selectTasksForPlayer = createSelector(
+  [selectTasksViewModel, selectGamePlayersViewModel],
+  (tasks, players): PlayerTasksViewModel[] =>
+    players.map(player => ({
+      ...player,
+      tasks: tasks.filter(task => task.assigneePlayerId === player.id)
+    }))
 );
 
 // Queries

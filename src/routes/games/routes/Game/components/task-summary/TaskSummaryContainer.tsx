@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import EstimationSummary from './EstimationSummary';
-import TaskCard from '../../../components/TaskCard';
-import TasksViewModel from '../../../view-models/tasks-view-model';
+import TaskCard from '../TaskCard';
+import TasksViewModel from '../../view-models/tasks-view-model';
 import { Box, Typography } from '@material-ui/core';
-import styled from 'styled-components/macro';
+import TaskCardsContainer from '../TaskCardContainer';
 
 interface Props {
   tasks: TasksViewModel[];
@@ -16,13 +16,6 @@ const TASK_DISTRIBUTION_MAX_THRESHOLD = 1.15;
 function roundHalf(num: number) {
   return Math.round(num * 2) / 2;
 }
-
-const TaskCardsContainer = styled.div`
-  display: grid;
-  column-gap: ${({ theme }) => theme.spacing(2)}px;
-  row-gap: ${({ theme }) => theme.spacing(2)}px;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-`;
 
 const TaskSummaryContainer: FC<Props> = ({ tasks, totalPlayers }) => {
   let totalTasks = tasks.length.toString();
