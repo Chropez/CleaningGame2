@@ -5,15 +5,11 @@ import {
   selectGame,
   updateGameByIdQuery,
   selectGameId,
-  selectGamePlayers,
-  selectGamePlayersData
+  selectGamePlayers
 } from '../../game-duck';
 import { DocumentQuery } from 'typings/firestore';
 import GamePlayer from 'models/game-player';
-import {
-  getGameTasksQuery,
-  selectTasksViewModel as selectTasksFromCurrentGameTask
-} from '../../duck-helpers/current-game-tasks';
+import { getGameTasksQuery } from '../../duck-helpers/current-game-tasks';
 
 enum ChoosePlayerOrderActionTypes {
   NextGamePhaseRequested = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/NEXT_GAME_PHASE_REQUESTED',
@@ -28,9 +24,12 @@ enum ChoosePlayerOrderActionTypes {
 
 // Selectors
 
-export const selectTasksViewModel = selectTasksFromCurrentGameTask(
-  selectGamePlayersData
-);
+export {
+  selectTasksViewModel,
+  selectTotalEstimationPoints,
+  selectMinEstimationPointsPerPlayer,
+  selectMaxEstimationPointsPerPlayer
+} from '../../duck-helpers/current-game-tasks';
 
 // Queries
 

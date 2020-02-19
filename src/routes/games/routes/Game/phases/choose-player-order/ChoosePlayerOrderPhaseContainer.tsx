@@ -10,7 +10,10 @@ import {
   subscribeToChoosePlayerOrderPhase,
   unsubscribeFromChoosePlayerOrderPhase,
   changePlayerPickingOrder,
-  selectTasksViewModel
+  selectTasksViewModel,
+  selectTotalEstimationPoints,
+  selectMinEstimationPointsPerPlayer,
+  selectMaxEstimationPointsPerPlayer
 } from './choose-player-order-duck';
 import ChooseOrderContainer from './ChooseOrderContainer';
 import { selectGameId, selectOrderedPlayersViewModel } from '../../game-duck';
@@ -21,6 +24,15 @@ const ChoosePlayerOrderPhaseContainer: FC = () => {
   let gameId = useSelector(selectGameId);
   let players = useSelector(selectOrderedPlayersViewModel);
   let tasks = useSelector(selectTasksViewModel);
+
+  let totalEstimationPoints = useSelector(selectTotalEstimationPoints);
+  let minEstimationPointsPerPlayer = useSelector(
+    selectMinEstimationPointsPerPlayer
+  );
+
+  let maxEstimationPointsPerPlayer = useSelector(
+    selectMaxEstimationPointsPerPlayer
+  );
 
   useEffect(() => {
     dispatch(subscribeToChoosePlayerOrderPhase(gameId));
@@ -55,7 +67,12 @@ const ChoosePlayerOrderPhaseContainer: FC = () => {
           </Box>
 
           <Box p={2} pt={0}>
-            <TaskSummaryContainer tasks={tasks} totalPlayers={players.length} />
+            <TaskSummaryContainer
+              tasks={tasks}
+              totalEstimationPoints={totalEstimationPoints}
+              minEstimationPointsPerPlayer={minEstimationPointsPerPlayer}
+              maxEstimationPointsPerPlayer={maxEstimationPointsPerPlayer}
+            />
           </Box>
         </GamePhaseContentWrapper>
 

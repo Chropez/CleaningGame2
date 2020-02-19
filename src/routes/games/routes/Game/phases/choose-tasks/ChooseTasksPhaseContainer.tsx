@@ -3,11 +3,7 @@ import GamePhaseWrapper from '../../components/GamePhaseWrapper';
 import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
 import BottomButtonBar from 'components/BottomButtonBar';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectGameId,
-  selectCurrentUserId,
-  selectOrderedPlayersViewModel
-} from '../../game-duck';
+import { selectGameId, selectCurrentUserId } from '../../game-duck';
 import {
   goToPreviousStep,
   goToNextStep,
@@ -16,8 +12,11 @@ import {
   selectPlayerTurn,
   selectAvailableTasksViewModel,
   selectTasksForPlayer,
-  selectTasksViewModel,
-  chooseTask
+  chooseTask,
+  selectTotalTasks,
+  selectTotalEstimationPoints,
+  selectMinEstimationPointsPerPlayer,
+  selectMaxEstimationPointsPerPlayer
 } from './choose-tasks-duck';
 import ChooseTasksContainer from './ChooseTaskContainer';
 import { Button } from '@material-ui/core';
@@ -31,8 +30,14 @@ const ChooseTasksPhaseContainer: FC = () => {
   let currentUserId = useSelector(selectCurrentUserId);
   let playerWithTasks = useSelector(selectTasksForPlayer);
   let playersAreChoosingTasks = availableTasks.length > 0;
-  let tasks = useSelector(selectTasksViewModel);
-  let players = useSelector(selectOrderedPlayersViewModel);
+  let totalTasks = useSelector(selectTotalTasks);
+  let totalEstimationPoints = useSelector(selectTotalEstimationPoints);
+  let minEstimationPointsPerPlayer = useSelector(
+    selectMinEstimationPointsPerPlayer
+  );
+  let maxEstimationPointsPerPlayer = useSelector(
+    selectMaxEstimationPointsPerPlayer
+  );
 
   let isCurrentPlayerTurn =
     playerTurn && playerTurn.user && playerTurn.user.id === currentUserId;
@@ -55,8 +60,10 @@ const ChooseTasksPhaseContainer: FC = () => {
               playerWithTasks={playerWithTasks}
               availableTasks={availableTasks}
               onChooseTask={taskId => dispatch(chooseTask(taskId))}
-              tasks={tasks}
-              totalPlayers={players.length}
+              totalTasks={totalTasks}
+              totalEstimationPoints={totalEstimationPoints}
+              minEstimationPointsPerPlayer={minEstimationPointsPerPlayer}
+              maxEstimationPointsPerPlayer={maxEstimationPointsPerPlayer}
             />
           ) : (
             <ChooseTasksSummary />

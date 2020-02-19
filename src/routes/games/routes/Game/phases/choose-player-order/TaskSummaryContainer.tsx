@@ -7,15 +7,27 @@ import TaskCardsContainer from '../../components/TaskCardContainer';
 
 interface Props {
   tasks: TasksViewModel[];
-  totalPlayers: number;
+  totalEstimationPoints: number;
+  minEstimationPointsPerPlayer: number;
+  maxEstimationPointsPerPlayer: number;
 }
 
-const TaskSummaryContainer: FC<Props> = ({ tasks, totalPlayers }) => (
+const TaskSummaryContainer: FC<Props> = ({
+  tasks,
+  totalEstimationPoints,
+  minEstimationPointsPerPlayer,
+  maxEstimationPointsPerPlayer
+}) => (
   <>
     <Typography variant="h2">Resultat</Typography>
 
     <Box mb={2}>
-      <EstimationSummary tasks={tasks} totalPlayers={totalPlayers} />
+      <EstimationSummary
+        totalTasks={tasks.length}
+        totalEstimationPoints={totalEstimationPoints}
+        minEstimationPointsPerPlayer={minEstimationPointsPerPlayer}
+        maxEstimationPointsPerPlayer={maxEstimationPointsPerPlayer}
+      />
     </Box>
 
     <TaskCardsContainer>

@@ -6,8 +6,7 @@ import {
   updateGameByIdQuery,
   selectGamePlayersViewModel,
   selectCurrentPlayer,
-  selectGameId,
-  selectGamePlayersData
+  selectGameId
 } from '../../game-duck';
 import { DocumentQuery } from 'typings/firestore';
 import { createSelector } from 'reselect';
@@ -15,7 +14,7 @@ import { GamePlayerViewModel } from '../../view-models/game-player-view-model';
 import Task from 'models/task';
 import {
   getGameTasksQuery,
-  selectTasksViewModel as selectTasksFromCurrentGameTask
+  selectTasksViewModel
 } from '../../duck-helpers/current-game-tasks';
 import PlayerTasksViewModel from '../../view-models/player-tasks-view-model';
 
@@ -32,8 +31,16 @@ enum ChooseTasksActionTypes {
 
 // Selectors
 
-export const selectTasksViewModel = selectTasksFromCurrentGameTask(
-  selectGamePlayersData
+export {
+  selectTasksViewModel,
+  selectTotalEstimationPoints,
+  selectMinEstimationPointsPerPlayer,
+  selectMaxEstimationPointsPerPlayer
+} from '../../duck-helpers/current-game-tasks';
+
+export const selectTotalTasks = createSelector(
+  [selectTasksViewModel],
+  tasks => tasks.length
 );
 
 export const selectAvailableTasksViewModel = createSelector(
