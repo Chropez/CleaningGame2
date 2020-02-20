@@ -63,11 +63,6 @@ export interface MainTheme extends Theme {
     secondaryTextColor: string;
   };
   palette: ExtendedPalette;
-  // components: {
-  //   BottomButtonBar: {
-
-  //   }
-  // }
 }
 
 const mainTheme: MainTheme = {

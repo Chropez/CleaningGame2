@@ -4,16 +4,12 @@ import { GamePhase } from 'models/game';
 import {
   selectGame,
   updateGameByIdQuery,
-  selectGamePlayersViewModel,
   selectGameId,
-  selectGamePlayers,
-  selectGamePlayersData
+  selectGamePlayers
 } from '../../game-duck';
 import { DocumentQuery } from 'typings/firestore';
-import { ApplicationState } from 'store/root-reducer';
 import GamePlayer from 'models/game-player';
-import TasksViewModel from '../../view-models/tasks-view-model';
-import { createSelector } from 'reselect';
+import { getGameTasksQuery } from '../../duck-helpers/current-game-tasks';
 
 enum ChoosePlayerOrderActionTypes {
   NextGamePhaseRequested = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/NEXT_GAME_PHASE_REQUESTED',
@@ -27,80 +23,13 @@ enum ChoosePlayerOrderActionTypes {
 }
 
 // Selectors
-export const selectOrderedPlayersViewModel = createSelector(
-  selectGamePlayersViewModel,
-  players => [...players].sort((a, b) => a.pickOrder! - b.pickOrder!)
-);
 
-const selectCurrentGameTasks = (state: ApplicationState) =>
-  state.firestore.data.currentGameTasks;
-
-const selectOrderedCurrentGameTasks = (state: ApplicationState) =>
-  state.firestore.ordered.currentGameTasks;
-
-const selectAllPlayersTaskEstimations = (state: ApplicationState) =>
-  state.firestore.ordered.allPlayersTaskEstimations;
-
-export const selectTasksViewModel = createSelector(
-  [
-    selectCurrentGameTasks,
-    selectAllPlayersTaskEstimations,
-    selectOrderedCurrentGameTasks,
-    selectGamePlayersData
-  ],
-  (gameTasks, allPlayersTaskEstimations, orderedTasks, gamePlayersData) => {
-    if (
-      gameTasks === undefined ||
-      allPlayersTaskEstimations === undefined ||
-      gamePlayersData === undefined
-    ) {
-      return [];
-    }
-
-    let tasks: Record<string, TasksViewModel | undefined> = JSON.parse(
-      JSON.stringify(gameTasks)
-    );
-
-    allPlayersTaskEstimations.forEach(taskEstimation => {
-      let task = tasks[taskEstimation.taskId!]!;
-      if (task === undefined) {
-        return;
-      }
-
-      if (task.estimations) {
-        task.estimations.push(taskEstimation);
-        return;
-      }
-
-      if (task.assigneePlayerId) {
-        task.assignee = gamePlayersData[task.assigneePlayerId];
-      }
-
-      task.estimations = [taskEstimation];
-    });
-
-    return orderedTasks
-      .filter(orderedTask => tasks[orderedTask.id!] !== undefined)
-      .map(orderedTask => {
-        let taskVM = tasks[orderedTask.id!] as TasksViewModel;
-
-        taskVM.id = orderedTask.id!;
-        if (taskVM.estimations === undefined) {
-          taskVM.averageEstimate = 0;
-          return taskVM;
-        }
-
-        let sum = taskVM.estimations.reduce(
-          (accumulator, task) => accumulator + task.estimate,
-          0
-        );
-
-        taskVM.averageEstimate = sum > 0 ? sum / taskVM.estimations.length : 0;
-
-        return taskVM;
-      });
-  }
-);
+export {
+  selectTasksViewModel,
+  selectTotalEstimationPoints,
+  selectMinEstimationPointsPerPlayer,
+  selectMaxEstimationPointsPerPlayer
+} from '../../duck-helpers/current-game-tasks';
 
 // Queries
 
@@ -119,13 +48,6 @@ const getAllPlayersTaskEstimationsQuery = (gameId: string) => ({
   doc: gameId,
   subcollections: [{ collection: 'task-estimations' }],
   storeAs: 'allPlayersTaskEstimations'
-});
-
-const getGameTasksQuery = (gameId: string) => ({
-  collection: 'games',
-  doc: gameId,
-  subcollections: [{ collection: 'tasks', orderBy: [['createdAt', 'desc']] }],
-  storeAs: 'currentGameTasks'
 });
 
 const getChoosePlayerOrderPhaseQueries = (gameId: string): DocumentQuery[] => [

@@ -9,19 +9,30 @@ import {
   goToNextStep,
   subscribeToChoosePlayerOrderPhase,
   unsubscribeFromChoosePlayerOrderPhase,
-  selectOrderedPlayersViewModel,
   changePlayerPickingOrder,
-  selectTasksViewModel
+  selectTasksViewModel,
+  selectTotalEstimationPoints,
+  selectMinEstimationPointsPerPlayer,
+  selectMaxEstimationPointsPerPlayer
 } from './choose-player-order-duck';
 import ChooseOrderContainer from './ChooseOrderContainer';
-import { selectGameId } from '../../game-duck';
-import TaskSummaryContainer from './task-summary/TaskSummaryContainer';
+import { selectGameId, selectOrderedPlayersViewModel } from '../../game-duck';
+import TaskSummaryContainer from './TaskSummaryContainer';
 
 const ChoosePlayerOrderPhaseContainer: FC = () => {
   let dispatch = useDispatch();
   let gameId = useSelector(selectGameId);
   let players = useSelector(selectOrderedPlayersViewModel);
   let tasks = useSelector(selectTasksViewModel);
+
+  let totalEstimationPoints = useSelector(selectTotalEstimationPoints);
+  let minEstimationPointsPerPlayer = useSelector(
+    selectMinEstimationPointsPerPlayer
+  );
+
+  let maxEstimationPointsPerPlayer = useSelector(
+    selectMaxEstimationPointsPerPlayer
+  );
 
   useEffect(() => {
     dispatch(subscribeToChoosePlayerOrderPhase(gameId));
@@ -56,14 +67,18 @@ const ChoosePlayerOrderPhaseContainer: FC = () => {
           </Box>
 
           <Box p={2} pt={0}>
-            <TaskSummaryContainer tasks={tasks} totalPlayers={players.length} />
+            <TaskSummaryContainer
+              tasks={tasks}
+              totalEstimationPoints={totalEstimationPoints}
+              minEstimationPointsPerPlayer={minEstimationPointsPerPlayer}
+              maxEstimationPointsPerPlayer={maxEstimationPointsPerPlayer}
+            />
           </Box>
         </GamePhaseContentWrapper>
 
         <BottomButtonBar>
           <Button
             color="default"
-            variant="outlined"
             aria-label="Previous stage"
             onClick={() => dispatch(goToPreviousStep())}
           >

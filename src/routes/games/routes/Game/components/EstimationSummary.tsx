@@ -9,35 +9,37 @@ const Paper = styled(MuiPaper as FC<PaperProps>)`
 `;
 
 interface Props {
-  totalTasks: string;
-  totalEstimationPoints: string;
-  minEstimationPoints: string;
-  maxEstimationPoints: string;
+  totalTasks: number;
+  totalEstimationPoints: number;
+  minEstimationPointsPerPlayer: number;
+  maxEstimationPointsPerPlayer: number;
 }
 
 const EstimationSummary: FC<Props> = ({
   totalTasks,
   totalEstimationPoints,
-  minEstimationPoints,
-  maxEstimationPoints
+  minEstimationPointsPerPlayer,
+  maxEstimationPointsPerPlayer
 }) => (
   <Paper>
     <Box display="flex" flexDirection="row" flexWrap="wrap">
-      <InfoGroup primaryText={totalTasks} secondaryText="Städuppgifter" />
       <InfoGroup
-        primaryText={totalEstimationPoints}
+        primaryText={totalTasks.toString()}
+        secondaryText="Städuppgifter"
+      />
+      <InfoGroup
+        primaryText={totalEstimationPoints.toString()}
         secondaryText="Totalpoäng"
       />
       <InfoGroup
-        primaryText={minEstimationPoints}
+        primaryText={minEstimationPointsPerPlayer.toString()}
         secondaryText="Minst per spelare"
       />
       <InfoGroup
-        primaryText={maxEstimationPoints}
+        primaryText={maxEstimationPointsPerPlayer.toString()}
         secondaryText="Högst per spelare"
       />
     </Box>
   </Paper>
 );
-
 export default EstimationSummary;

@@ -4,29 +4,66 @@ import { GamePhase } from 'models/game';
 import {
   selectGame,
   updateGameByIdQuery,
-  selectGamePlayersViewModel
+  selectGamePlayersViewModel,
+  selectCurrentPlayer,
+  selectGameId
 } from '../../game-duck';
 import { DocumentQuery } from 'typings/firestore';
 import { createSelector } from 'reselect';
-import { selectTasksViewModel } from '../choose-player-order/choose-player-order-duck';
 import { GamePlayerViewModel } from '../../view-models/game-player-view-model';
+import Task from 'models/task';
+import {
+  getGameTasksQuery,
+  selectTasksViewModel
+} from '../../duck-helpers/current-game-tasks';
+import PlayerTasksViewModel from '../../view-models/player-tasks-view-model';
 
 enum ChooseTasksActionTypes {
   NextGamePhaseRequested = 'GAMES/GAME/CHOOSE_TASKS/NEXT_GAME_PHASE_REQUESTED',
   NextGamePhaseSucceeded = 'GAMES/GAME/CHOOSE_TASKS/NEXT_GAME_PHASE_SUCCEEDED',
   PreviousGamePhaseRequested = 'GAMES/GAME/CHOOSE_TASKS/PREVIOUS_GAME_PHASE_REQUESTED',
   PreviousGamePhaseSucceeded = 'GAMES/GAME/CHOOSE_TASKS/PREVIOUS_GAME_PHASE_SUCCEEDED',
+  ChooseTaskRequested = 'GAMES/GAME/CHOOSE_TASKS/CHOOSE_TASK_REQUESTED',
+  ChooseTaskSucceeded = 'GAMES/GAME/CHOOSE_TASKS/CHOOSE_TASK_SUCCEEDED',
   ChooseTasksPhaseSubscribed = 'GAMES/GAME/CHOOSE_TASKS/CHOOSE_TASKS_PHASE_SUBSCRIBED',
-  ChooseTasksPhaseUnsubscribed = 'GAMES/GAME/CHOOSE_TASKS/CHOOSE_TASKS_PHASE_UNSUBSCRIBED'
+  ChooseTasksPhaseUnsubscribed = 'GAMES/GAME/CHOOSE_TASKS/CHOOSE_TASKS_PHASE_UNSUBSCRIBED',
+  ChangeTaskAssigneeRequested = 'GAMES/GAME/CHOOSE_TASKS/CHANGE_TASK_ASSIGNEE_REQUESTED',
+  ChangeTaskAssigneeSucceeded = 'GAMES/GAME/CHOOSE_TASKS/CHANGE_TASK_ASSIGNEE_SUCCEEDED'
 }
 
 // Selectors
+
+export {
+  selectTasksViewModel,
+  selectTotalEstimationPoints,
+  selectMinEstimationPointsPerPlayer,
+  selectMaxEstimationPointsPerPlayer
+} from '../../duck-helpers/current-game-tasks';
+
+export const selectTotalTasks = createSelector(
+  [selectTasksViewModel],
+  tasks => tasks.length
+);
+
+export const selectAvailableTasksViewModel = createSelector(
+  selectTasksViewModel,
+  tasks => tasks.filter(task => !task.assigneePlayerId)
+);
+
+export const selectTasksForPlayer = createSelector(
+  [selectTasksViewModel, selectGamePlayersViewModel],
+  (tasks, players): PlayerTasksViewModel[] =>
+    players.map(player => ({
+      ...player,
+      tasks: tasks.filter(task => task.assigneePlayerId === player.id)
+    }))
+);
+
 export const selectPlayerTurn = createSelector(
   [selectTasksViewModel, selectGamePlayersViewModel],
   (tasks, players): GamePlayerViewModel => {
-    // let chosenTasks = tasks.filter(task => task.assigneePlayerId);
-    let playerTurn = (2 + 1) % players.length;
-    // let playerTurn = (chosenTasks.length + 1) % players.length;
+    let chosenTasks = tasks.filter(task => task.assigneePlayerId);
+    let playerTurn = (chosenTasks.length + 1) % players.length;
 
     if (playerTurn === 0) {
       return players.find(player => player.pickOrder === players.length)!;
@@ -37,12 +74,6 @@ export const selectPlayerTurn = createSelector(
 );
 
 // Queries
-const getGameTasksQuery = (gameId: string) => ({
-  collection: 'games',
-  doc: gameId,
-  subcollections: [{ collection: 'tasks', orderBy: [['createdAt', 'desc']] }],
-  storeAs: 'currentGameTasks'
-});
 
 const getAllPlayersTaskEstimationsQuery = (gameId: string) => ({
   collection: 'games',
@@ -55,6 +86,36 @@ const getChooseTasksQueries = (gameId: string): DocumentQuery[] => [
   getGameTasksQuery(gameId),
   getAllPlayersTaskEstimationsQuery(gameId)
 ];
+
+export const updateTaskQuery = (
+  gameId: string,
+  taskId: string
+): DocumentQuery => ({
+  collection: 'games',
+  doc: gameId,
+  storeAs: 'updateChooseTask',
+  subcollections: [
+    {
+      collection: 'tasks',
+      doc: taskId
+    }
+  ]
+});
+
+export const updateChangeTaskAssigneeQuery = (
+  gameId: string,
+  taskId: string
+): DocumentQuery => ({
+  collection: 'games',
+  doc: gameId,
+  storeAs: 'updateChangeTaskAssigneeQuery',
+  subcollections: [
+    {
+      collection: 'tasks',
+      doc: taskId
+    }
+  ]
+});
 
 // Actions
 
@@ -117,6 +178,52 @@ export const subscribeToChooseTasksPhase: AppActionCreator = (
   dispatch({
     type: ChooseTasksActionTypes.ChooseTasksPhaseSubscribed
   });
+};
+
+export const changeTaskAssignee: AppActionCreator = (
+  taskId: string,
+  newAssignee: string
+) => async (dispatch, getState, { getFirestore }) => {
+  let state = getState();
+  let firestore = getFirestore();
+  let gameId = selectGameId(state);
+  let assignee: Partial<Task> = { assigneePlayerId: newAssignee };
+
+  dispatch({
+    type: ChooseTasksActionTypes.ChangeTaskAssigneeRequested,
+    payload: assignee
+  });
+
+  await firestore.update(
+    updateChangeTaskAssigneeQuery(gameId, taskId),
+    assignee
+  );
+
+  dispatch({
+    type: ChooseTasksActionTypes.ChangeTaskAssigneeSucceeded
+  });
+};
+
+export const chooseTask: AppActionCreator = (taskId: string) => async (
+  dispatch,
+  getState,
+  { getFirestore }
+) => {
+  let state = getState();
+  let firestore = getFirestore();
+  let gameId = selectGameId(state)!;
+  let player = selectCurrentPlayer(state)!;
+
+  let assignee: Partial<Task> = { assigneePlayerId: player.userId };
+
+  dispatch({
+    type: ChooseTasksActionTypes.ChooseTaskRequested,
+    payload: assignee
+  });
+
+  await firestore.update(updateTaskQuery(gameId, taskId), assignee);
+
+  dispatch({ type: ChooseTasksActionTypes.ChooseTaskSucceeded });
 };
 
 export const unsubscribeFromChooseTasksPhase: AppActionCreator = (

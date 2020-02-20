@@ -39,12 +39,7 @@ const EstimationBoardContainer: FC<Props> = ({
     </GamePhaseContentWrapper>
 
     <BottomButtonBar>
-      <Button
-        color="default"
-        variant="outlined"
-        aria-label="Previous stage"
-        onClick={onBackClick}
-      >
+      <Button color="default" aria-label="Previous stage" onClick={onBackClick}>
         Tillbaka
       </Button>
       <Button
