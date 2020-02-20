@@ -79,7 +79,6 @@ const ChoosePlayerOrderPhaseContainer: FC = () => {
         <BottomButtonBar>
           <Button
             color="default"
-            variant="outlined"
             aria-label="Previous stage"
             onClick={() => dispatch(goToPreviousStep())}
           >

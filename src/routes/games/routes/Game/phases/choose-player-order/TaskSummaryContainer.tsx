@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import EstimationSummary from '../../components/task-summary/EstimationSummary';
+import EstimationSummary from '../../components/EstimationSummary';
 import TaskCard from '../../components/TaskCard';
 import TasksViewModel from '../../view-models/tasks-view-model';
 import { Box, Typography } from '@material-ui/core';
@@ -36,6 +36,7 @@ const TaskSummaryContainer: FC<Props> = ({
           key={task.id}
           taskName={task.name}
           estimate={task.averageEstimate}
+          hideShadow={true}
         />
       ))}
     </TaskCardsContainer>

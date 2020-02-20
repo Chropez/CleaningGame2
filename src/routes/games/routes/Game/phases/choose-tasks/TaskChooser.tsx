@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
 import TaskCard from '../../components/TaskCard';
 import TasksViewModel from '../../view-models/tasks-view-model';
 import TaskCardsContainer from '../../components/TaskCardContainer';
@@ -11,7 +11,11 @@ interface Props {
 
 const TaskChooser: FC<Props> = ({ availableTasks, onChooseTask }) => (
   <>
-    <Typography variant="h2">Din tur!</Typography>
+    <Box mb={2}>
+      <Typography variant="h6" align="center">
+        Din tur!
+      </Typography>
+    </Box>
     <TaskCardsContainer>
       {availableTasks.map(task => (
         <TaskCard

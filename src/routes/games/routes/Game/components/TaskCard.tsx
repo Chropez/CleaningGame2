@@ -15,6 +15,7 @@ interface Props {
   estimate: number;
   onClickCard?: () => void;
   showActions?: boolean;
+  hideShadow?: boolean;
 }
 
 const Card = styled(MuiCard as FC<CardProps>)``;
@@ -24,7 +25,7 @@ const Avatar = styled(MuiAvatar as FC<AvatarProps>)`
     background-color: ${({ theme }) => theme.palette.primary.light};
     width: 30px;
     height: 30px;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 `;
 
@@ -32,9 +33,13 @@ const TaskCard: FC<Props> = ({
   estimate,
   taskName,
   onClickCard,
-  showActions = false
+  showActions = false,
+  hideShadow = false
 }) => (
-  <Card onClick={() => onClickCard && onClickCard()}>
+  <Card
+    elevation={hideShadow ? 0 : 1}
+    onClick={() => onClickCard && onClickCard()}
+  >
     <CardHeader
       avatar={
         <Avatar sizes="small" aria-label="estimate">

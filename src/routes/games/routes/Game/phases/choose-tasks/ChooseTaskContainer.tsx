@@ -6,7 +6,8 @@ import PlayerTasksViewModel from '../../view-models/player-tasks-view-model';
 import TaskChooser from './TaskChooser';
 import PlayerTasks from './PlayerTasks';
 import { Box } from '@material-ui/core';
-import EstimationSummary from '../../components/task-summary/EstimationSummary';
+import calculatePlayerPoints from 'routes/games/utils/calculate-player-points';
+import PlayerTasksTitle from '../../components/PlayerTasksTitle';
 
 interface Props {
   availableTasks: TasksViewModel[];
@@ -14,8 +15,6 @@ interface Props {
   playerTurn: GamePlayerViewModel;
   playerWithTasks: PlayerTasksViewModel[];
   onChooseTask: (taskId: string) => void;
-  totalTasks: number;
-  totalEstimationPoints: number;
   minEstimationPointsPerPlayer: number;
   maxEstimationPointsPerPlayer: number;
 }
@@ -26,17 +25,19 @@ const ChooseTasksContainer: FC<Props> = ({
   playerTurn,
   playerWithTasks,
   onChooseTask,
-  totalTasks,
-  totalEstimationPoints,
   minEstimationPointsPerPlayer,
   maxEstimationPointsPerPlayer
 }) => (
   <>
-    <Box p={2}>
-      <Typography>Nu är det dags att välja uppgifter</Typography>
+    <Box m={2}>
+      <Typography>
+        Dags att välja uppgifter. Det bästa är om alla får mellan{' '}
+        <strong>{minEstimationPointsPerPlayer}</strong> och{' '}
+        <strong>{maxEstimationPointsPerPlayer}</strong> poäng.
+      </Typography>
     </Box>
     {isCurrentPlayerTurn && (
-      <Box p={2} pt={0}>
+      <Box m={2}>
         <TaskChooser
           availableTasks={availableTasks}
           onChooseTask={onChooseTask}
@@ -45,30 +46,25 @@ const ChooseTasksContainer: FC<Props> = ({
     )}
 
     {!isCurrentPlayerTurn && playerTurn && (
-      <Box p={2} pt={0}>
-        <Typography variant="h2">
+      <Box m={2}>
+        <Typography variant="h6" align="center">
           Nu väljer <strong>{playerTurn.user.displayName}</strong>
         </Typography>
       </Box>
     )}
 
-    <Box p={2}>
-      <EstimationSummary
-        totalTasks={totalTasks}
-        totalEstimationPoints={totalEstimationPoints}
-        minEstimationPointsPerPlayer={minEstimationPointsPerPlayer}
-        maxEstimationPointsPerPlayer={maxEstimationPointsPerPlayer}
-      />
-    </Box>
-
     {playerWithTasks.map(
       player =>
         player.tasks.length > 0 && (
-          <Box p={2} pt={0} key={player.id}>
-            <PlayerTasks
-              tasks={player.tasks}
-              playerName={player.user.displayName}
+          <Box mb={2} key={player.id}>
+            <PlayerTasksTitle
+              title={player.user.displayName}
+              playerPoints={calculatePlayerPoints(player.tasks)}
             />
+
+            <Box m={2} mt={1}>
+              <PlayerTasks tasks={player.tasks} />
+            </Box>
           </Box>
         )
     )}

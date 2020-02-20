@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import GamePhaseWrapper from '../../components/GamePhaseWrapper';
 import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
 import BottomButtonBar from 'components/BottomButtonBar';
@@ -13,14 +13,13 @@ import {
   selectAvailableTasksViewModel,
   selectTasksForPlayer,
   chooseTask,
-  selectTotalTasks,
-  selectTotalEstimationPoints,
   selectMinEstimationPointsPerPlayer,
   selectMaxEstimationPointsPerPlayer
 } from './choose-tasks-duck';
 import ChooseTasksContainer from './ChooseTaskContainer';
 import { Button } from '@material-ui/core';
 import ChooseTasksSummary from './ChooseTasksSummary';
+import calculatePlayerPoints from 'routes/games/utils/calculate-player-points';
 
 const ChooseTasksPhaseContainer: FC = () => {
   let dispatch = useDispatch();
@@ -30,13 +29,27 @@ const ChooseTasksPhaseContainer: FC = () => {
   let currentUserId = useSelector(selectCurrentUserId);
   let playerWithTasks = useSelector(selectTasksForPlayer);
   let playersAreChoosingTasks = availableTasks.length > 0;
-  let totalTasks = useSelector(selectTotalTasks);
-  let totalEstimationPoints = useSelector(selectTotalEstimationPoints);
   let minEstimationPointsPerPlayer = useSelector(
     selectMinEstimationPointsPerPlayer
   );
   let maxEstimationPointsPerPlayer = useSelector(
     selectMaxEstimationPointsPerPlayer
+  );
+
+  let hasUnfairPointDistribution = useMemo(
+    () =>
+      playerWithTasks.some(player => {
+        let playerPoints = calculatePlayerPoints(player.tasks);
+        return (
+          playerPoints <= minEstimationPointsPerPlayer ||
+          playerPoints >= maxEstimationPointsPerPlayer
+        );
+      }),
+    [
+      maxEstimationPointsPerPlayer,
+      minEstimationPointsPerPlayer,
+      playerWithTasks
+    ]
   );
 
   let isCurrentPlayerTurn =
@@ -60,20 +73,20 @@ const ChooseTasksPhaseContainer: FC = () => {
               playerWithTasks={playerWithTasks}
               availableTasks={availableTasks}
               onChooseTask={taskId => dispatch(chooseTask(taskId))}
-              totalTasks={totalTasks}
-              totalEstimationPoints={totalEstimationPoints}
               minEstimationPointsPerPlayer={minEstimationPointsPerPlayer}
               maxEstimationPointsPerPlayer={maxEstimationPointsPerPlayer}
             />
           ) : (
-            <ChooseTasksSummary />
+            <ChooseTasksSummary
+              hasUnfairPointDistribution={hasUnfairPointDistribution}
+              playerWithTasks={playerWithTasks}
+            />
           )}
         </GamePhaseContentWrapper>
 
         <BottomButtonBar>
           <Button
             color="default"
-            variant="outlined"
             aria-label="Previous stage"
             onClick={() => dispatch(goToPreviousStep())}
           >
