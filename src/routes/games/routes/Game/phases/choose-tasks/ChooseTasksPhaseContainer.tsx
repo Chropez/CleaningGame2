@@ -5,14 +5,15 @@ import BottomButtonBar from 'components/BottomButtonBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGameId, selectCurrentUserId } from '../../game-duck';
 import {
+  chooseTask,
+  changeTaskAssignee,
   goToPreviousStep,
-  goToNextStep,
+  // goToNextStep,
   subscribeToChooseTasksPhase,
   unsubscribeFromChooseTasksPhase,
   selectPlayerTurn,
   selectAvailableTasksViewModel,
   selectTasksForPlayer,
-  chooseTask,
   selectMinEstimationPointsPerPlayer,
   selectMaxEstimationPointsPerPlayer
 } from './choose-tasks-duck';
@@ -27,7 +28,7 @@ const ChooseTasksPhaseContainer: FC = () => {
   let availableTasks = useSelector(selectAvailableTasksViewModel);
   let playerTurn = useSelector(selectPlayerTurn);
   let currentUserId = useSelector(selectCurrentUserId);
-  let playerWithTasks = useSelector(selectTasksForPlayer);
+  let playersWithTasks = useSelector(selectTasksForPlayer);
   let playersAreChoosingTasks = availableTasks.length > 0;
   let minEstimationPointsPerPlayer = useSelector(
     selectMinEstimationPointsPerPlayer
@@ -38,7 +39,7 @@ const ChooseTasksPhaseContainer: FC = () => {
 
   let hasUnfairPointDistribution = useMemo(
     () =>
-      playerWithTasks.some(player => {
+      playersWithTasks.some(player => {
         let playerPoints = calculatePlayerPoints(player.tasks);
         return (
           playerPoints <= minEstimationPointsPerPlayer ||
@@ -48,7 +49,7 @@ const ChooseTasksPhaseContainer: FC = () => {
     [
       maxEstimationPointsPerPlayer,
       minEstimationPointsPerPlayer,
-      playerWithTasks
+      playersWithTasks
     ]
   );
 
@@ -70,7 +71,7 @@ const ChooseTasksPhaseContainer: FC = () => {
             <ChooseTasksContainer
               isCurrentPlayerTurn={isCurrentPlayerTurn}
               playerTurn={playerTurn}
-              playerWithTasks={playerWithTasks}
+              playersWithTasks={playersWithTasks}
               availableTasks={availableTasks}
               onChooseTask={taskId => dispatch(chooseTask(taskId))}
               minEstimationPointsPerPlayer={minEstimationPointsPerPlayer}
@@ -79,7 +80,12 @@ const ChooseTasksPhaseContainer: FC = () => {
           ) : (
             <ChooseTasksSummary
               hasUnfairPointDistribution={hasUnfairPointDistribution}
-              playerWithTasks={playerWithTasks}
+              playersWithTasks={playersWithTasks}
+              onChangeTaskAssignee={(taskId, newAssigneeId) =>
+                dispatch(changeTaskAssignee(taskId, newAssigneeId))
+              }
+              minEstimationPointsPerPlayer={minEstimationPointsPerPlayer}
+              maxEstimationPointsPerPlayer={maxEstimationPointsPerPlayer}
             />
           )}
         </GamePhaseContentWrapper>
@@ -92,14 +98,14 @@ const ChooseTasksPhaseContainer: FC = () => {
           >
             Tillbaka
           </Button>
-          <Button
+          {/* <Button
             color="primary"
             variant="contained"
             aria-label="Next stage"
             onClick={() => dispatch(goToNextStep())}
           >
             Fortsätt
-          </Button>
+          </Button> */}
         </BottomButtonBar>
       </GamePhaseWrapper>
     </>

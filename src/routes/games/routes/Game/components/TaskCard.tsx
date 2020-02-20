@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
 import {
   Card as MuiCard,
-  CardHeader,
-  Avatar as MuiAvatar,
-  IconButton
+  CardHeader as MuiCardHeader,
+  CardHeaderProps,
+  Avatar as MuiAvatar
 } from '@material-ui/core';
-import DotsVerticalIcon from 'mdi-material-ui/DotsVertical';
 import { AvatarProps } from '@material-ui/core/Avatar';
 import styled from 'styled-components/macro';
 import { CardProps } from '@material-ui/core/Card';
@@ -14,11 +13,19 @@ interface Props {
   taskName: string;
   estimate: number;
   onClickCard?: () => void;
-  showActions?: boolean;
+  actionButton?: JSX.Element;
   hideShadow?: boolean;
 }
 
 const Card = styled(MuiCard as FC<CardProps>)``;
+const CardHeader = styled(MuiCardHeader as FC<CardHeaderProps>)`
+  && {
+    justify-content: center;
+    .MuiCardHeader-action {
+      margin-top: 0;
+    }
+  }
+`;
 
 const Avatar = styled(MuiAvatar as FC<AvatarProps>)`
   && {
@@ -33,7 +40,7 @@ const TaskCard: FC<Props> = ({
   estimate,
   taskName,
   onClickCard,
-  showActions = false,
+  actionButton = undefined,
   hideShadow = false
 }) => (
   <Card
@@ -46,13 +53,7 @@ const TaskCard: FC<Props> = ({
           {estimate}
         </Avatar>
       }
-      action={
-        showActions && (
-          <IconButton aria-label="Task settings">
-            <DotsVerticalIcon />
-          </IconButton>
-        )
-      }
+      action={actionButton !== undefined && actionButton}
       title={taskName}
     />
   </Card>

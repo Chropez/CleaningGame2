@@ -13,7 +13,7 @@ interface Props {
   availableTasks: TasksViewModel[];
   isCurrentPlayerTurn: boolean;
   playerTurn: GamePlayerViewModel;
-  playerWithTasks: PlayerTasksViewModel[];
+  playersWithTasks: PlayerTasksViewModel[];
   onChooseTask: (taskId: string) => void;
   minEstimationPointsPerPlayer: number;
   maxEstimationPointsPerPlayer: number;
@@ -23,7 +23,7 @@ const ChooseTasksContainer: FC<Props> = ({
   availableTasks,
   isCurrentPlayerTurn,
   playerTurn,
-  playerWithTasks,
+  playersWithTasks,
   onChooseTask,
   minEstimationPointsPerPlayer,
   maxEstimationPointsPerPlayer
@@ -53,7 +53,7 @@ const ChooseTasksContainer: FC<Props> = ({
       </Box>
     )}
 
-    {playerWithTasks.map(
+    {playersWithTasks.map(
       player =>
         player.tasks.length > 0 && (
           <Box mb={2} key={player.id}>

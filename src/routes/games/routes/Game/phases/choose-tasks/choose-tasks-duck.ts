@@ -26,7 +26,9 @@ enum ChooseTasksActionTypes {
   ChooseTaskRequested = 'GAMES/GAME/CHOOSE_TASKS/CHOOSE_TASK_REQUESTED',
   ChooseTaskSucceeded = 'GAMES/GAME/CHOOSE_TASKS/CHOOSE_TASK_SUCCEEDED',
   ChooseTasksPhaseSubscribed = 'GAMES/GAME/CHOOSE_TASKS/CHOOSE_TASKS_PHASE_SUBSCRIBED',
-  ChooseTasksPhaseUnsubscribed = 'GAMES/GAME/CHOOSE_TASKS/CHOOSE_TASKS_PHASE_UNSUBSCRIBED'
+  ChooseTasksPhaseUnsubscribed = 'GAMES/GAME/CHOOSE_TASKS/CHOOSE_TASKS_PHASE_UNSUBSCRIBED',
+  ChangeTaskAssigneeRequested = 'GAMES/GAME/CHOOSE_TASKS/CHANGE_TASK_ASSIGNEE_REQUESTED',
+  ChangeTaskAssigneeSucceeded = 'GAMES/GAME/CHOOSE_TASKS/CHANGE_TASK_ASSIGNEE_SUCCEEDED'
 }
 
 // Selectors
@@ -100,6 +102,21 @@ export const updateTaskQuery = (
   ]
 });
 
+export const updateChangeTaskAssigneeQuery = (
+  gameId: string,
+  taskId: string
+): DocumentQuery => ({
+  collection: 'games',
+  doc: gameId,
+  storeAs: 'updateChangeTaskAssigneeQuery',
+  subcollections: [
+    {
+      collection: 'tasks',
+      doc: taskId
+    }
+  ]
+});
+
 // Actions
 
 export const goToNextStep: AppActionCreator = () => async (
@@ -160,6 +177,30 @@ export const subscribeToChooseTasksPhase: AppActionCreator = (
 
   dispatch({
     type: ChooseTasksActionTypes.ChooseTasksPhaseSubscribed
+  });
+};
+
+export const changeTaskAssignee: AppActionCreator = (
+  taskId: string,
+  newAssignee: string
+) => async (dispatch, getState, { getFirestore }) => {
+  let state = getState();
+  let firestore = getFirestore();
+  let gameId = selectGameId(state);
+  let assignee: Partial<Task> = { assigneePlayerId: newAssignee };
+
+  dispatch({
+    type: ChooseTasksActionTypes.ChangeTaskAssigneeRequested,
+    payload: assignee
+  });
+
+  await firestore.update(
+    updateChangeTaskAssigneeQuery(gameId, taskId),
+    assignee
+  );
+
+  dispatch({
+    type: ChooseTasksActionTypes.ChangeTaskAssigneeSucceeded
   });
 };
 

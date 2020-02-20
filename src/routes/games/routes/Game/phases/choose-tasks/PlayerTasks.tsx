@@ -8,18 +8,16 @@ interface Props {
 }
 
 const PlayerTasks: FC<Props> = ({ tasks }) => (
-  <>
-    <TaskCardsContainer>
-      {tasks.map(task => (
-        <TaskCard
-          estimate={task.averageEstimate}
-          taskName={task.name}
-          key={task.id}
-          hideShadow={true}
-        />
-      ))}
-    </TaskCardsContainer>
-  </>
+  <TaskCardsContainer>
+    {tasks.map(task => (
+      <TaskCard
+        estimate={task.averageEstimate}
+        taskName={task.name}
+        key={task.id}
+        hideShadow={true}
+      />
+    ))}
+  </TaskCardsContainer>
 );
 
 export default PlayerTasks;
