@@ -1,12 +1,10 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import Application from 'routes/application';
-import { initializeFirebase } from 'config/firebase';
 import 'firebase/auth';
 import 'firebase/firestore';
 import React, { FunctionComponent } from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import Routes from 'routes/Routes';
 import GlobalTheme from 'themes/global-theme';
@@ -14,16 +12,12 @@ import mainTheme from 'themes/main-theme';
 import { ThemeProvider } from 'styled-components/macro';
 import 'typeface-leckerli-one'; // Used logo
 import 'typeface-roboto'; // Used by Material Design
-import configureStore from './config/redux';
 import * as serviceWorker from './serviceWorker';
-
-initializeFirebase();
-
-const store = configureStore();
+import ReduxFirebaseProvider from 'config/ReduxFirebaseProvider';
 
 const render = (RoutesComponent: FunctionComponent) => {
   return ReactDOM.render(
-    <Provider store={store}>
+    <ReduxFirebaseProvider>
       <CssBaseline />
       <GlobalTheme />
       <MuiThemeProvider theme={mainTheme}>
@@ -35,7 +29,7 @@ const render = (RoutesComponent: FunctionComponent) => {
           </BrowserRouter>
         </ThemeProvider>
       </MuiThemeProvider>
-    </Provider>,
+    </ReduxFirebaseProvider>,
     document.getElementById('root')
   );
 };
