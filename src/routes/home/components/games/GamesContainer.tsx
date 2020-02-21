@@ -15,13 +15,12 @@ import {
   createGame,
   subscribeToGames,
   unsubscribeFromGames,
-  selectGames,
-  selectUsers
+  selectGames
+  // selectUsers
 } from './games-duck';
 import Game from 'models/game';
-import User from 'models/user';
-import Link from 'components/Link';
-import { LinkProps } from '@material-ui/core/Link';
+import { useHistory } from 'react-router-dom';
+import GameCard from './GameCard';
 
 const AddFab = styled(MuiFab as FC<FabProps>)`
   && {
@@ -39,16 +38,12 @@ const SearchFab = styled(MuiFab as FC<FabProps>)`
   }
 `;
 
-const StyledLink = styled(Link as FC<LinkProps>)`
-  &&:hover {
-    text-decoration: none;
-  }
-`;
-
 const GamesContainer: FC = () => {
   const dispatch: AppThunkDispatch = useDispatch();
+  const history = useHistory();
+
   let games = useSelector(selectGames);
-  let users = useSelector(selectUsers)!;
+  // let users = useSelector(selectUsers)!;
 
   useEffect(() => {
     dispatch(subscribeToGames());
@@ -58,26 +53,20 @@ const GamesContainer: FC = () => {
   return (
     <>
       <Container maxWidth="md">
-        <Box p={2}>
-          <ListSubheader>Spelare</ListSubheader>
+        <Box p={2} pb={18}>
+          <ListSubheader>Dina Städspel</ListSubheader>
 
           <>
             {games &&
               games.map((game: Game) => (
-                <StyledLink
-                  key={game.id}
-                  color="inherit"
-                  href={`/games/${game.id}`}
-                >
-                  {game.id}
-                  <br />
-                  {game.name} <br />
-                  {users[game.createdById] &&
-                    (users[game.createdById] as User).displayName}
-                  <br />
-                  {new Date(game.createdAt).toString()}
-                  <hr />
-                </StyledLink>
+                <Box key={game.id} mb={2}>
+                  <GameCard
+                    gameName={game.name}
+                    gameId={game.id!}
+                    currentPlayerId=""
+                    players={[]}
+                  />
+                </Box>
               ))}
           </>
         </Box>
@@ -88,7 +77,7 @@ const GamesContainer: FC = () => {
       <AddFab
         color="secondary"
         aria-label="Add"
-        onClick={() => dispatch(createGame())}
+        onClick={() => dispatch(createGame(history))}
       >
         <AddIcon />
       </AddFab>

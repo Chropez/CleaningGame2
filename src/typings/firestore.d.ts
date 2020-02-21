@@ -7,7 +7,8 @@ interface Populates {
 }
 
 export interface DocumentQuery {
-  collection: string;
+  collection?: string;
+  collectionGroup?: string;
   doc?: string;
   orderBy?: string | string[] | string[][];
   where?: string | string[] | string[][];

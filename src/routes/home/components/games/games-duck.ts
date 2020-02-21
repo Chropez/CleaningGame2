@@ -5,6 +5,7 @@ import Firestore from 'typings/firestore';
 import { ApplicationState } from 'store/root-reducer';
 import { addPlayerToGame } from 'routes/games/routes/Game/phases/setup/players/players-duck';
 import { timestamp } from 'utils/firestore';
+import * as H from 'history';
 
 enum GamesActionTypes {
   CreateGameRequested = 'GAMES/CREATE_GAME_REQUESTED',
@@ -31,8 +32,11 @@ const getGamesQuery = () => ({
   orderBy: [['createdAt', 'desc']],
   populates: [
     { child: 'createdById', root: 'users' },
-    { child: 'playerIds', root: 'users' }
+    { child: 'players', root: 'players' }
   ]
+});
+const getPlayersQuery = () => ({
+  collection: 'players'
 });
 
 // Actions
@@ -43,7 +47,8 @@ export const subscribeToGames: AppActionCreator = () => (
   { getFirestore }
 ) => {
   dispatch({ type: GamesActionTypes.AllUserGamesSubscribed });
-  getFirestore().setListener(getGamesQuery());
+  const firestore = getFirestore();
+  firestore.setListeners([getGamesQuery(), getPlayersQuery()]);
 };
 
 export const unsubscribeFromGames: AppActionCreator = () => (
@@ -92,7 +97,7 @@ const makeIdHumanReadable = (gameId: string) => {
     .join(' ');
 };
 
-export const createGame: AppActionCreator = () => async (
+export const createGame: AppActionCreator = (history: H.History) => async (
   dispatch,
   getState,
   { getFirestore }
@@ -123,4 +128,6 @@ export const createGame: AppActionCreator = () => async (
   });
 
   dispatch(addPlayerToGame(gameId, userId));
+
+  history.push(`/games/${gameId}`);
 };
