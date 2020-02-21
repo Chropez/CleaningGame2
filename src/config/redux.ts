@@ -10,8 +10,17 @@ import Firestore from '../typings/firestore';
 export interface ExtraArguments {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getFirebase: () => any; // typeof firebase;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getFirestore: () => Firestore;
+}
+
+const reduxDevToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
+const enhancers = [...firebaseEnhancers];
+
+if (
+  process.env.NODE_ENV === 'development' &&
+  typeof reduxDevToolsExtension === 'function'
+) {
+  enhancers.push(reduxDevToolsExtension());
 }
 
 const getFirestore = reduxGetFirestore as () => Firestore;
@@ -23,7 +32,7 @@ const configureStore = () => {
     rootReducer,
     compose(
       applyMiddleware(thunk.withExtraArgument(firebaseArgs)),
-      compose(...firebaseEnhancers)
+      compose(...enhancers)
     )
   );
 
