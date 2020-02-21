@@ -4,10 +4,10 @@ import Game, { GamePhase } from 'models/game';
 import {
   selectGame,
   selectGameId,
-  selectCurrentUserId,
   updateGameByIdQuery,
   selectGamePlayers
 } from '../../game-duck';
+import { selectCurrentUserId } from 'application/selectors';
 import TaskEstimation from 'models/task-estimation';
 import { ApplicationState } from 'store/root-reducer';
 import Task from 'models/task';

@@ -1,11 +1,12 @@
 import { AppActionCreator, AppThunkDispatch } from 'store';
 import Game, { GamePhase } from 'models/game';
 import { getId } from 'animal-id';
-import Firestore from 'typings/firestore';
+import Firestore, { DocumentQuery } from 'typings/firestore';
 import { ApplicationState } from 'store/root-reducer';
 import { addPlayerToGame } from 'routes/games/routes/Game/phases/setup/players/players-duck';
 import { timestamp } from 'utils/firestore';
 import * as H from 'history';
+import { selectCurrentUserId } from 'application/selectors';
 
 enum GamesActionTypes {
   CreateGameRequested = 'GAMES/CREATE_GAME_REQUESTED',
@@ -27,37 +28,46 @@ export const selectUsers = (state: ApplicationState) =>
 
 // Queries
 
-const getGamesQuery = () => ({
+const getGamesQuery = (userId: string): DocumentQuery => ({
   collection: 'games',
   orderBy: [['createdAt', 'desc']],
+  where: ['participants', 'array-contains', userId],
   populates: [
-    { child: 'createdById', root: 'users' },
-    { child: 'players', root: 'players' }
+    {
+      child: 'createdById',
+      root: 'users'
+    },
+    {
+      child: 'participants',
+      root: 'users'
+    }
   ]
-});
-const getPlayersQuery = () => ({
-  collection: 'players'
 });
 
 // Actions
 
 export const subscribeToGames: AppActionCreator = () => (
   dispatch,
-  _,
+  getState,
   { getFirestore }
 ) => {
   dispatch({ type: GamesActionTypes.AllUserGamesSubscribed });
-  const firestore = getFirestore();
-  firestore.setListeners([getGamesQuery(), getPlayersQuery()]);
+  let state = getState();
+  let firestore = getFirestore();
+
+  let userId = selectCurrentUserId(state);
+  firestore.setListeners([getGamesQuery(userId)]);
 };
 
 export const unsubscribeFromGames: AppActionCreator = () => (
   dispatch,
-  _,
+  getState,
   { getFirestore }
 ) => {
+  let state = getState();
+  let userId = selectCurrentUserId(state);
   dispatch({ type: GamesActionTypes.AllUserGamesUnsubscribed });
-  getFirestore().unsetListener(getGamesQuery());
+  getFirestore().unsetListener(getGamesQuery(userId));
 };
 
 const getAvailableGameName = async (
@@ -113,7 +123,8 @@ export const createGame: AppActionCreator = (history: H.History) => async (
     name,
     createdAt: timestamp(firestore),
     createdById: userId,
-    phase: GamePhase.Setup
+    phase: GamePhase.Setup,
+    participants: []
   };
 
   dispatch({

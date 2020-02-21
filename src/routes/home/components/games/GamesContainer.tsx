@@ -15,12 +15,14 @@ import {
   createGame,
   subscribeToGames,
   unsubscribeFromGames,
-  selectGames
-  // selectUsers
+  selectGames,
+  selectUsers
 } from './games-duck';
 import Game from 'models/game';
 import { useHistory } from 'react-router-dom';
 import GameCard from './GameCard';
+import User from 'models/user';
+import { selectCurrentUserId } from 'application/selectors';
 
 const AddFab = styled(MuiFab as FC<FabProps>)`
   && {
@@ -43,7 +45,8 @@ const GamesContainer: FC = () => {
   const history = useHistory();
 
   let games = useSelector(selectGames);
-  // let users = useSelector(selectUsers)!;
+  let users = useSelector(selectUsers)!;
+  let currentUserId = useSelector(selectCurrentUserId);
 
   useEffect(() => {
     dispatch(subscribeToGames());
@@ -63,8 +66,10 @@ const GamesContainer: FC = () => {
                   <GameCard
                     gameName={game.name}
                     gameId={game.id!}
-                    currentPlayerId=""
-                    players={[]}
+                    currentPlayerId={currentUserId}
+                    participants={game.participants
+                      .filter(participants => participants)
+                      .map(participantId => users[participantId] as User)}
                   />
                 </Box>
               ))}

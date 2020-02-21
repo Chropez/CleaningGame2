@@ -5,12 +5,13 @@ import { AppAction } from 'config/redux';
 import User from 'models/user';
 import {
   selectGamePlayers,
-  selectGameId,
-  selectCurrentUserId
+  selectGameId
 } from 'routes/games/routes/Game/game-duck';
+import { selectCurrentUserId } from 'application/selectors';
 import { DocumentQuery } from 'typings/firestore';
 import GamePlayer from 'models/game-player';
 import { timestamp } from 'utils/firestore';
+import Game from 'models/game';
 
 enum PlayerActionTypes {
   ShowAddPlayerDialog = 'GAMES/GAME/PLAYERS/SHOW_ADD_PLAYER_DIALOG',
@@ -67,6 +68,12 @@ export const setPlayerToGameQuery = (
   subcollections: [{ collection: 'players', doc: userId }]
 });
 
+export const updateGameQuery = (gameId: string): DocumentQuery => ({
+  collection: 'games',
+  doc: gameId,
+  storeAs: 'updateGameQuery'
+});
+
 export const deletePlayerFromGameQuery = (
   gameId: string,
   userId: string
@@ -121,6 +128,11 @@ export const addPlayerToGame: AppActionCreator = (
 
   await firestore.set(setPlayerToGameQuery(gameId, userId), player);
 
+  let updatedGame: Partial<Game> = {
+    participants: firestore.FieldValue.arrayUnion(userId)
+  };
+
+  await firestore.update(updateGameQuery(gameId), updatedGame);
   dispatch({ type: PlayerActionTypes.AddPlayerToGameSucceeded });
 };
 
@@ -134,6 +146,12 @@ export const removePlayerFromGame: AppActionCreator = (
   dispatch({ type: PlayerActionTypes.RemovePlayerFromGameRequested });
 
   await firestore.delete(deletePlayerFromGameQuery(gameId, playerId));
+
+  let updatedGame: Partial<Game> = {
+    participants: firestore.FieldValue.arrayRemove(playerId)
+  };
+
+  await firestore.update(updateGameQuery(gameId), updatedGame);
 
   dispatch({ type: PlayerActionTypes.RemovePlayerFromGameSucceeded });
 };

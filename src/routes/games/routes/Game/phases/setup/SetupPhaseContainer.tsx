@@ -32,9 +32,9 @@ import {
 import {
   selectGame,
   selectGamePlayersViewModel,
-  selectCurrentUserId,
   selectGameId
 } from '../../game-duck';
+import { selectCurrentUserId } from 'application/selectors';
 
 const SetupPhaseContainer: FC = () => {
   let dispatch: AppThunkDispatch = useDispatch();

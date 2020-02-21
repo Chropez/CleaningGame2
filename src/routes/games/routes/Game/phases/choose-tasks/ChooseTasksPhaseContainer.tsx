@@ -3,7 +3,9 @@ import GamePhaseWrapper from '../../components/GamePhaseWrapper';
 import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
 import BottomButtonBar from 'components/BottomButtonBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectGameId, selectCurrentUserId } from '../../game-duck';
+import { selectGameId } from '../../game-duck';
+import { selectCurrentUserId } from 'application/selectors';
+
 import {
   chooseTask,
   changeTaskAssignee,

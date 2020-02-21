@@ -7,6 +7,7 @@ import GamePlayer from 'models/game-player';
 import { GamePlayerViewModel } from './view-models/game-player-view-model';
 import { timestamp } from 'utils/firestore';
 import { createSelector } from 'reselect';
+import { selectCurrentUserId } from 'application/selectors';
 
 enum GameActionTypes {
   GameSubscribed = 'GAMES/GAME/GAME_SUBSCRIBED',
@@ -16,9 +17,6 @@ enum GameActionTypes {
 }
 
 // Selectors
-
-export const selectCurrentUserId = (state: ApplicationState): string =>
-  state.firebase.auth.uid;
 
 export const selectGame = (state: ApplicationState): Game | undefined =>
   state.firestore.ordered.currentGame

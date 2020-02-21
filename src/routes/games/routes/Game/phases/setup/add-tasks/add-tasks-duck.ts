@@ -2,10 +2,8 @@ import { AppAction } from 'config/redux';
 import { AppActionCreator } from 'store';
 import { ApplicationState } from 'store/root-reducer';
 import Task from 'models/task';
-import {
-  selectCurrentUserId,
-  selectGameId
-} from 'routes/games/routes/Game/game-duck';
+import { selectGameId } from 'routes/games/routes/Game/game-duck';
+import { selectCurrentUserId } from 'application/selectors';
 import { timestamp } from 'utils/firestore';
 
 enum AddTasksActionTypes {

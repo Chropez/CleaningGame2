@@ -4,6 +4,7 @@ interface Populates {
   child: string;
   root: string;
   childAlias?: string;
+  keyProp?: string;
 }
 
 export interface DocumentQuery {
@@ -32,8 +33,8 @@ export interface FirebaseTimestamp {
 
 interface FieldValue {
   serverTimestamp: () => FirebaseTimestamp;
-  arrayUnion: <T>(arrayUnion: T) => T;
-  arrayRemove: <T>(arrayUnion: T) => T;
+  arrayUnion: <T>(arrayUnion: T) => T[];
+  arrayRemove: <T>(arrayRemove: T) => T[];
   delete: <T>() => T;
 }
 interface SnapshotMetadata {
