@@ -8,26 +8,33 @@ enum AccountActionTypes {
 
 // ActionCreators
 
-export const loginWithGoogle: AppActionCreator = () => (
+export const loginWithGoogle: AppActionCreator = () => async (
   dispatch,
   getState,
   { getFirebase }
 ) => {
   // login with google in firebase
   let firebase = getFirebase();
-  firebase.login({ provider: 'google', type: 'redirect' });
-  dispatch({ type: AccountActionTypes.LoginWithGoogle });
+  let createdUser = await firebase.login({ provider: 'google', type: 'popup' });
+
+  dispatch({ type: AccountActionTypes.LoginWithGoogle, payload: createdUser });
 };
 
-export const loginWithFacebook: AppActionCreator = () => (
+export const loginWithFacebook: AppActionCreator = () => async (
   dispatch,
   getState,
   { getFirebase }
 ) => {
   // login with google in firebase
   let firebase = getFirebase();
-  firebase.login({ provider: 'facebook', type: 'redirect' });
-  dispatch({ type: AccountActionTypes.LoginWithFacebook });
+  let createdUser = await firebase.login({
+    provider: 'facebook',
+    type: 'redirect'
+  });
+  dispatch({
+    type: AccountActionTypes.LoginWithFacebook,
+    payload: createdUser
+  });
 };
 
 export const logout: AppActionCreator = () => (

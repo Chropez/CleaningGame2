@@ -39,7 +39,7 @@ const GameCard: FC<Props> = ({
     <StyledLink href={`/games/${gameId}`} color="inherit">
       <CardContent>
         <Typography variant="h6" color="textSecondary">
-          {gameName} {gameId}
+          {gameName}
         </Typography>
         <Typography variant="subtitle1" color="textSecondary">
           {participants.length === 1 &&
