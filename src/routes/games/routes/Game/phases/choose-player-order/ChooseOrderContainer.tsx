@@ -8,7 +8,8 @@ import {
   Avatar,
   ListItemText,
   ListItemSecondaryAction,
-  IconButton
+  IconButton,
+  Box
 } from '@material-ui/core';
 import { GamePlayerViewModel } from '../../view-models/game-player-view-model';
 import styled from 'styled-components/macro';
@@ -29,14 +30,12 @@ const CompoundButtons = styled.div`
 `;
 
 const OrderNumber = styled(ListItemText as FC<ListItemTextProps>)`
-  && {
-    flex: 0;
-    margin-right: ${({ theme }) => theme.spacing(3)}px;
+  flex: 0;
+  margin-right: ${({ theme }) => theme.spacing(3)}px;
 
-    .MuiTypography-root {
-      font-size: 1.2rem;
-      color: ${({ theme }) => theme.palette.primary.light};
-    }
+  .MuiTypography-root {
+    font-size: 1.2rem;
+    color: ${({ theme }) => theme.palette.text.secondary};
   }
 `;
 
@@ -70,7 +69,9 @@ const ChooseOrderContainer: FC<Props> = ({ onChangeOrder, players }) => (
                       src={player.user.avatarUrl}
                     />
                   </ListItemAvatar>
-                  <ListItemText primary={player.user.displayName} />
+                  <ListItemText>
+                    <Box pr={1}>{player.user.displayName}</Box>
+                  </ListItemText>
                   <ListItemSecondaryAction>
                     <CompoundButtons>
                       <IconButton

@@ -49,7 +49,8 @@ const EstimationBoardContainer: FC<Props> = ({
         aria-label="Next stage"
         onClick={onContinueClick}
       >
-        Fortsätt <br />
+        Fortsätt
+        <br />
         {!canContinue && <Small>{cantContinueButtonMessage}</Small>}
       </Button>
     </BottomButtonBar>

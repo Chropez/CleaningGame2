@@ -30,6 +30,7 @@ const CardHeader = styled(MuiCardHeader as FC<CardHeaderProps>)`
 const Avatar = styled(MuiAvatar as FC<AvatarProps>)`
   && {
     background-color: ${({ theme }) => theme.palette.primary.light};
+    color: ${({ theme }) => theme.palette.primary.contrastText};
     width: 30px;
     height: 30px;
     font-size: 0.7rem;

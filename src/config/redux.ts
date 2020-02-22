@@ -28,7 +28,7 @@ const getFirestore = reduxGetFirestore as () => Firestore;
 const firebaseArgs: ExtraArguments = { getFirebase, getFirestore };
 
 const configureStore = () => {
-  const store = createStore(
+  let store = createStore(
     rootReducer,
     compose(
       applyMiddleware(thunk.withExtraArgument(firebaseArgs)),

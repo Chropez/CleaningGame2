@@ -59,7 +59,11 @@ const PlayerEstimationWaitList: FC<Props> = ({
                       src={player.user.avatarUrl}
                     />
                   </ListItemAvatar>
-                  <ListItemText primary={player.user.displayName} />
+
+                  <ListItemText>
+                    <Box pr={1}>{player.user.displayName}</Box>
+                  </ListItemText>
+
                   <ListItemSecondaryAction>
                     {player.isDoneEstimating ? (
                       <Chip
@@ -96,7 +100,8 @@ const PlayerEstimationWaitList: FC<Props> = ({
         aria-label="Next stage"
         onClick={onContinueClick}
       >
-        Fortsätt <br />
+        Fortsätt
+        <br />
         {!canContinue && <Small>{cantContinueButtonMessage}</Small>}
       </Button>
     </BottomButtonBar>

@@ -25,5 +25,5 @@
     "noUnusedLocals": true,
     "experimentalDecorators": true
   },
-  "include": ["src", "src/*", "src/**/*"]
+  "include": ["src", "src/*"]
 }

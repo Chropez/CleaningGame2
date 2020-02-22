@@ -19,27 +19,23 @@ const SecondaryTextWrapper = styled.div`
 `;
 
 const InfoGroupPrimaryText = styled(Typography as FC<TypographyProps>)`
-  && {
-    color: ${({ theme }) => theme.palette.primary.light};
-    font-size: 1.3rem;
-    text-align: center;
+  color: ${({ theme }) => theme.palette.text.secondary};
+  font-size: 1.3rem;
+  text-align: center;
 
-    ${({ theme }) => theme.breakpoints.up('xs')} {
-      font-size: 1.7rem;
-    }
+  ${({ theme }) => theme.breakpoints.up('xs')} {
+    font-size: 1.7rem;
   }
 `;
 const InfoGroupSecondaryText = styled(Typography as FC<TypographyProps>)`
-  && {
-    color: ${({ theme }) => theme.palette.text.hint};
-    line-height: 1.2;
-    text-align: center;
-    font-size: 0.7rem;
-    width: 100%;
+  color: ${({ theme }) => theme.palette.text.hint};
+  line-height: 1.2;
+  text-align: center;
+  font-size: 0.7rem;
+  width: 100%;
 
-    ${({ theme }) => theme.breakpoints.up('xs')} {
-      font-size: 0.8rem;
-    }
+  ${({ theme }) => theme.breakpoints.up('xs')} {
+    font-size: 0.8rem;
   }
 `;
 

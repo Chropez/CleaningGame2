@@ -10,7 +10,8 @@ import {
   ListItemSecondaryAction,
   IconButton,
   Fab,
-  Typography
+  Typography,
+  Box
 } from '@material-ui/core';
 import DeleteIcon from 'mdi-material-ui/Delete';
 import styled from 'styled-components/macro';
@@ -36,7 +37,10 @@ const PlayerListItem: FC<PlayerListItemProps> = ({
       <ListItemAvatar>
         <Avatar alt={player.user.displayName} src={player.user.avatarUrl} />
       </ListItemAvatar>
-      <ListItemText primary={player.user.displayName} />
+
+      <ListItemText>
+        <Box pr={1}>{player.user.displayName}</Box>
+      </ListItemText>
 
       {canBeRemoved && (
         <ListItemSecondaryAction>

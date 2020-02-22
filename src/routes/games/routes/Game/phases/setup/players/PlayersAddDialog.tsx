@@ -12,7 +12,8 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Divider,
-  Chip
+  Chip,
+  Box
 } from '@material-ui/core';
 import AvailableGamePlayerModel from './available-game-player-view-model';
 import CheckIcon from 'mdi-material-ui/Check';
@@ -50,7 +51,11 @@ const PlayersAddDialog: FC<Props> = ({
                     src={player.user.avatarUrl}
                   />
                 </ListItemAvatar>
-                <ListItemText primary={player.user.displayName} />
+
+                <ListItemText>
+                  <Box pr={1}>{player.user.displayName}</Box>
+                </ListItemText>
+
                 <ListItemSecondaryAction>
                   {player.addedToGame ? (
                     <Chip
