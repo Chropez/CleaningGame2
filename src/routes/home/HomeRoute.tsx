@@ -21,12 +21,17 @@ const HomeRoute: FunctionComponent = () => {
     (state: ApplicationState) => state.firebase.auth.displayName
   );
 
+  let onLogout = () => {
+    dispatch(hideMenu());
+    dispatch(logout());
+  };
+
   return (
     <>
       <HomeAppBar
         menuIsOpen={menuIsOpen}
         onHideMenu={() => dispatch(hideMenu())}
-        onLogout={() => dispatch(logout())}
+        onLogout={onLogout}
         onShowMenu={() => dispatch(showMenu())}
       >
         <ProfileContent avatarUrl={avatarUrl} name={name} />

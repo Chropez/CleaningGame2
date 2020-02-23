@@ -1,9 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 import {
   AppBar as MuiAppBar,
   Toolbar,
   IconButton,
-  Typography
+  Typography,
+  Menu,
+  MenuProps,
+  MenuItem
 } from '@material-ui/core';
 import Link from 'components/Link';
 import HomeIcon from 'mdi-material-ui/Home';
@@ -26,25 +29,60 @@ const AppBar = styled(MuiAppBar as FC<AppBarProps>)`
   }
 `;
 
+const TopRightMenu = styled(Menu as FC<MenuProps>)`
+  && .top-right-menu {
+    min-width: 150px;
+  }
+`;
+
 interface Props {
   gameName: string;
+  menuIsOpen: boolean;
+  onHideMenu: () => void;
+  onLogout: () => void;
+  onShowMenu: () => void;
 }
 
-const GameAppBar: FC<Props> = ({ gameName }) => (
-  <AppBar>
-    <Toolbar>
-      <Link href="/" color="inherit">
-        <IconButton edge="start" color="inherit" aria-label="Home">
-          <HomeIcon />
-        </IconButton>
-      </Link>
-      <ToolbarText variant="h6">{gameName}</ToolbarText>
+const GameAppBar: FC<Props> = ({
+  gameName,
+  menuIsOpen,
+  onHideMenu,
+  onLogout,
+  onShowMenu
+}) => {
+  let menuAnchorRef = useRef<HTMLButtonElement | null>(null);
 
-      <IconButton edge="end" color="inherit" aria-label="Options">
-        <DotsVerticalIcon />
-      </IconButton>
-    </Toolbar>
-  </AppBar>
-);
+  return (
+    <AppBar>
+      <Toolbar>
+        <Link href="/" color="inherit">
+          <IconButton edge="start" color="inherit" aria-label="Home">
+            <HomeIcon />
+          </IconButton>
+        </Link>
+        <ToolbarText variant="h6">{gameName}</ToolbarText>
+
+        <IconButton
+          edge="end"
+          color="inherit"
+          aria-label="Options"
+          onClick={onShowMenu}
+          ref={menuAnchorRef}
+        >
+          <DotsVerticalIcon />
+        </IconButton>
+
+        <TopRightMenu
+          anchorEl={menuAnchorRef.current}
+          open={menuIsOpen}
+          onClose={onHideMenu}
+          PopoverClasses={{ paper: 'top-right-menu' }}
+        >
+          <MenuItem onClick={onLogout}>Logga Ut</MenuItem>
+        </TopRightMenu>
+      </Toolbar>
+    </AppBar>
+  );
+};
 
 export default GameAppBar;

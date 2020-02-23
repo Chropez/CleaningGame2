@@ -13,7 +13,9 @@ enum GameActionTypes {
   GameSubscribed = 'GAMES/GAME/GAME_SUBSCRIBED',
   GameUnsubscribed = 'GAMES/GAME/GAME_UNSUBSCRIBED',
   AddGamePlayerRequested = 'GAMES/GAME/ADD_GAME_PLAYER_REQUESTED',
-  AddGamePlayerSucceeded = 'GAMES/GAME/ADD_GAME_PLAYER_SUCCEEDED'
+  AddGamePlayerSucceeded = 'GAMES/GAME/ADD_GAME_PLAYER_SUCCEEDED',
+  GameMenuOpened = 'GAMES/GAME/GAME_MENU_OPENED',
+  GameMenuHidden = 'GAMES/GAME/GAME_MENU_HIDDEN'
 }
 
 // Selectors
@@ -66,6 +68,9 @@ export const selectOrderedPlayersViewModel = createSelector(
   selectGamePlayersViewModel,
   players => [...players].sort((a, b) => a.pickOrder! - b.pickOrder!)
 );
+
+export const selectMenuIsOpen = (state: ApplicationState) =>
+  state.routes.games.game.main.menuIsOpen;
 
 // Queries
 
@@ -158,24 +163,34 @@ export const addGamePlayer: AppActionCreator = (userId: string) => async (
   });
 };
 
+export const showMenu: AppActionCreator = () => dispatch =>
+  dispatch({ type: GameActionTypes.GameMenuOpened });
+
+export const hideMenu: AppActionCreator = () => dispatch =>
+  dispatch({ type: GameActionTypes.GameMenuHidden });
+
 // Reducer
 
 type Actions =
   | AppAction<GameActionTypes.GameSubscribed, { id: string }>
-  | AppAction<GameActionTypes.GameUnsubscribed>;
+  | AppAction<GameActionTypes.GameUnsubscribed>
+  | AppAction<GameActionTypes.GameMenuOpened>
+  | AppAction<GameActionTypes.GameMenuHidden>;
 
 export interface GameState {
   currentGameId: string;
   showAddPlayerDialog: boolean;
   isLoadingAvailablePlayers: boolean;
   isLoadingGame: boolean;
+  menuIsOpen: boolean;
 }
 
 const initialState: GameState = {
   showAddPlayerDialog: false,
   currentGameId: '',
   isLoadingAvailablePlayers: false,
-  isLoadingGame: false
+  isLoadingGame: false,
+  menuIsOpen: false
 };
 
 export const gameReducer = (
@@ -191,6 +206,10 @@ export const gameReducer = (
       };
     case GameActionTypes.GameUnsubscribed:
       return { ...state, currentGameId: '', isLoadingGame: false };
+    case GameActionTypes.GameMenuOpened:
+      return { ...state, menuIsOpen: true };
+    case GameActionTypes.GameMenuHidden:
+      return { ...state, menuIsOpen: false };
     default:
       return state;
   }

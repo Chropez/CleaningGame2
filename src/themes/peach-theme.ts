@@ -23,7 +23,7 @@ const peachTheme: DeepPartial<MainTheme> = {
       disabled: grey[300]
     },
     action: {
-      disabled: grey[300],
+      disabled: grey[400],
       active: '#6d4c41'
     },
     background: {
