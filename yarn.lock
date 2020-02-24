@@ -1672,6 +1672,13 @@
   resolved "https://registry.npmjs.org/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
   integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
 
+"@types/firebase-client@^0.1.32":
+  version "0.1.32"
+  resolved "https://registry.npmjs.org/@types/firebase-client/-/firebase-client-0.1.32.tgz#354b6b51ab46afc726c2887deeba5d04f070f291"
+  integrity sha512-GKCwphJqdGKacuYlvfKadogXfC/Bj/6z/Q9m6IOPnZQVv55EoJ5MtK1EBXqLh8K1TpEHbtLxfdo6rePXt3YgdA==
+  dependencies:
+    "@types/q" "^0"
+
 "@types/firebase@^3.2.1":
   version "3.2.1"
   resolved "https://registry.npmjs.org/@types/firebase/-/firebase-3.2.1.tgz#17c1c8fee7485ab09668d2461e34540bdf44b3b1"
@@ -1768,6 +1775,11 @@
   version "15.7.3"
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
+
+"@types/q@^0":
+  version "0.0.37"
+  resolved "https://registry.npmjs.org/@types/q/-/q-0.0.37.tgz#7d6a934b35ee2f0ed0646d286eba559599021c9e"
+  integrity sha512-vjFGX1zMTMz/kUp3xgfJcxMVLkMWVMrdlyc0RwVyve1y9jxwqNaT8wTcv6M51ylq2a/zn5lm8g7qPSoIS4uvZQ==
 
 "@types/q@^1.5.1":
   version "1.5.2"

@@ -1,5 +1,10 @@
 import { AppState } from 'react-native';
-import { getFirebase } from 'react-redux-firebase';
+import {
+  getFirebase,
+  ExtendedAuthInstance,
+  ExtendedStorageInstance,
+  ExtendedFirebaseInstance
+} from 'react-redux-firebase';
 import { getFirestore as reduxGetFirestore } from 'redux-firestore';
 import { AnyAction, applyMiddleware, compose, createStore } from 'redux';
 import thunk, { ThunkAction } from 'redux-thunk';
@@ -8,8 +13,9 @@ import { firebaseEnhancers } from './firebase';
 import Firestore from '../typings/firestore';
 
 export interface ExtraArguments {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getFirebase: () => any; // typeof firebase;
+  getFirebase: () => ExtendedFirebaseInstance &
+    ExtendedAuthInstance &
+    ExtendedStorageInstance;
   getFirestore: () => Firestore;
 }
 

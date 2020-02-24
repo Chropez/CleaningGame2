@@ -29,7 +29,7 @@ export const loginWithFacebook: AppActionCreator = () => async (
   let firebase = getFirebase();
   let createdUser = await firebase.login({
     provider: 'facebook',
-    type: 'redirect'
+    type: 'popup'
   });
   dispatch({
     type: AccountActionTypes.LoginWithFacebook,
