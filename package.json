@@ -1,0 +1,67 @@
+{
+  "name": "app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.9.3",
+    "@material-ui/system": "^4.9.3",
+    "animal-id": "^0.0.1",
+    "firebase": "^7.9.0",
+    "mdi-material-ui": "^6.12.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-redux": "^7.2.0",
+    "react-redux-firebase": "^3.1.1",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.4.0",
+    "reduce-reducers": "^1.0.4",
+    "redux": "^4.0.5",
+    "redux-firestore": "^0.12.0",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
+    "styled-components": "^5.0.1",
+    "typeface-leckerli-one": "^0.0.72",
+    "typeface-roboto": "^0.0.75"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "lint": "eslint 'src/**/*.ts?(x)'",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app",
+    "browser": true,
+    "node": true
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@types/firebase": "^3.2.1",
+    "@types/firebase-client": "^0.1.32",
+    "@types/jest": "^25.1.3",
+    "@types/node": "^13.7.4",
+    "@types/react": "^16.9.21",
+    "@types/react-dom": "^16.9.5",
+    "@types/react-redux": "^7.1.7",
+    "@types/react-router-dom": "^5.1.3",
+    "@types/redux-thunk": "^2.1.0",
+    "@types/styled-components": "^5.0.0",
+    "@types/webpack-env": "^1.15.1",
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
+    "@typescript-eslint/parser": "^2.20.0",
+    "babel-plugin-macros": "^2.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-react": "^1.1.7",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react-hooks": "^2.4.0",
+    "prettier": "^1.19.1",
+    "typescript": "^3.8.2"
+  }
+}
