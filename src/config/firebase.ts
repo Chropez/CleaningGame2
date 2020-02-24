@@ -11,25 +11,9 @@ export const initializeFirebase = () => {
   return firebase;
 };
 
-interface ExtendedReactReduxFirebaseConfig extends ReactReduxFirebaseConfig {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  profileFactory: (userData: any, profileData: any, firebase: any) => any;
-  createProfileOnSignup: boolean;
-}
-
-export const firestoreConfig: Partial<ExtendedReactReduxFirebaseConfig> = {
+export const firestoreConfig: Partial<ReactReduxFirebaseConfig> = {
   userProfile: 'users',
-  useFirestoreForProfile: true,
-  autoPopulateProfile: true,
-  updateProfileOnLogin: true,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  profileFactory: (userData: any, profileData: any, firebase: any) => {
-    console.log(userData);
-    console.log(profileData);
-    console.log(firebase);
-    debugger;
-  },
-  createProfileOnSignup: true
+  useFirestoreForProfile: true
 };
 
 export const firebaseEnhancers = [reduxFirestore(firebase)];
