@@ -14,6 +14,10 @@ interface Props {
   onRemovePlayer: (playerId: string) => void;
   showAddPlayerModal: boolean;
   players: GamePlayerViewModel[];
+  canShare: boolean;
+  onShareClick: () => void;
+  shareLink: string;
+  onCopyInvitationUrl: () => void;
 }
 
 const PlayersContainer: FC<Props> = ({
@@ -25,7 +29,11 @@ const PlayersContainer: FC<Props> = ({
   onHidePlayersAddDialog,
   onRemovePlayer,
   showAddPlayerModal,
-  players
+  players,
+  canShare,
+  onShareClick,
+  shareLink,
+  onCopyInvitationUrl
 }) => (
   <>
     <PlayersAddDialog
@@ -34,6 +42,10 @@ const PlayersContainer: FC<Props> = ({
       onAddPlayer={onAddPlayerToGame}
       onClose={onHidePlayersAddDialog}
       show={showAddPlayerModal}
+      canShare={canShare}
+      onShareClick={onShareClick}
+      shareLink={shareLink}
+      onCopyInvitationUrl={onCopyInvitationUrl}
     />
     <PlayerList
       currentPlayerId={currentPlayerId}

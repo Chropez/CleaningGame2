@@ -7,6 +7,7 @@ import { addPlayerToGame } from 'routes/games/routes/Game/phases/setup/players/p
 import { timestamp } from 'utils/firestore';
 import * as H from 'history';
 import { selectCurrentUserId } from 'application/selectors';
+import shortid from 'shortid';
 
 enum GamesActionTypes {
   CreateGameRequested = 'GAMES/CREATE_GAME_REQUESTED',
@@ -124,7 +125,8 @@ export const createGame: AppActionCreator = (history: H.History) => async (
     createdAt: timestamp(firestore),
     createdById: userId,
     phase: GamePhase.Setup,
-    participants: []
+    participants: [],
+    invitationId: shortid.generate()
   };
 
   dispatch({

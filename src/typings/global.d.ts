@@ -1,9 +1,18 @@
 import { MainTheme } from 'themes';
 
+interface NavigatorShareParam {
+  title?: string;
+  text?: string;
+  url?: string;
+}
 declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION__: () => void;
     theme: MainTheme;
+  }
+
+  interface Navigator {
+    share?: (navigaroShareParam: NavigatorShareParam) => Promise;
   }
 }
 

@@ -12,5 +12,6 @@ export default interface Game {
   createdAt: number;
   createdById: string;
   phase: GamePhase;
+  invitationId: string;
   participants: string[];
 }
