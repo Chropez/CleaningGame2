@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import GamePhaseWrapper from '../../components/GamePhaseWrapper';
-import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
+import PageWrapper from 'components/PageWrapper';
+import PageContentWrapper from 'components/PageContentWrapper';
 import { Box, Typography, Button } from '@material-ui/core';
 import EstimationBoard from './EstimationBoard';
 import BottomButtonBar from 'components/BottomButtonBar';
@@ -24,8 +24,8 @@ const EstimationBoardContainer: FC<Props> = ({
   onEstimate,
   tasksWithEstimation
 }) => (
-  <GamePhaseWrapper>
-    <GamePhaseContentWrapper>
+  <PageWrapper>
+    <PageContentWrapper>
       <Box p={2}>
         <Typography>
           Nu ska städuppgifterna betygsättas. 1 är lättast, 5 är jobbigast. Den
@@ -36,7 +36,7 @@ const EstimationBoardContainer: FC<Props> = ({
           onEstimate={onEstimate}
         />
       </Box>
-    </GamePhaseContentWrapper>
+    </PageContentWrapper>
 
     <BottomButtonBar>
       <Button color="default" aria-label="Previous stage" onClick={onBackClick}>
@@ -54,7 +54,7 @@ const EstimationBoardContainer: FC<Props> = ({
         {!canContinue && <Small>{cantContinueButtonMessage}</Small>}
       </Button>
     </BottomButtonBar>
-  </GamePhaseWrapper>
+  </PageWrapper>
 );
 
 export default EstimationBoardContainer;

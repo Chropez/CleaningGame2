@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useMemo } from 'react';
-import GamePhaseWrapper from '../../components/GamePhaseWrapper';
-import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
+import PageWrapper from 'components/PageWrapper';
+import PageContentWrapper from 'components/PageContentWrapper';
 import BottomButtonBar from 'components/BottomButtonBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGameId } from '../../game-duck';
@@ -67,8 +67,8 @@ const ChooseTasksPhaseContainer: FC = () => {
 
   return (
     <>
-      <GamePhaseWrapper>
-        <GamePhaseContentWrapper>
+      <PageWrapper>
+        <PageContentWrapper>
           {playersAreChoosingTasks ? (
             <ChooseTasksContainer
               isCurrentPlayerTurn={isCurrentPlayerTurn}
@@ -90,7 +90,7 @@ const ChooseTasksPhaseContainer: FC = () => {
               maxEstimationPointsPerPlayer={maxEstimationPointsPerPlayer}
             />
           )}
-        </GamePhaseContentWrapper>
+        </PageContentWrapper>
 
         <BottomButtonBar>
           <Button
@@ -109,7 +109,7 @@ const ChooseTasksPhaseContainer: FC = () => {
             Fortsätt
           </Button> */}
         </BottomButtonBar>
-      </GamePhaseWrapper>
+      </PageWrapper>
     </>
   );
 };

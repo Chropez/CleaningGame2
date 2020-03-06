@@ -27,6 +27,10 @@ import GamePlayer from 'models/game-player';
 import Task from 'models/task';
 import TaskEstimation from 'models/task-estimation';
 import User from 'models/user';
+import {
+  InvitationState,
+  invitationReducer
+} from 'routes/games/routes/invitation/invitation-duck';
 
 type Collection<T> = T;
 
@@ -39,6 +43,7 @@ interface AppData {
   allPlayersTaskEstimations: Collection<TaskEstimation>;
   currentPlayerTaskEstimations: Collection<TaskEstimation>;
   currentGameAvailablePlayers: Collection<User>;
+  invitationGame: Game;
 }
 
 type FirestoreRecordData<T> = {
@@ -82,6 +87,7 @@ export interface ApplicationState {
         players: PlayersState;
         setupPhase: SetupPhaseState;
       };
+      invitation: InvitationState;
     };
   };
 }
@@ -98,7 +104,8 @@ let fireStoreInitialState: FirestoreState = {
     currentGameTasks: undefined,
     allPlayersTaskEstimations: undefined,
     currentPlayerTaskEstimations: undefined,
-    currentGameAvailablePlayers: undefined
+    currentGameAvailablePlayers: undefined,
+    invitationGame: undefined
   },
   ordered: {
     users: [],
@@ -108,7 +115,8 @@ let fireStoreInitialState: FirestoreState = {
     currentGameTasks: [],
     allPlayersTaskEstimations: [],
     currentPlayerTaskEstimations: [],
-    currentGameAvailablePlayers: []
+    currentGameAvailablePlayers: [],
+    invitationGame: []
   },
   listeners: {},
   errors: {},
@@ -129,7 +137,8 @@ const combinedReducers = combineReducers<ApplicationState>({
         main: gameReducer,
         players: playerReducer,
         setupPhase: setupPhaseReducer
-      })
+      }),
+      invitation: invitationReducer
     })
   })
 });

@@ -27,8 +27,8 @@ import {
   removeTask
 } from './add-tasks/add-tasks-duck';
 import BottomButtonBar from 'components/BottomButtonBar';
-import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
-import GamePhaseWrapper from '../../components/GamePhaseWrapper';
+import PageContentWrapper from 'components/PageContentWrapper';
+import PageWrapper from 'components/PageWrapper';
 import {
   goToNextStep,
   selectGameTasks,
@@ -103,8 +103,8 @@ const SetupPhaseContainer: FC = () => {
   };
 
   return (
-    <GamePhaseWrapper>
-      <GamePhaseContentWrapper>
+    <PageWrapper>
+      <PageContentWrapper>
         <Box p={2}>
           <Typography>
             Glöm inte att bjuda in dina städkompanjoner till spelet.
@@ -134,7 +134,7 @@ const SetupPhaseContainer: FC = () => {
           newTaskText={newTaskText}
           tasks={tasks}
         />
-      </GamePhaseContentWrapper>
+      </PageContentWrapper>
 
       <Snackbar
         anchorOrigin={{
@@ -168,7 +168,7 @@ const SetupPhaseContainer: FC = () => {
           Nästa
         </Button>
       </BottomButtonBar>
-    </GamePhaseWrapper>
+    </PageWrapper>
   );
 };
 

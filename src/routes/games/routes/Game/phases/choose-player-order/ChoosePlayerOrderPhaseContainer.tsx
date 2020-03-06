@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
-import GamePhaseWrapper from '../../components/GamePhaseWrapper';
-import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
+import PageWrapper from 'components/PageWrapper';
+import PageContentWrapper from 'components/PageContentWrapper';
 import { Box, Typography, Button } from '@material-ui/core';
 import BottomButtonBar from 'components/BottomButtonBar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,8 +44,8 @@ const ChoosePlayerOrderPhaseContainer: FC = () => {
 
   return (
     <>
-      <GamePhaseWrapper>
-        <GamePhaseContentWrapper>
+      <PageWrapper>
+        <PageContentWrapper>
           <Box p={2}>
             <Typography>
               Innan ni börjar välja städuppgifter måste ni bestämma vem som
@@ -74,7 +74,7 @@ const ChoosePlayerOrderPhaseContainer: FC = () => {
               maxEstimationPointsPerPlayer={maxEstimationPointsPerPlayer}
             />
           </Box>
-        </GamePhaseContentWrapper>
+        </PageContentWrapper>
 
         <BottomButtonBar>
           <Button
@@ -93,7 +93,7 @@ const ChoosePlayerOrderPhaseContainer: FC = () => {
             Fortsätt
           </Button>
         </BottomButtonBar>
-      </GamePhaseWrapper>
+      </PageWrapper>
     </>
   );
 };

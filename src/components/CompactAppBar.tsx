@@ -43,7 +43,7 @@ interface Props {
   onShowMenu: () => void;
 }
 
-const GameAppBar: FC<Props> = ({
+const CompactAppBar: FC<Props> = ({
   gameName,
   menuIsOpen,
   onHideMenu,
@@ -85,4 +85,4 @@ const GameAppBar: FC<Props> = ({
   );
 };
 
-export default GameAppBar;
+export default CompactAppBar;

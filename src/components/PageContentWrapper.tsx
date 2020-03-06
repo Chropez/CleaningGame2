@@ -10,8 +10,8 @@ const Container = styled(MuiContainer as FC<ContainerProps>)`
   }
 `;
 
-const GamePhaseContentWrapper: FC<ContainerProps> = props => (
+const PageContentWrapper: FC<ContainerProps> = props => (
   <Container maxWidth="md" {...props} />
 );
 
-export default GamePhaseContentWrapper;
+export default PageContentWrapper;

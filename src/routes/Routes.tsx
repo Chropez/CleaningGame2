@@ -9,6 +9,7 @@ import TestRouteComponent from './test';
 import { GameRoute } from './games';
 import PrivacyPolicy from './terms/privacy-policy';
 import TermsAndConditions from './terms/terms-and-conditions';
+import InvitationRoute from './games/routes/invitation/InvitationRoute';
 
 const Routes: FunctionComponent = () => {
   return (
@@ -19,6 +20,10 @@ const Routes: FunctionComponent = () => {
       />
 
       <ProtectedRoute exact={true} path="/" component={HomeRoute} />
+      <ProtectedRoute
+        path="/games/:gameId/invitation/:invitationId"
+        component={InvitationRoute}
+      />
       <ProtectedRoute path="/games/:gameId" component={GameRoute} />
       <ProtectedRoute path="/test" component={TestRouteComponent} />
       <Route path="/terms/privacy-policy" component={PrivacyPolicy} />

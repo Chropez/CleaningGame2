@@ -9,7 +9,7 @@ import {
   hideMenu,
   showMenu
 } from './game-duck';
-import GameAppBar from './components/GameAppBar';
+import GameAppBar from 'components/CompactAppBar';
 import { GamePhase } from 'models/game';
 import SetupPhaseContainer from './phases/setup/SetupPhaseContainer';
 import EstimatePhaseContainer from './phases/estimate/EstimatePhaseContainer';
