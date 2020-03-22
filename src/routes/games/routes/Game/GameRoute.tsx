@@ -1,20 +1,14 @@
 import React, { FC, useEffect } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import GameContainer from './GameContainer';
 
-interface GamesParams {
-  gameId: string;
-}
+const GameRoute: FC = () => {
+  let { gameId } = useParams();
 
-const GameRoute: FC<RouteComponentProps<GamesParams>> = ({
-  match: {
-    params: { gameId }
-  }
-}) => {
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
-  return <GameContainer gameId={gameId} />;
+  return <GameContainer gameId={gameId!} />;
 };
 
 export default GameRoute;

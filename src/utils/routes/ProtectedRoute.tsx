@@ -6,7 +6,7 @@ import { ApplicationState } from 'store/root-reducer';
 
 type Props = RouteProps;
 
-const ProtectedRoute: FunctionComponent<Props> = props => {
+const ProtectedRoute: FunctionComponent<Props> = ({ children, ...rest }) => {
   let isLoggedIn = useSelector(
     (state: ApplicationState) => !state.firebase.auth.isEmpty
   );
@@ -14,15 +14,26 @@ const ProtectedRoute: FunctionComponent<Props> = props => {
     (state: ApplicationState) => state.firebase.auth.isLoaded
   );
 
-  if (!isLoaded) {
-    return null;
-  }
+  return (
+    <Route
+      {...rest}
+      render={({ location }) => {
+        if (!isLoaded) {
+          return null;
+        }
 
-  if (!isLoggedIn) {
-    return <Redirect to="/account/login" />;
-  }
+        if (!isLoggedIn) {
+          return (
+            <Redirect
+              to={{ pathname: '/account/login', state: { from: location } }}
+            />
+          );
+        }
 
-  return <Route {...props} />;
+        return <>{children}</>;
+      }}
+    />
+  );
 };
 
 export default ProtectedRoute;

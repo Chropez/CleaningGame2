@@ -1,16 +1,11 @@
 import React, { FC } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import InvitationContainer from './InvitationContainer';
+import { useParams } from 'react-router-dom';
 
-interface InvitationParams {
-  gameId: string;
-  invitationId: string;
-}
+const InvitationRoute: FC = () => {
+  let { gameId, invitationId } = useParams();
 
-const InvitationRoute: FC<RouteComponentProps<InvitationParams>> = ({
-  match: {
-    params: { gameId, invitationId }
-  }
-}) => <InvitationContainer gameId={gameId} invitationId={invitationId} />;
+  return <InvitationContainer gameId={gameId!} invitationId={invitationId!} />;
+};
 
 export default InvitationRoute;

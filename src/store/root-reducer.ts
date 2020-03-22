@@ -2,7 +2,6 @@ import { firebaseReducer } from 'react-redux-firebase';
 import { combineReducers, AnyAction, Reducer } from 'redux';
 import { firestoreReducer } from 'redux-firestore';
 import { homeReducer, HomeState } from 'routes/home/home-duck';
-import { testReducer } from 'routes/test/duck';
 import { GameState, gameReducer } from 'routes/games/routes/Game/game-duck';
 import Game from 'models/game';
 import reduceReducers from 'reduce-reducers';
@@ -74,9 +73,6 @@ export interface ApplicationState {
   firebase: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   firestore: FirestoreState;
-  test: {
-    greet: string;
-  };
   routes: {
     application: ApplicationRouteState;
     home: HomeState;
@@ -127,7 +123,6 @@ const combinedReducers = combineReducers<ApplicationState>({
   firebase: firebaseReducer,
   firestore: (state = fireStoreInitialState, action) =>
     firestoreReducer(state, action),
-  test: testReducer,
   routes: combineReducers({
     application: applicationRouteReducer,
     home: homeReducer,
