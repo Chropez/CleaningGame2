@@ -33,7 +33,7 @@ const PlayersContainer: FC<Props> = ({
   canShare,
   onShareClick,
   shareLink,
-  onCopyInvitationUrl
+  onCopyInvitationUrl,
 }) => (
   <>
     <PlayersAddDialog

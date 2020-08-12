@@ -13,7 +13,7 @@ export const initializeFirebase = () => {
 
 export const firestoreConfig: Partial<ReactReduxFirebaseConfig> = {
   userProfile: 'users',
-  useFirestoreForProfile: true
+  useFirestoreForProfile: true,
 };
 
 export const firebaseEnhancers = [reduxFirestore(firebase)];

@@ -7,7 +7,7 @@ import {
   selectGame,
   selectMenuIsOpen,
   hideMenu,
-  showMenu
+  showMenu,
 } from './game-duck';
 import GameAppBar from 'components/CompactAppBar';
 import { GamePhase } from 'models/game';

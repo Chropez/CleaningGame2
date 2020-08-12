@@ -32,7 +32,7 @@ interface EstimationButtonProps {
 const EstimationButton: FC<EstimationButtonProps> = ({
   isSelected,
   onClick,
-  point
+  point,
 }) => (
   <StyledEstimationButton
     variant={isSelected ? 'contained' : 'outlined'}
@@ -52,7 +52,7 @@ interface TaskEstimateProps {
 const TaskEstimate: FC<TaskEstimateProps> = ({
   estimate,
   onEstimate,
-  taskName
+  taskName,
 }) => (
   <>
     <Box mb={2}>

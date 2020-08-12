@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 
 const ActionTypes = {
   ListenerResponse: '@@reduxFirestore/LISTENER_RESPONSE',
-  GetSuccess: '@@reduxFirestore/GET_SUCCESS'
+  GetSuccess: '@@reduxFirestore/GET_SUCCESS',
 };
 
 // Reducer that listens to firestore changes

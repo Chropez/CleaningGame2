@@ -3,7 +3,7 @@ import {
   Card as MuiCard,
   CardHeader as MuiCardHeader,
   CardHeaderProps,
-  Avatar as MuiAvatar
+  Avatar as MuiAvatar,
 } from '@material-ui/core';
 import { AvatarProps } from '@material-ui/core/Avatar';
 import styled from 'styled-components/macro';
@@ -42,7 +42,7 @@ const TaskCard: FC<Props> = ({
   taskName,
   onClickCard,
   actionButton = undefined,
-  hideShadow = false
+  hideShadow = false,
 }) => (
   <Card
     elevation={hideShadow ? 0 : 1}

@@ -6,7 +6,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Fade
+  Fade,
 } from '@material-ui/core';
 import PlayerTasksViewModel from '../../view-models/player-tasks-view-model';
 import PlayerTasksTitle from '../../components/PlayerTasksTitle';
@@ -33,11 +33,11 @@ const ChooseTasksSummary: FC<Props> = ({
   playersWithTasks,
   onChangeTaskAssignee,
   minEstimationPointsPerPlayer,
-  maxEstimationPointsPerPlayer
+  maxEstimationPointsPerPlayer,
 }) => {
   let [
     changeAssigneeMenuAnchor,
-    setChangeAssigneeMenuAnchor
+    setChangeAssigneeMenuAnchor,
   ] = useState<Element | null>(null);
   let [changeAssigneeMenuIsOpen, setChangeAssigneeMenuIsOpen] = useState(false);
   let [currentTaskAssignee, setChangeCurrentTaskAssignee] = useState('');

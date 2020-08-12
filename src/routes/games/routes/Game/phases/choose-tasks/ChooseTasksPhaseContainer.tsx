@@ -17,7 +17,7 @@ import {
   selectAvailableTasksViewModel,
   selectTasksForPlayer,
   selectMinEstimationPointsPerPlayer,
-  selectMaxEstimationPointsPerPlayer
+  selectMaxEstimationPointsPerPlayer,
 } from './choose-tasks-duck';
 import ChooseTasksContainer from './ChooseTaskContainer';
 import { Button } from '@material-ui/core';
@@ -51,7 +51,7 @@ const ChooseTasksPhaseContainer: FC = () => {
     [
       maxEstimationPointsPerPlayer,
       minEstimationPointsPerPlayer,
-      playersWithTasks
+      playersWithTasks,
     ]
   );
 

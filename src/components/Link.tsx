@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react';
 import { FunctionComponent, memo } from 'react';
 import {
   Link as RouterLink,
-  LinkProps as RouterLinkProps
+  LinkProps as RouterLinkProps,
 } from 'react-router-dom';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

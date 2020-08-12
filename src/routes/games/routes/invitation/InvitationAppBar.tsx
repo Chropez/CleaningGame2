@@ -16,7 +16,7 @@ const InvitationAppBar: FC<Props> = ({
   menuIsOpen,
   onHideMenu,
   onLogout,
-  onShowMenu
+  onShowMenu,
 }) => (
   <>
     <GameAppBar

@@ -6,7 +6,7 @@ import {
   updateGameByIdQuery,
   selectGamePlayersViewModel,
   selectCurrentPlayer,
-  selectGameId
+  selectGameId,
 } from '../../game-duck';
 import { DocumentQuery } from 'typings/firestore';
 import { createSelector } from 'reselect';
@@ -14,7 +14,7 @@ import { GamePlayerViewModel } from '../../view-models/game-player-view-model';
 import Task from 'models/task';
 import {
   getGameTasksQuery,
-  selectTasksViewModel
+  selectTasksViewModel,
 } from '../../duck-helpers/current-game-tasks';
 import PlayerTasksViewModel from '../../view-models/player-tasks-view-model';
 
@@ -28,7 +28,7 @@ enum ChooseTasksActionTypes {
   ChooseTasksPhaseSubscribed = 'GAMES/GAME/CHOOSE_TASKS/CHOOSE_TASKS_PHASE_SUBSCRIBED',
   ChooseTasksPhaseUnsubscribed = 'GAMES/GAME/CHOOSE_TASKS/CHOOSE_TASKS_PHASE_UNSUBSCRIBED',
   ChangeTaskAssigneeRequested = 'GAMES/GAME/CHOOSE_TASKS/CHANGE_TASK_ASSIGNEE_REQUESTED',
-  ChangeTaskAssigneeSucceeded = 'GAMES/GAME/CHOOSE_TASKS/CHANGE_TASK_ASSIGNEE_SUCCEEDED'
+  ChangeTaskAssigneeSucceeded = 'GAMES/GAME/CHOOSE_TASKS/CHANGE_TASK_ASSIGNEE_SUCCEEDED',
 }
 
 // Selectors
@@ -37,7 +37,7 @@ export {
   selectTasksViewModel,
   selectTotalEstimationPoints,
   selectMinEstimationPointsPerPlayer,
-  selectMaxEstimationPointsPerPlayer
+  selectMaxEstimationPointsPerPlayer,
 } from '../../duck-helpers/current-game-tasks';
 
 export const selectTotalTasks = createSelector(
@@ -55,7 +55,7 @@ export const selectTasksForPlayer = createSelector(
   (tasks, players): PlayerTasksViewModel[] =>
     players.map(player => ({
       ...player,
-      tasks: tasks.filter(task => task.assigneePlayerId === player.id)
+      tasks: tasks.filter(task => task.assigneePlayerId === player.id),
     }))
 );
 
@@ -79,12 +79,12 @@ const getAllPlayersTaskEstimationsQuery = (gameId: string) => ({
   collection: 'games',
   doc: gameId,
   subcollections: [{ collection: 'task-estimations' }],
-  storeAs: 'allPlayersTaskEstimations'
+  storeAs: 'allPlayersTaskEstimations',
 });
 
 const getChooseTasksQueries = (gameId: string): DocumentQuery[] => [
   getGameTasksQuery(gameId),
-  getAllPlayersTaskEstimationsQuery(gameId)
+  getAllPlayersTaskEstimationsQuery(gameId),
 ];
 
 export const updateTaskQuery = (
@@ -97,9 +97,9 @@ export const updateTaskQuery = (
   subcollections: [
     {
       collection: 'tasks',
-      doc: taskId
-    }
-  ]
+      doc: taskId,
+    },
+  ],
 });
 
 export const updateChangeTaskAssigneeQuery = (
@@ -112,9 +112,9 @@ export const updateChangeTaskAssigneeQuery = (
   subcollections: [
     {
       collection: 'tasks',
-      doc: taskId
-    }
-  ]
+      doc: taskId,
+    },
+  ],
 });
 
 // Actions
@@ -138,7 +138,7 @@ export const goToNextStep: AppActionCreator = () => async (
 
   dispatch({
     type: ChooseTasksActionTypes.NextGamePhaseRequested,
-    payload: { phase }
+    payload: { phase },
   });
   await firestore.update(updateGameByIdQuery(game.id!), phase);
   dispatch({ type: ChooseTasksActionTypes.NextGamePhaseSucceeded });
@@ -163,7 +163,7 @@ export const goToPreviousStep: AppActionCreator = () => async (
 
   dispatch({
     type: ChooseTasksActionTypes.PreviousGamePhaseRequested,
-    payload: phase
+    payload: phase,
   });
   await firestore.update(updateGameByIdQuery(game.id!), phase);
   dispatch({ type: ChooseTasksActionTypes.PreviousGamePhaseSucceeded });
@@ -176,7 +176,7 @@ export const subscribeToChooseTasksPhase: AppActionCreator = (
   await firestore.setListeners(getChooseTasksQueries(gameId));
 
   dispatch({
-    type: ChooseTasksActionTypes.ChooseTasksPhaseSubscribed
+    type: ChooseTasksActionTypes.ChooseTasksPhaseSubscribed,
   });
 };
 
@@ -191,7 +191,7 @@ export const changeTaskAssignee: AppActionCreator = (
 
   dispatch({
     type: ChooseTasksActionTypes.ChangeTaskAssigneeRequested,
-    payload: assignee
+    payload: assignee,
   });
 
   await firestore.update(
@@ -200,7 +200,7 @@ export const changeTaskAssignee: AppActionCreator = (
   );
 
   dispatch({
-    type: ChooseTasksActionTypes.ChangeTaskAssigneeSucceeded
+    type: ChooseTasksActionTypes.ChangeTaskAssigneeSucceeded,
   });
 };
 
@@ -218,7 +218,7 @@ export const chooseTask: AppActionCreator = (taskId: string) => async (
 
   dispatch({
     type: ChooseTasksActionTypes.ChooseTaskRequested,
-    payload: assignee
+    payload: assignee,
   });
 
   await firestore.update(updateTaskQuery(gameId, taskId), assignee);
@@ -233,7 +233,7 @@ export const unsubscribeFromChooseTasksPhase: AppActionCreator = (
   await firestore.unsetListeners(getChooseTasksQueries(gameId));
 
   dispatch({
-    type: ChooseTasksActionTypes.ChooseTasksPhaseUnsubscribed
+    type: ChooseTasksActionTypes.ChooseTasksPhaseUnsubscribed,
   });
 };
 

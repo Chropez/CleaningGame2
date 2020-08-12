@@ -3,7 +3,7 @@ import {
   Fab as MuiFab,
   Container,
   Box,
-  ListSubheader
+  ListSubheader,
 } from '@material-ui/core';
 import AddIcon from 'mdi-material-ui/Plus';
 import styled from 'styled-components/macro';
@@ -15,7 +15,7 @@ import {
   subscribeToGames,
   unsubscribeFromGames,
   selectGames,
-  selectUsers
+  selectUsers,
 } from './games-duck';
 import Game from 'models/game';
 import { useHistory } from 'react-router-dom';

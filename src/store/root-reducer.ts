@@ -8,19 +8,19 @@ import reduceReducers from 'reduce-reducers';
 import firestoreEnhancedReducers from './firestore-enhanced-reducer';
 import {
   AddTasksState,
-  addTasksReducer
+  addTasksReducer,
 } from 'routes/games/routes/Game/phases/setup/add-tasks/add-tasks-duck';
 import {
   PlayersState,
-  playerReducer
+  playerReducer,
 } from 'routes/games/routes/Game/phases/setup/players/players-duck';
 import {
   ApplicationRouteState,
-  applicationRouteReducer
+  applicationRouteReducer,
 } from 'routes/application/application-duck';
 import {
   setupPhaseReducer,
-  SetupPhaseState
+  SetupPhaseState,
 } from 'routes/games/routes/Game/phases/setup/setup-phase-duck';
 import GamePlayer from 'models/game-player';
 import Task from 'models/task';
@@ -28,7 +28,7 @@ import TaskEstimation from 'models/task-estimation';
 import User from 'models/user';
 import {
   InvitationState,
-  invitationReducer
+  invitationReducer,
 } from 'routes/games/routes/invitation/invitation-duck';
 
 type Collection<T> = T;
@@ -90,7 +90,7 @@ export interface ApplicationState {
 
 let fireStoreInitialState: FirestoreState = {
   status: {
-    requesting: undefined
+    requesting: undefined,
   },
   data: {
     users: undefined,
@@ -101,7 +101,7 @@ let fireStoreInitialState: FirestoreState = {
     allPlayersTaskEstimations: undefined,
     currentPlayerTaskEstimations: undefined,
     currentGameAvailablePlayers: undefined,
-    invitationGame: undefined
+    invitationGame: undefined,
   },
   ordered: {
     users: [],
@@ -112,11 +112,11 @@ let fireStoreInitialState: FirestoreState = {
     allPlayersTaskEstimations: [],
     currentPlayerTaskEstimations: [],
     currentGameAvailablePlayers: [],
-    invitationGame: []
+    invitationGame: [],
   },
   listeners: {},
   errors: {},
-  queries: {}
+  queries: {},
 };
 
 const combinedReducers = combineReducers<ApplicationState>({
@@ -131,11 +131,11 @@ const combinedReducers = combineReducers<ApplicationState>({
         addTasks: addTasksReducer,
         main: gameReducer,
         players: playerReducer,
-        setupPhase: setupPhaseReducer
+        setupPhase: setupPhaseReducer,
       }),
-      invitation: invitationReducer
-    })
-  })
+      invitation: invitationReducer,
+    }),
+  }),
 });
 
 export default reduceReducers<ApplicationState>(

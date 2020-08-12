@@ -8,12 +8,12 @@ import {
   unsubscribeFromEstimatePhase,
   selectTasksWithEstimation,
   updateCurrentPlayerIsDoneEstimating,
-  goToNextStep
+  goToNextStep,
 } from './estimate-phase-duck';
 import {
   selectGameId,
   selectGamePlayersViewModel,
-  selectCurrentPlayer
+  selectCurrentPlayer,
 } from '../../game-duck';
 import EstimationBoardContainer from './EstimationBoardContainer';
 import PlayerEstimationWaitList from './PlayerEstimationWaitList';

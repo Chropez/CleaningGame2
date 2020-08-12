@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
 import ListSubheader, {
-  ListSubheaderProps
+  ListSubheaderProps,
 } from '@material-ui/core/ListSubheader';
 import { FC } from 'react';
 

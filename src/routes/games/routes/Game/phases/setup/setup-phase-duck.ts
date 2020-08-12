@@ -11,7 +11,7 @@ enum SetupPhaseTypes {
   NextGamePhaseRequested = 'GAMES/GAME/SETUP_PHASE/NEXT_GAME_PHASE_REQUESTED',
   NextGamePhaseSucceeded = 'GAMES/GAME/SETUP_PHASE/NEXT_GAME_PHASE_SUCCEEDED',
   CopiedInvitationUrlSnackbarOpened = 'GAMES/GAME/SETUP_PHASE/COPIED_INVITATION_URL_SNACKBAR_OPENED',
-  CopiedInvitationUrlSnackbarClosed = 'GAMES/GAME/SETUP_PHASE/COPIED_INVITATION_URL_SNACKBAR_CLOSED'
+  CopiedInvitationUrlSnackbarClosed = 'GAMES/GAME/SETUP_PHASE/COPIED_INVITATION_URL_SNACKBAR_CLOSED',
 }
 
 // Selectors
@@ -30,7 +30,7 @@ const getGameTasksQuery = (gameId: string) => ({
   collection: 'games',
   doc: gameId,
   subcollections: [{ collection: 'tasks', orderBy: [['createdAt', 'desc']] }],
-  storeAs: 'currentGameTasks'
+  storeAs: 'currentGameTasks',
 });
 
 export const subscribeToGameTasks: AppActionCreator = (
@@ -42,7 +42,7 @@ export const subscribeToGameTasks: AppActionCreator = (
 
   dispatch({
     type: SetupPhaseTypes.GameTasksSubscribed,
-    payload: { id: gameId }
+    payload: { id: gameId },
   });
 };
 
@@ -55,7 +55,7 @@ export const unsubscribeFromGameTasks: AppActionCreator = (
 
   dispatch({
     type: SetupPhaseTypes.GameTasksSubscribed,
-    payload: { id: gameId }
+    payload: { id: gameId },
   });
 };
 
@@ -77,7 +77,7 @@ export const goToNextStep: AppActionCreator = () => async (
 
   dispatch({ type: SetupPhaseTypes.NextGamePhaseRequested });
   await firestore.update(updateGameByIdQuery(game.id!), {
-    phase: GamePhase.Estimate
+    phase: GamePhase.Estimate,
   });
   dispatch({ type: SetupPhaseTypes.NextGamePhaseSucceeded });
 };
@@ -102,7 +102,7 @@ export interface SetupPhaseState {
 }
 
 const initialState: SetupPhaseState = {
-  invitationUrlCopiedSnackbarIsOpen: false
+  invitationUrlCopiedSnackbarIsOpen: false,
 };
 
 export const setupPhaseReducer = (

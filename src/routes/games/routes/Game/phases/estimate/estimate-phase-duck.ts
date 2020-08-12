@@ -5,7 +5,7 @@ import {
   selectGame,
   selectGameId,
   updateGameByIdQuery,
-  selectGamePlayers
+  selectGamePlayers,
 } from '../../game-duck';
 import { selectCurrentUserId } from 'application/selectors';
 import TaskEstimation from 'models/task-estimation';
@@ -30,7 +30,7 @@ enum EstimatePhaseActionTypes {
   UpdatingPlayerOrderRequested = 'GAMES/GAME/ESTIMATE_PHASE/UPDATE_PLAYER_ORDER_REQUESTED',
   UpdatingPlayerOrderSucceeded = 'GAMES/GAME/ESTIMATE_PHASE/UPDATE_PLAYER_ORDER_SUCCEEDED',
   TaskEstimationsSubscribed = 'GAMES/GAME/ESTIMATE_PHASE/TASK_ESTIMATION_SUBSCRIBED',
-  TaskEstimationUnsubscribed = 'GAMES/GAME/ESTIMATE_PHASE/TASK_ESTIMATION_UNSUBSCRIBED'
+  TaskEstimationUnsubscribed = 'GAMES/GAME/ESTIMATE_PHASE/TASK_ESTIMATION_UNSUBSCRIBED',
 }
 
 // Selectors
@@ -59,7 +59,7 @@ export const selectTasksWithEstimation = (
   return tasks.map(task => {
     return {
       task: task,
-      estimation: selectEstimationByTaskId(state, task.id!)
+      estimation: selectEstimationByTaskId(state, task.id!),
     };
   });
 };
@@ -69,7 +69,7 @@ export const selectTasksWithEstimation = (
 const getAddEstimationQuery = (gameId: string): DocumentQuery => ({
   collection: 'games',
   doc: gameId,
-  subcollections: [{ collection: 'task-estimations' }]
+  subcollections: [{ collection: 'task-estimations' }],
 });
 
 const getUpdateEstimationQuery = (
@@ -78,14 +78,14 @@ const getUpdateEstimationQuery = (
 ): DocumentQuery => ({
   collection: 'games',
   doc: gameId,
-  subcollections: [{ collection: 'task-estimations', doc: estimationId }]
+  subcollections: [{ collection: 'task-estimations', doc: estimationId }],
 });
 
 const getGameTasksQuery = (gameId: string): DocumentQuery => ({
   collection: 'games',
   doc: gameId,
   subcollections: [{ collection: 'tasks', orderBy: [['createdAt', 'desc']] }],
-  storeAs: 'currentGameTasks'
+  storeAs: 'currentGameTasks',
 });
 
 const getCurrentPlayerTaskEstimationsQuery = (
@@ -96,7 +96,7 @@ const getCurrentPlayerTaskEstimationsQuery = (
   doc: gameId,
   subcollections: [{ collection: 'task-estimations' }],
   storeAs: 'currentPlayerTaskEstimations',
-  where: ['playerId', '==', userId]
+  where: ['playerId', '==', userId],
 });
 
 const updateGamePlayerQuery = (
@@ -106,7 +106,7 @@ const updateGamePlayerQuery = (
   collection: 'games',
   doc: gameId,
   storeAs: 'updateCurrentGamePlayerIsDoneEstimating',
-  subcollections: [{ collection: 'players', doc: playerId }]
+  subcollections: [{ collection: 'players', doc: playerId }],
 });
 
 const updatePlayerOrderQuery = (
@@ -116,7 +116,7 @@ const updatePlayerOrderQuery = (
   collection: 'games',
   doc: gameId,
   storeAs: 'updatePlayerOrderId',
-  subcollections: [{ collection: 'players', doc: playerId }]
+  subcollections: [{ collection: 'players', doc: playerId }],
 });
 
 // Actions
@@ -139,7 +139,7 @@ export const goToPreviousStep: AppActionCreator = () => async (
 
   dispatch({ type: EstimatePhaseActionTypes.PreviousGamePhaseRequested });
   await firestore.update(updateGameByIdQuery(game.id!), {
-    phase: GamePhase.Setup
+    phase: GamePhase.Setup,
   });
   dispatch({ type: EstimatePhaseActionTypes.PreviousGamePhaseSucceeded });
 };
@@ -159,7 +159,7 @@ export const setNextPhase = async (
 
   dispatch({
     type: EstimatePhaseActionTypes.NextGamePhaseRequested,
-    payload: { phase }
+    payload: { phase },
   });
 
   await firestore.update(updateGameByIdQuery(game.id!), phase);
@@ -181,12 +181,12 @@ const setPlayerOrderByFastest = async (
     let pickOrder = index + 1;
 
     let updatedPlayer: Partial<GamePlayer> = {
-      pickOrder
+      pickOrder,
     };
 
     dispatch({
       type: EstimatePhaseActionTypes.UpdatingPlayerOrderRequested,
-      payload: { ...player, pickOrder }
+      payload: { ...player, pickOrder },
     });
 
     firestore.update(updatePlayerOrderQuery(gameId, player.id!), updatedPlayer);
@@ -221,7 +221,7 @@ export const estimateTask: AppActionCreator = (
     playerId: userId,
     taskId,
     lastModified: timestamp(firestore),
-    estimate
+    estimate,
   };
 
   if (estimationId === undefined) {
@@ -229,7 +229,7 @@ export const estimateTask: AppActionCreator = (
 
     dispatch({
       type: EstimatePhaseActionTypes.AddTaskEstimationRequested,
-      payload: taskEstimation
+      payload: taskEstimation,
     });
     return;
   }
@@ -240,7 +240,7 @@ export const estimateTask: AppActionCreator = (
   );
 
   dispatch({
-    type: EstimatePhaseActionTypes.UpdateTaskEstimationSucceeded
+    type: EstimatePhaseActionTypes.UpdateTaskEstimationSucceeded,
   });
 };
 
@@ -254,7 +254,7 @@ export const subscribeToEstimatePhase: AppActionCreator = (
 
   await firestore.setListeners([
     getCurrentPlayerTaskEstimationsQuery(gameId, userId),
-    getGameTasksQuery(gameId)
+    getGameTasksQuery(gameId),
   ]);
   dispatch({ type: EstimatePhaseActionTypes.TaskEstimationsSubscribed });
 };
@@ -269,14 +269,14 @@ export const unsubscribeFromEstimatePhase: AppActionCreator = (
 
   await firestore.unsetListeners([
     getCurrentPlayerTaskEstimationsQuery(gameId, userId),
-    getGameTasksQuery(gameId)
+    getGameTasksQuery(gameId),
   ]);
 
   dispatch({ type: EstimatePhaseActionTypes.TaskEstimationUnsubscribed });
 };
 
 export const updateCurrentPlayerIsDoneEstimating: AppActionCreator = (
-  isDoneEstimating: boolean = true
+  isDoneEstimating = true
 ) => async (dispatch, getState, { getFirestore }) => {
   let state = getState();
   let firestore = getFirestore();
@@ -288,18 +288,18 @@ export const updateCurrentPlayerIsDoneEstimating: AppActionCreator = (
     isDoneEstimating,
     isDoneEstimatingAt: isDoneEstimating
       ? timestamp(firestore)
-      : firestore.FieldValue.delete()
+      : firestore.FieldValue.delete(),
   };
 
   dispatch({
     type: EstimatePhaseActionTypes.UpdatePlayerIsDoneEstimatingRequested,
-    payload: { ...updatedPlayer }
+    payload: { ...updatedPlayer },
   });
 
   await firestore.update(updateGamePlayerQuery(gameId, userId), updatedPlayer);
 
   dispatch({
-    type: EstimatePhaseActionTypes.UpdatePlayerIsDoneEstimatingSucceeded
+    type: EstimatePhaseActionTypes.UpdatePlayerIsDoneEstimatingSucceeded,
   });
 };
 

@@ -22,7 +22,7 @@ const EstimationBoardContainer: FC<Props> = ({
   onBackClick,
   onContinueClick,
   onEstimate,
-  tasksWithEstimation
+  tasksWithEstimation,
 }) => (
   <PageWrapper>
     <PageContentWrapper>

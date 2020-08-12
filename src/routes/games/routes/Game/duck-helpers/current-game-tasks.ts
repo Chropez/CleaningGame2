@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import TasksViewModel from '../view-models/tasks-view-model';
 import {
   selectGamePlayersData,
-  selectOrderedPlayersViewModel
+  selectOrderedPlayersViewModel,
 } from '../game-duck';
 
 const TASK_DISTRIBUTION_MIN_THRESHOLD = 0.85;
@@ -14,7 +14,7 @@ export const getGameTasksQuery = (gameId: string) => ({
   collection: 'games',
   doc: gameId,
   subcollections: [{ collection: 'tasks', orderBy: [['createdAt', 'desc']] }],
-  storeAs: 'currentGameTasks'
+  storeAs: 'currentGameTasks',
 });
 
 // Selectors
@@ -33,7 +33,7 @@ export const selectTasksViewModel = createSelector(
     selectCurrentGameTasks,
     selectAllPlayersTaskEstimations,
     selectOrderedCurrentGameTasks,
-    selectGamePlayersData
+    selectGamePlayersData,
   ],
   (gameTasks, allPlayersTaskEstimations, orderedTasks, gamePlayersData) => {
     if (

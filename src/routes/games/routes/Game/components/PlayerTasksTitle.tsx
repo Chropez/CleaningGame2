@@ -5,7 +5,7 @@ import {
   PaperProps,
   Box,
   Typography,
-  Chip
+  Chip,
 } from '@material-ui/core';
 
 const TitlePaper = styled(MuiPaper as FC<PaperProps>)`

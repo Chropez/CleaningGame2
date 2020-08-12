@@ -4,7 +4,7 @@ import {
   Box,
   Button,
   Snackbar,
-  IconButton
+  IconButton,
 } from '@material-ui/core';
 import GamePlayersContainer from './players/PlayersContainer';
 import { AppThunkDispatch } from 'store';
@@ -17,14 +17,14 @@ import {
   selectIsLoadingAvailablePlayers,
   selectAvailablePlayers,
   addPlayerToGame,
-  removePlayerFromGame
+  removePlayerFromGame,
 } from './players/players-duck';
 import TasksContainer from './add-tasks/TasksContainer';
 import {
   newTaskTextChanged,
   selectNewTaskText,
   addTask,
-  removeTask
+  removeTask,
 } from './add-tasks/add-tasks-duck';
 import BottomButtonBar from 'components/BottomButtonBar';
 import PageContentWrapper from 'components/PageContentWrapper';
@@ -36,12 +36,12 @@ import {
   unsubscribeFromGameTasks,
   selectInvitationUrlCopiedSnackbarIsOpen,
   closeInvitationUrlCopiedSnackbar,
-  openInvitationUrlCopiedSnackbar
+  openInvitationUrlCopiedSnackbar,
 } from './setup-phase-duck';
 import {
   selectGame,
   selectGamePlayersViewModel,
-  selectGameId
+  selectGameId,
 } from '../../game-duck';
 import { selectCurrentUserId } from 'application/selectors';
 import { Close as CloseIcon } from 'mdi-material-ui';
@@ -93,7 +93,7 @@ const SetupPhaseContainer: FC = () => {
     navigator.share({
       title: 'Städspelet',
       text: 'Du har blivit inbjuden att spela städspelet!',
-      url: invitationUrl
+      url: invitationUrl,
     });
   };
 
@@ -139,7 +139,7 @@ const SetupPhaseContainer: FC = () => {
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         open={invitationUrlCopiedSnackbarIsOpen}
         autoHideDuration={3000}

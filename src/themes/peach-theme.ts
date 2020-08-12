@@ -8,27 +8,27 @@ const peachTheme: DeepPartial<MainTheme> = {
       main: deepOrange[100], // #ffccbc
       light: '#ffffb0',
       dark: '#c97b63',
-      contrastText: '#543624'
+      contrastText: '#543624',
     },
     secondary: {
       main: '#6d4c41',
       light: '#9c786c',
       dark: '#40241a',
-      contrastText: '#ffffff'
+      contrastText: '#ffffff',
     },
     text: {
       primary: '#31180f',
       secondary: '#906656',
       hint: brown[200],
-      disabled: grey[300]
+      disabled: grey[300],
     },
     action: {
       disabled: grey[400],
-      active: '#6d4c41'
+      active: '#6d4c41',
     },
     background: {
-      default: '#fff8f6'
-    }
+      default: '#fff8f6',
+    },
   },
   secondaryBackground: {
     bgImage: `linear-gradient(
@@ -42,8 +42,8 @@ const peachTheme: DeepPartial<MainTheme> = {
     linkColor: '#90ff7e',
     // textColor: '#31180f',
     textColor: '#543624',
-    secondaryTextColor: '#906656'
-  }
+    secondaryTextColor: '#906656',
+  },
 };
 
 export default peachTheme;

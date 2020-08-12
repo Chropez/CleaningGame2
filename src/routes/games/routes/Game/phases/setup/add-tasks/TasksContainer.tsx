@@ -8,7 +8,7 @@ import {
   ListItemSecondaryAction,
   IconButton,
   Badge as MuiBadge,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import AddTaskTextField from './AddTaskTextField';
 import Task from 'models/task';
@@ -60,7 +60,7 @@ const TasksContainer: FC<Props> = ({
   onAddTask,
   onRemoveTask,
   onChange,
-  tasks
+  tasks,
 }) => (
   <List
     subheader={

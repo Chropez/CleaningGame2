@@ -17,13 +17,13 @@ import {
   Typography,
   OutlinedInput,
   InputAdornment,
-  IconButton
+  IconButton,
 } from '@material-ui/core';
 import AvailableGamePlayerModel from './available-game-player-view-model';
 import CheckIcon from 'mdi-material-ui/Check';
 import {
   ShareVariant as ShareVariantIcon,
-  ContentCopy as ContentCopyIcon
+  ContentCopy as ContentCopyIcon,
 } from 'mdi-material-ui';
 
 interface Props {
@@ -47,7 +47,7 @@ const PlayersAddDialog: FC<Props> = ({
   canShare,
   onShareClick,
   shareLink,
-  onCopyInvitationUrl
+  onCopyInvitationUrl,
 }) => {
   return (
     <Dialog

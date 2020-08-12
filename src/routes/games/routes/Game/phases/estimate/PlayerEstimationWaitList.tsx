@@ -12,7 +12,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Chip,
-  Divider
+  Divider,
 } from '@material-ui/core';
 import BottomButtonBar from 'components/BottomButtonBar';
 import { Small } from 'components/typography';
@@ -40,7 +40,7 @@ const PlayerEstimationWaitList: FC<Props> = ({
   cantContinueButtonMessage,
   onBackClick,
   onContinueClick,
-  players
+  players,
 }) => (
   <PageWrapper>
     <PageContentWrapper>

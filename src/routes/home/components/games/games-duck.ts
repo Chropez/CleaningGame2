@@ -16,7 +16,7 @@ enum GamesActionTypes {
   AllUserGamesUnsubscribed = 'GAMES/ALL_USER_GAMES_UNSUBSCRIBED',
   GameNameCheckRequested = 'GAMES/GAME_NAME_CHECK_REQUESTED',
   GameNameWasAvailable = 'GAMES/GAME_NAME_WAS_AVAILABLE',
-  GameNameWasUnavailable = 'GAMES/GAME_NAME_WAS_UNAVAILABLE'
+  GameNameWasUnavailable = 'GAMES/GAME_NAME_WAS_UNAVAILABLE',
 }
 
 // Selectors
@@ -36,13 +36,13 @@ const getGamesQuery = (userId: string): DocumentQuery => ({
   populates: [
     {
       child: 'createdById',
-      root: 'users'
+      root: 'users',
     },
     {
       child: 'participants',
-      root: 'users'
-    }
-  ]
+      root: 'users',
+    },
+  ],
 });
 
 // Actions
@@ -79,13 +79,13 @@ const getAvailableGameName = async (
 
   dispatch({
     type: GamesActionTypes.GameNameCheckRequested,
-    payload: { gameId }
+    payload: { gameId },
   });
 
   let game = await firestore.get({
     collection: 'games',
     doc: gameId,
-    storeAs: 'availableGameName'
+    storeAs: 'availableGameName',
   });
 
   if (game.exists) {
@@ -126,18 +126,18 @@ export const createGame: AppActionCreator = (history: H.History) => async (
     createdById: userId,
     phase: GamePhase.Setup,
     participants: [],
-    invitationId: shortid.generate()
+    invitationId: shortid.generate(),
   };
 
   dispatch({
     type: GamesActionTypes.CreateGameRequested,
-    payload: { ...game, documentId: gameId }
+    payload: { ...game, documentId: gameId },
   });
 
   await firestore.set({ collection: 'games', doc: gameId }, game);
 
   dispatch({
-    type: GamesActionTypes.CreateGameSucceeded
+    type: GamesActionTypes.CreateGameSucceeded,
   });
 
   dispatch(addPlayerToGame(gameId, userId));

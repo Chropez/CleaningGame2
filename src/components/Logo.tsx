@@ -5,13 +5,13 @@ import styled from 'styled-components/macro';
 const StyledLogo = styled.h1`
   /* color: ${({
     theme: {
-      palette: { getContrastText, primary }
-    }
+      palette: { getContrastText, primary },
+    },
   }) => getContrastText(primary.main)}; */
   color: ${({
     theme: {
-      palette: { primary }
-    }
+      palette: { primary },
+    },
   }) => primary.contrastText};
   font-size: 3.75rem;
   font-weight: 300;

@@ -15,7 +15,7 @@ enum GameActionTypes {
   AddGamePlayerRequested = 'GAMES/GAME/ADD_GAME_PLAYER_REQUESTED',
   AddGamePlayerSucceeded = 'GAMES/GAME/ADD_GAME_PLAYER_SUCCEEDED',
   GameMenuOpened = 'GAMES/GAME/GAME_MENU_OPENED',
-  GameMenuHidden = 'GAMES/GAME/GAME_MENU_HIDDEN'
+  GameMenuHidden = 'GAMES/GAME/GAME_MENU_HIDDEN',
 }
 
 // Selectors
@@ -49,7 +49,7 @@ export const selectGamePlayersViewModel = createSelector(
       ? []
       : currentGamePlayers.map(gamePlayer => ({
           ...gamePlayer,
-          user: users[gamePlayer.userId]!
+          user: users[gamePlayer.userId]!,
         }))
 );
 
@@ -77,7 +77,7 @@ export const selectMenuIsOpen = (state: ApplicationState) =>
 const getGameByIdQuery = (gameId: string): DocumentQuery => ({
   collection: 'games',
   doc: gameId,
-  storeAs: 'currentGame'
+  storeAs: 'currentGame',
 });
 
 const getGamePlayersByGameIdQuery = (gameId: string): DocumentQuery => ({
@@ -85,7 +85,7 @@ const getGamePlayersByGameIdQuery = (gameId: string): DocumentQuery => ({
   doc: gameId,
   storeAs: 'currentGamePlayers',
   populates: [{ child: 'userId', root: 'users' }],
-  subcollections: [{ collection: 'players' }]
+  subcollections: [{ collection: 'players' }],
 });
 
 const setGamePlayerQuery = (
@@ -98,20 +98,20 @@ const setGamePlayerQuery = (
     {
       collection: 'players',
       storeAs: 'currentGameAddPlayer',
-      doc: playerId
-    }
-  ]
+      doc: playerId,
+    },
+  ],
 });
 
 export const updateGameByIdQuery = (gameId: string): DocumentQuery => ({
   collection: 'games',
   doc: gameId,
-  storeAs: 'updateGameId'
+  storeAs: 'updateGameId',
 });
 
 const listenToGameQueries = (gameId: string) => [
   getGameByIdQuery(gameId),
-  getGamePlayersByGameIdQuery(gameId)
+  getGamePlayersByGameIdQuery(gameId),
 ];
 
 // Actions
@@ -148,18 +148,18 @@ export const addGamePlayer: AppActionCreator = (userId: string) => async (
 
   let player: GamePlayer = {
     userId,
-    createdAt: timestamp(firestore)
+    createdAt: timestamp(firestore),
   };
 
   dispatch({
     type: GameActionTypes.AddGamePlayerRequested,
-    payload: { ...player, id: userId }
+    payload: { ...player, id: userId },
   });
 
   await firestore.set(setGamePlayerQuery(gameId, userId), player);
 
   dispatch({
-    type: GameActionTypes.AddGamePlayerSucceeded
+    type: GameActionTypes.AddGamePlayerSucceeded,
   });
 };
 
@@ -190,7 +190,7 @@ const initialState: GameState = {
   currentGameId: '',
   isLoadingAvailablePlayers: false,
   isLoadingGame: false,
-  menuIsOpen: false
+  menuIsOpen: false,
 };
 
 export const gameReducer = (
@@ -202,7 +202,7 @@ export const gameReducer = (
       return {
         ...state,
         currentGameId: action.payload.id,
-        isLoadingGame: true
+        isLoadingGame: true,
       };
     case GameActionTypes.GameUnsubscribed:
       return { ...state, currentGameId: '', isLoadingGame: false };

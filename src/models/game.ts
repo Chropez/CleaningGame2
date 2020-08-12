@@ -3,7 +3,7 @@ export enum GamePhase {
   Estimate = 'estimate',
   ChoosePlayerOrder = 'choose-player-order',
   ChooseTasks = 'choose-tasks',
-  Clean = 'clean'
+  Clean = 'clean',
 }
 
 export default interface Game {

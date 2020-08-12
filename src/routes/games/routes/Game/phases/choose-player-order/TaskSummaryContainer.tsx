@@ -16,7 +16,7 @@ const TaskSummaryContainer: FC<Props> = ({
   tasks,
   totalEstimationPoints,
   minEstimationPointsPerPlayer,
-  maxEstimationPointsPerPlayer
+  maxEstimationPointsPerPlayer,
 }) => (
   <>
     <Typography variant="h2">Resultat</Typography>

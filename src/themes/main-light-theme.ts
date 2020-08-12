@@ -8,8 +8,8 @@ export const baseMuiLightTheme: ThemeOptions = {
     fontSize: 14,
     h2: {
       color: grey[600],
-      fontSize: '1.8rem'
-    }
+      fontSize: '1.8rem',
+    },
   },
   spacing: SPACING,
   palette: {
@@ -17,18 +17,18 @@ export const baseMuiLightTheme: ThemeOptions = {
       main: '#1e88e5',
       light: '#62a3ff',
       dark: '#004a9f',
-      contrastText: '#e9f3fc'
+      contrastText: '#e9f3fc',
     },
     secondary: {
       main: '#f50057',
       light: '#ff5983',
       dark: '#bb002f',
-      contrastText: '#fff'
+      contrastText: '#fff',
     },
     text: {
       primary: '#555',
-      secondary: '#555'
-    }
+      secondary: '#555',
+    },
   },
   breakpoints: {
     values: {
@@ -36,23 +36,23 @@ export const baseMuiLightTheme: ThemeOptions = {
       sm: 600,
       md: 960,
       lg: 1280,
-      xl: 1920
-    }
+      xl: 1920,
+    },
   },
   overrides: {
     MuiTypography: {
       h2: {
         marginBottom: `${SPACING * 2}px`,
-        marginTop: `${SPACING * 2}px`
-      }
+        marginTop: `${SPACING * 2}px`,
+      },
     },
     MuiChip: {
       label: {
         display: 'flex',
-        alignItems: 'flex-end'
-      }
-    }
-  }
+        alignItems: 'flex-end',
+      },
+    },
+  },
 };
 
 export const extendedLightTheme = {
@@ -74,6 +74,6 @@ export const extendedLightTheme = {
   );`,
     linkColor: '#90ff7e',
     textColor: '#fff',
-    secondaryTextColor: blue[100]
-  }
+    secondaryTextColor: blue[100],
+  },
 };

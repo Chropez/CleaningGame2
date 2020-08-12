@@ -4,7 +4,7 @@ import { AppAction } from 'config/redux';
 enum HomeActionTypes {
   ShowMenu = 'HOME_SHOW_MENU',
   HideMenu = 'HOME_HIDE_MENU',
-  CreateGame = 'HOME_CREATE_GAME'
+  CreateGame = 'HOME_CREATE_GAME',
 }
 
 export const showMenu: AppActionCreator = () => dispatch => {
@@ -24,7 +24,7 @@ export interface HomeState {
 }
 
 const initialState: HomeState = {
-  menuIsOpen: false
+  menuIsOpen: false,
 };
 
 export const homeReducer = (

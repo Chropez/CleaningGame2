@@ -13,7 +13,7 @@ import {
   selectTasksViewModel,
   selectTotalEstimationPoints,
   selectMinEstimationPointsPerPlayer,
-  selectMaxEstimationPointsPerPlayer
+  selectMaxEstimationPointsPerPlayer,
 } from './choose-player-order-duck';
 import ChooseOrderContainer from './ChooseOrderContainer';
 import { selectGameId, selectOrderedPlayersViewModel } from '../../game-duck';

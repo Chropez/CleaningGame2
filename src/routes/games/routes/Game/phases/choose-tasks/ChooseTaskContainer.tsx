@@ -26,7 +26,7 @@ const ChooseTasksContainer: FC<Props> = ({
   playersWithTasks,
   onChooseTask,
   minEstimationPointsPerPlayer,
-  maxEstimationPointsPerPlayer
+  maxEstimationPointsPerPlayer,
 }) => (
   <>
     <Box m={2}>

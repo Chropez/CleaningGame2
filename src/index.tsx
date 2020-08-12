@@ -49,5 +49,5 @@ serviceWorker.register({
       registration.waiting.postMessage({ type: 'SKIP_WAITING' });
     }
     window.location.reload();
-  }
+  },
 });

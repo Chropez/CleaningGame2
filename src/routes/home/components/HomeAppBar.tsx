@@ -56,7 +56,7 @@ const HomeAppBar: FunctionComponent<Props> = ({
   menuIsOpen,
   onHideMenu,
   onLogout,
-  onShowMenu
+  onShowMenu,
 }) => {
   let menuAnchorRef = useRef<HTMLElement | null>(null);
 

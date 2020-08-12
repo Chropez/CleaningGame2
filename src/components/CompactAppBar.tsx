@@ -6,7 +6,7 @@ import {
   Typography,
   Menu,
   MenuProps,
-  MenuItem
+  MenuItem,
 } from '@material-ui/core';
 import Link from 'components/Link';
 import HomeIcon from 'mdi-material-ui/Home';
@@ -48,7 +48,7 @@ const CompactAppBar: FC<Props> = ({
   menuIsOpen,
   onHideMenu,
   onLogout,
-  onShowMenu
+  onShowMenu,
 }) => {
   let menuAnchorRef = useRef<HTMLButtonElement | null>(null);
 

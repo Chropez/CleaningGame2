@@ -5,7 +5,7 @@ import {
   selectGame,
   updateGameByIdQuery,
   selectGameId,
-  selectGamePlayers
+  selectGamePlayers,
 } from '../../game-duck';
 import { DocumentQuery } from 'typings/firestore';
 import GamePlayer from 'models/game-player';
@@ -19,7 +19,7 @@ enum ChoosePlayerOrderActionTypes {
   ChangePlayerOrderRequested = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHANGE_PLAYER_ORDER_REQUESTED',
   ChangePlayerOrderSucceeded = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHANGE_PLAYER_ORDER_SUCCEEDED',
   ChoosePlayerOrderPhaseSubscribed = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHOOSE_PLAYER_ORDER_PHASE_SUBSCRIBED',
-  ChoosePlayerOrderPhaseUnsubscribed = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHOOSE_PLAYER_ORDER_PHASE_UNSUBSCRIBED'
+  ChoosePlayerOrderPhaseUnsubscribed = 'GAMES/GAME/CHOOSE_PLAYER_ORDER/CHOOSE_PLAYER_ORDER_PHASE_UNSUBSCRIBED',
 }
 
 // Selectors
@@ -28,7 +28,7 @@ export {
   selectTasksViewModel,
   selectTotalEstimationPoints,
   selectMinEstimationPointsPerPlayer,
-  selectMaxEstimationPointsPerPlayer
+  selectMaxEstimationPointsPerPlayer,
 } from '../../duck-helpers/current-game-tasks';
 
 // Queries
@@ -40,19 +40,19 @@ const updatePlayerOrderQuery = (
   collection: 'games',
   doc: gameId,
   storeAs: 'updatePlayerOrderId',
-  subcollections: [{ collection: 'players', doc: playerId }]
+  subcollections: [{ collection: 'players', doc: playerId }],
 });
 
 const getAllPlayersTaskEstimationsQuery = (gameId: string) => ({
   collection: 'games',
   doc: gameId,
   subcollections: [{ collection: 'task-estimations' }],
-  storeAs: 'allPlayersTaskEstimations'
+  storeAs: 'allPlayersTaskEstimations',
 });
 
 const getChoosePlayerOrderPhaseQueries = (gameId: string): DocumentQuery[] => [
   getAllPlayersTaskEstimationsQuery(gameId),
-  getGameTasksQuery(gameId)
+  getGameTasksQuery(gameId),
 ];
 
 // Actions
@@ -76,7 +76,7 @@ export const goToNextStep: AppActionCreator = () => async (
 
   dispatch({
     type: ChoosePlayerOrderActionTypes.NextGamePhaseRequested,
-    payload: { phase }
+    payload: { phase },
   });
   await firestore.update(updateGameByIdQuery(game.id!), phase);
 };
@@ -100,7 +100,7 @@ export const goToPreviousStep: AppActionCreator = () => async (
 
   dispatch({
     type: ChoosePlayerOrderActionTypes.PreviousGamePhaseRequested,
-    payload: phase
+    payload: phase,
   });
   await firestore.update(updateGameByIdQuery(game.id!), phase);
   dispatch({ type: ChoosePlayerOrderActionTypes.PreviousGamePhaseSucceeded });
@@ -154,12 +154,12 @@ export const changePlayerPickingOrder: AppActionCreator = (
     }
 
     let updatedPlayer: Partial<GamePlayer> = {
-      pickOrder: newPickOrder
+      pickOrder: newPickOrder,
     };
 
     dispatch({
       type: ChoosePlayerOrderActionTypes.ChangePlayerOrderRequested,
-      payload: { player, updatedPlayer }
+      payload: { player, updatedPlayer },
     });
 
     firestore.update(updatePlayerOrderQuery(gameId, player.id!), updatedPlayer);
@@ -174,7 +174,7 @@ export const subscribeToChoosePlayerOrderPhase: AppActionCreator = (
   await firestore.setListeners(getChoosePlayerOrderPhaseQueries(gameId));
 
   dispatch({
-    type: ChoosePlayerOrderActionTypes.ChoosePlayerOrderPhaseSubscribed
+    type: ChoosePlayerOrderActionTypes.ChoosePlayerOrderPhaseSubscribed,
   });
 };
 
@@ -186,7 +186,7 @@ export const unsubscribeFromChoosePlayerOrderPhase: AppActionCreator = (
   await firestore.unsetListeners(getChoosePlayerOrderPhaseQueries(gameId));
 
   dispatch({
-    type: ChoosePlayerOrderActionTypes.ChoosePlayerOrderPhaseUnsubscribed
+    type: ChoosePlayerOrderActionTypes.ChoosePlayerOrderPhaseUnsubscribed,
   });
 };
 
