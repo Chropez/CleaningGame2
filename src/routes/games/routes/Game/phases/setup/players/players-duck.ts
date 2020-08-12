@@ -5,7 +5,7 @@ import { AppAction } from 'config/redux';
 import User from 'models/user';
 import {
   selectGamePlayers,
-  selectGameId
+  selectGameId,
 } from 'routes/games/routes/Game/game-duck';
 import { selectCurrentUserId } from 'application/selectors';
 import { DocumentQuery } from 'typings/firestore';
@@ -21,7 +21,7 @@ enum PlayerActionTypes {
   AddPlayerToGameRequested = 'GAMES/GAME/PLAYERS/ADD_PLAYER_TO_GAME_REQUESTED',
   AddPlayerToGameSucceeded = 'GAMES/GAME/PLAYERS/ADD_PLAYER_TO_GAME_SUCCEEDED',
   RemovePlayerFromGameRequested = 'GAMES/GAME/PLAYERS/REMOVE_PLAYER_FROM_GAME_REQUESTED',
-  RemovePlayerFromGameSucceeded = 'GAMES/GAME/PLAYERS/REMOVE_PLAYER_FROM_GAME_SUCCEEDED'
+  RemovePlayerFromGameSucceeded = 'GAMES/GAME/PLAYERS/REMOVE_PLAYER_FROM_GAME_SUCCEEDED',
 }
 
 // Selectors
@@ -48,7 +48,7 @@ export const selectAvailablePlayers = (
         user,
         addedToGame:
           gamePlayers.find(gamePlayer => gamePlayer.userId === user.id) !==
-          undefined
+          undefined,
       }))
 
       // Remove your own user
@@ -65,13 +65,13 @@ export const setPlayerToGameQuery = (
   collection: 'games',
   doc: gameId,
   storeAs: 'setPlayerToGame',
-  subcollections: [{ collection: 'players', doc: userId }]
+  subcollections: [{ collection: 'players', doc: userId }],
 });
 
 export const updateGameQuery = (gameId: string): DocumentQuery => ({
   collection: 'games',
   doc: gameId,
-  storeAs: 'updateGameQuery'
+  storeAs: 'updateGameQuery',
 });
 
 export const deletePlayerFromGameQuery = (
@@ -81,7 +81,7 @@ export const deletePlayerFromGameQuery = (
   collection: 'games',
   doc: gameId,
   storeAs: 'removePlayerToGame',
-  subcollections: [{ collection: 'players', doc: userId }]
+  subcollections: [{ collection: 'players', doc: userId }],
 });
 
 // Actions
@@ -104,7 +104,7 @@ export const getAvailablePlayers: AppActionCreator = () => async (
 
   await firestore.get({
     collection: 'users',
-    storeAs: 'currentGameAvailablePlayers'
+    storeAs: 'currentGameAvailablePlayers',
   });
 
   dispatch({ type: PlayerActionTypes.FetchAvailablePlayersSucceeded });
@@ -118,18 +118,18 @@ export const addPlayerToGame: AppActionCreator = (
 
   let player: GamePlayer = {
     userId,
-    createdAt: timestamp(firestore)
+    createdAt: timestamp(firestore),
   };
 
   dispatch({
     type: PlayerActionTypes.AddPlayerToGameRequested,
-    payload: { ...player }
+    payload: { ...player },
   });
 
   await firestore.set(setPlayerToGameQuery(gameId, userId), player);
 
   let updatedGame: Partial<Game> = {
-    participants: firestore.FieldValue.arrayUnion(userId)
+    participants: firestore.FieldValue.arrayUnion(userId),
   };
 
   await firestore.update(updateGameQuery(gameId), updatedGame);
@@ -148,7 +148,7 @@ export const removePlayerFromGame: AppActionCreator = (
   await firestore.delete(deletePlayerFromGameQuery(gameId, playerId));
 
   let updatedGame: Partial<Game> = {
-    participants: firestore.FieldValue.arrayRemove(playerId)
+    participants: firestore.FieldValue.arrayRemove(playerId),
   };
 
   await firestore.update(updateGameQuery(gameId), updatedGame);
@@ -169,7 +169,7 @@ export interface PlayersState {
 
 const initialState: PlayersState = {
   showAddPlayerDialog: false,
-  isLoadingAvailablePlayers: false
+  isLoadingAvailablePlayers: false,
 };
 
 export const playerReducer = (

@@ -6,5 +6,5 @@ export const FirebaseConfig: FirebaseConfigInterface = {
   databaseURL: 'https://stadspelet.firebaseio.com',
   projectId: 'stadspelet',
   storageBucket: 'stadspelet.appspot.com',
-  messagingSenderId: '96589965693'
+  messagingSenderId: '96589965693',
 };

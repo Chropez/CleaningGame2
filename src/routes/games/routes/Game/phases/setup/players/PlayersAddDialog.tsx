@@ -13,10 +13,18 @@ import {
   ListItemSecondaryAction,
   Divider,
   Chip,
-  Box
+  Box,
+  Typography,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
 } from '@material-ui/core';
 import AvailableGamePlayerModel from './available-game-player-view-model';
 import CheckIcon from 'mdi-material-ui/Check';
+import {
+  ShareVariant as ShareVariantIcon,
+  ContentCopy as ContentCopyIcon,
+} from 'mdi-material-ui';
 
 interface Props {
   availablePlayers: AvailableGamePlayerModel[];
@@ -24,6 +32,10 @@ interface Props {
   onClose: () => void;
   onAddPlayer: (playerId: string) => void;
   show: boolean;
+  canShare: boolean;
+  onShareClick: () => void;
+  shareLink: string;
+  onCopyInvitationUrl: () => void;
 }
 
 const PlayersAddDialog: FC<Props> = ({
@@ -31,7 +43,11 @@ const PlayersAddDialog: FC<Props> = ({
   isLoadingAvailablePlayers,
   onAddPlayer,
   onClose,
-  show
+  show,
+  canShare,
+  onShareClick,
+  shareLink,
+  onCopyInvitationUrl,
 }) => {
   return (
     <Dialog
@@ -39,7 +55,7 @@ const PlayersAddDialog: FC<Props> = ({
       fullWidth={true}
       open={show && !isLoadingAvailablePlayers}
     >
-      <DialogTitle>Lägg till spelare</DialogTitle>
+      <DialogTitle>Bjud in dina vänner</DialogTitle>
       <DialogContent>
         <List>
           {availablePlayers.map(player => (
@@ -82,9 +98,42 @@ const PlayersAddDialog: FC<Props> = ({
             </Fragment>
           ))}
         </List>
+        {!canShare && (
+          <Box pt={2} pb={2}>
+            <Typography>Eller dela länken</Typography>
+            <OutlinedInput
+              // id="outlined-adornment-password"
+              fullWidth={true}
+              type="text"
+              value={shareLink}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="copy link"
+                    onClick={onCopyInvitationUrl}
+                    edge="end"
+                  >
+                    <ContentCopyIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </Box>
+        )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => onClose()}>Stäng</Button>
+        {canShare && (
+          <Button
+            variant="text"
+            startIcon={<ShareVariantIcon />}
+            onClick={onShareClick}
+          >
+            Share game
+          </Button>
+        )}
+        <Button variant="text" onClick={() => onClose()}>
+          Stäng
+        </Button>
       </DialogActions>
     </Dialog>
   );

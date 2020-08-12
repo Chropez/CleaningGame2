@@ -1,6 +1,6 @@
 import React, { FC, Fragment } from 'react';
-import GamePhaseWrapper from '../../components/GamePhaseWrapper';
-import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
+import PageWrapper from 'components/PageWrapper';
+import PageContentWrapper from 'components/PageContentWrapper';
 import {
   Box,
   Typography,
@@ -12,7 +12,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Chip,
-  Divider
+  Divider,
 } from '@material-ui/core';
 import BottomButtonBar from 'components/BottomButtonBar';
 import { Small } from 'components/typography';
@@ -40,10 +40,10 @@ const PlayerEstimationWaitList: FC<Props> = ({
   cantContinueButtonMessage,
   onBackClick,
   onContinueClick,
-  players
+  players,
 }) => (
-  <GamePhaseWrapper>
-    <GamePhaseContentWrapper>
+  <PageWrapper>
+    <PageContentWrapper>
       <Box p={2}>
         <Typography>Väntar på de långsamma...</Typography>
       </Box>
@@ -87,7 +87,7 @@ const PlayerEstimationWaitList: FC<Props> = ({
           </Fragment>
         ))}
       </List>
-    </GamePhaseContentWrapper>
+    </PageContentWrapper>
 
     <BottomButtonBar>
       <Button color="default" aria-label="Previous stage" onClick={onBackClick}>
@@ -105,7 +105,7 @@ const PlayerEstimationWaitList: FC<Props> = ({
         {!canContinue && <Small>{cantContinueButtonMessage}</Small>}
       </Button>
     </BottomButtonBar>
-  </GamePhaseWrapper>
+  </PageWrapper>
 );
 
 export default PlayerEstimationWaitList;

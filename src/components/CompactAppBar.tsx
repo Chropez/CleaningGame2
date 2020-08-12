@@ -6,7 +6,7 @@ import {
   Typography,
   Menu,
   MenuProps,
-  MenuItem
+  MenuItem,
 } from '@material-ui/core';
 import Link from 'components/Link';
 import HomeIcon from 'mdi-material-ui/Home';
@@ -43,12 +43,12 @@ interface Props {
   onShowMenu: () => void;
 }
 
-const GameAppBar: FC<Props> = ({
+const CompactAppBar: FC<Props> = ({
   gameName,
   menuIsOpen,
   onHideMenu,
   onLogout,
-  onShowMenu
+  onShowMenu,
 }) => {
   let menuAnchorRef = useRef<HTMLButtonElement | null>(null);
 
@@ -85,4 +85,4 @@ const GameAppBar: FC<Props> = ({
   );
 };
 
-export default GameAppBar;
+export default CompactAppBar;

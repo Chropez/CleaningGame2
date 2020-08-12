@@ -33,7 +33,7 @@ const AddTaskTextField: FC<Props> = ({ onSubmit, onChange, value }) => (
               <SendIcon />
             </IconButton>
           </InputAdornment>
-        )
+        ),
       }}
     />
   </form>

@@ -3,10 +3,9 @@ import {
   Fab as MuiFab,
   Container,
   Box,
-  ListSubheader
+  ListSubheader,
 } from '@material-ui/core';
 import AddIcon from 'mdi-material-ui/Plus';
-import MagnifyIcon from 'mdi-material-ui/Magnify';
 import styled from 'styled-components/macro';
 import { FabProps } from '@material-ui/core/Fab';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +15,7 @@ import {
   subscribeToGames,
   unsubscribeFromGames,
   selectGames,
-  selectUsers
+  selectUsers,
 } from './games-duck';
 import Game from 'models/game';
 import { useHistory } from 'react-router-dom';
@@ -32,13 +31,14 @@ const AddFab = styled(MuiFab as FC<FabProps>)`
   }
 `;
 
-const SearchFab = styled(MuiFab as FC<FabProps>)`
-  && {
-    position: fixed;
-    right: 32px;
-    bottom: 94px;
-  }
-`;
+// Todo: Add feature
+// const SearchFab = styled(MuiFab as FC<FabProps>)`
+//   && {
+//     position: fixed;
+//     right: 32px;
+//     bottom: 94px;
+//   }
+// `;
 
 const GamesContainer: FC = () => {
   const dispatch: AppThunkDispatch = useDispatch();
@@ -76,9 +76,11 @@ const GamesContainer: FC = () => {
           </>
         </Box>
       </Container>
+
+      {/* Todo: Add Feature
       <SearchFab color="default" size="small" aria-label="Search">
         <MagnifyIcon />
-      </SearchFab>
+      </SearchFab> */}
       <AddFab
         color="secondary"
         aria-label="Add"

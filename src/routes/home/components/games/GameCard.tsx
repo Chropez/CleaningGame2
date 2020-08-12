@@ -7,11 +7,11 @@ import {
   IconButton,
   Divider,
   LinkProps,
-  Link
+  Link,
 } from '@material-ui/core';
 import {
   ShareVariant as ShareVariantIcon,
-  Delete as DeleteIcon
+  Delete as DeleteIcon,
 } from 'mdi-material-ui';
 import styled from 'styled-components/macro';
 import User from 'models/user';
@@ -33,7 +33,7 @@ const GameCard: FC<Props> = ({
   gameName,
   gameId,
   currentPlayerId,
-  participants
+  participants,
 }) => (
   <Card>
     <StyledLink href={`/games/${gameId}`} color="inherit">

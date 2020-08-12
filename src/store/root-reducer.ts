@@ -2,31 +2,34 @@ import { firebaseReducer } from 'react-redux-firebase';
 import { combineReducers, AnyAction, Reducer } from 'redux';
 import { firestoreReducer } from 'redux-firestore';
 import { homeReducer, HomeState } from 'routes/home/home-duck';
-import { testReducer } from 'routes/test/duck';
 import { GameState, gameReducer } from 'routes/games/routes/Game/game-duck';
 import Game from 'models/game';
 import reduceReducers from 'reduce-reducers';
 import firestoreEnhancedReducers from './firestore-enhanced-reducer';
 import {
   AddTasksState,
-  addTasksReducer
+  addTasksReducer,
 } from 'routes/games/routes/Game/phases/setup/add-tasks/add-tasks-duck';
 import {
   PlayersState,
-  playerReducer
+  playerReducer,
 } from 'routes/games/routes/Game/phases/setup/players/players-duck';
 import {
   ApplicationRouteState,
-  applicationRouteReducer
+  applicationRouteReducer,
 } from 'routes/application/application-duck';
 import {
   setupPhaseReducer,
-  SetupPhaseState
+  SetupPhaseState,
 } from 'routes/games/routes/Game/phases/setup/setup-phase-duck';
 import GamePlayer from 'models/game-player';
 import Task from 'models/task';
 import TaskEstimation from 'models/task-estimation';
 import User from 'models/user';
+import {
+  InvitationState,
+  invitationReducer,
+} from 'routes/games/routes/invitation/invitation-duck';
 
 type Collection<T> = T;
 
@@ -39,6 +42,7 @@ interface AppData {
   allPlayersTaskEstimations: Collection<TaskEstimation>;
   currentPlayerTaskEstimations: Collection<TaskEstimation>;
   currentGameAvailablePlayers: Collection<User>;
+  invitationGame: Game;
 }
 
 type FirestoreRecordData<T> = {
@@ -69,9 +73,6 @@ export interface ApplicationState {
   firebase: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   firestore: FirestoreState;
-  test: {
-    greet: string;
-  };
   routes: {
     application: ApplicationRouteState;
     home: HomeState;
@@ -82,13 +83,14 @@ export interface ApplicationState {
         players: PlayersState;
         setupPhase: SetupPhaseState;
       };
+      invitation: InvitationState;
     };
   };
 }
 
 let fireStoreInitialState: FirestoreState = {
   status: {
-    requesting: undefined
+    requesting: undefined,
   },
   data: {
     users: undefined,
@@ -98,7 +100,8 @@ let fireStoreInitialState: FirestoreState = {
     currentGameTasks: undefined,
     allPlayersTaskEstimations: undefined,
     currentPlayerTaskEstimations: undefined,
-    currentGameAvailablePlayers: undefined
+    currentGameAvailablePlayers: undefined,
+    invitationGame: undefined,
   },
   ordered: {
     users: [],
@@ -108,18 +111,18 @@ let fireStoreInitialState: FirestoreState = {
     currentGameTasks: [],
     allPlayersTaskEstimations: [],
     currentPlayerTaskEstimations: [],
-    currentGameAvailablePlayers: []
+    currentGameAvailablePlayers: [],
+    invitationGame: [],
   },
   listeners: {},
   errors: {},
-  queries: {}
+  queries: {},
 };
 
 const combinedReducers = combineReducers<ApplicationState>({
   firebase: firebaseReducer,
   firestore: (state = fireStoreInitialState, action) =>
     firestoreReducer(state, action),
-  test: testReducer,
   routes: combineReducers({
     application: applicationRouteReducer,
     home: homeReducer,
@@ -128,10 +131,11 @@ const combinedReducers = combineReducers<ApplicationState>({
         addTasks: addTasksReducer,
         main: gameReducer,
         players: playerReducer,
-        setupPhase: setupPhaseReducer
-      })
-    })
-  })
+        setupPhase: setupPhaseReducer,
+      }),
+      invitation: invitationReducer,
+    }),
+  }),
 });
 
 export default reduceReducers<ApplicationState>(

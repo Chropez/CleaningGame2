@@ -9,7 +9,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
-  Box
+  Box,
 } from '@material-ui/core';
 import { GamePlayerViewModel } from '../../view-models/game-player-view-model';
 import styled from 'styled-components/macro';

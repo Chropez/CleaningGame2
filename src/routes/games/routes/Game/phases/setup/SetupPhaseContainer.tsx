@@ -1,5 +1,11 @@
 import React, { FC, useEffect } from 'react';
-import { Typography, Box, Button } from '@material-ui/core';
+import {
+  Typography,
+  Box,
+  Button,
+  Snackbar,
+  IconButton,
+} from '@material-ui/core';
 import GamePlayersContainer from './players/PlayersContainer';
 import { AppThunkDispatch } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,30 +17,34 @@ import {
   selectIsLoadingAvailablePlayers,
   selectAvailablePlayers,
   addPlayerToGame,
-  removePlayerFromGame
+  removePlayerFromGame,
 } from './players/players-duck';
 import TasksContainer from './add-tasks/TasksContainer';
 import {
   newTaskTextChanged,
   selectNewTaskText,
   addTask,
-  removeTask
+  removeTask,
 } from './add-tasks/add-tasks-duck';
 import BottomButtonBar from 'components/BottomButtonBar';
-import GamePhaseContentWrapper from '../../components/GamePhaseContentWrapper';
-import GamePhaseWrapper from '../../components/GamePhaseWrapper';
+import PageContentWrapper from 'components/PageContentWrapper';
+import PageWrapper from 'components/PageWrapper';
 import {
   goToNextStep,
   selectGameTasks,
   subscribeToGameTasks,
-  unsubscribeFromGameTasks
+  unsubscribeFromGameTasks,
+  selectInvitationUrlCopiedSnackbarIsOpen,
+  closeInvitationUrlCopiedSnackbar,
+  openInvitationUrlCopiedSnackbar,
 } from './setup-phase-duck';
 import {
   selectGame,
   selectGamePlayersViewModel,
-  selectGameId
+  selectGameId,
 } from '../../game-duck';
 import { selectCurrentUserId } from 'application/selectors';
+import { Close as CloseIcon } from 'mdi-material-ui';
 
 const SetupPhaseContainer: FC = () => {
   let dispatch: AppThunkDispatch = useDispatch();
@@ -50,6 +60,10 @@ const SetupPhaseContainer: FC = () => {
 
   let newTaskText = useSelector(selectNewTaskText);
   let tasks = useSelector(selectGameTasks);
+
+  let invitationUrlCopiedSnackbarIsOpen = useSelector(
+    selectInvitationUrlCopiedSnackbarIsOpen
+  );
 
   useEffect(() => {
     dispatch(subscribeToGameTasks(gameId));
@@ -70,13 +84,30 @@ const SetupPhaseContainer: FC = () => {
     gamePlayers.length > 1 &&
     tasks.length >= gamePlayers.length;
 
+  let invitationUrl = `${window.location.protocol}//${window.location.hostname}/games/${gameId}/invitation/${game.invitationId}`;
+
+  let onShareClick = () => {
+    if (!navigator.share) {
+      throw new Error('Cannot share game');
+    }
+    navigator.share({
+      title: 'Städspelet',
+      text: 'Du har blivit inbjuden att spela städspelet!',
+      url: invitationUrl,
+    });
+  };
+
+  let onCopyInvitationUrl = () => {
+    navigator.clipboard.writeText(invitationUrl);
+    dispatch(openInvitationUrlCopiedSnackbar());
+  };
+
   return (
-    <GamePhaseWrapper>
-      <GamePhaseContentWrapper>
+    <PageWrapper>
+      <PageContentWrapper>
         <Box p={2}>
           <Typography>
-            Glöm inte att bjuda in dina städkompanjoner till spelet eller be dem
-            att söka på spelet <strong>{game.name}</strong>.
+            Glöm inte att bjuda in dina städkompanjoner till spelet.
           </Typography>
         </Box>
         <GamePlayersContainer
@@ -91,6 +122,10 @@ const SetupPhaseContainer: FC = () => {
           onRemovePlayer={userId => dispatch(removePlayerFromGame(userId))}
           players={gamePlayers}
           showAddPlayerModal={showAddPlayerModal}
+          canShare={navigator.share !== undefined}
+          onShareClick={onShareClick}
+          shareLink={invitationUrl}
+          onCopyInvitationUrl={onCopyInvitationUrl}
         />
         <TasksContainer
           onAddTask={() => dispatch(addTask())}
@@ -99,7 +134,28 @@ const SetupPhaseContainer: FC = () => {
           newTaskText={newTaskText}
           tasks={tasks}
         />
-      </GamePhaseContentWrapper>
+      </PageContentWrapper>
+
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={invitationUrlCopiedSnackbarIsOpen}
+        autoHideDuration={3000}
+        onClose={() => dispatch(closeInvitationUrlCopiedSnackbar())}
+        message="Länken har kopierats"
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => dispatch(closeInvitationUrlCopiedSnackbar())}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
       <BottomButtonBar>
         <Button
           disabled={!canGoToNextStep}
@@ -112,7 +168,7 @@ const SetupPhaseContainer: FC = () => {
           Nästa
         </Button>
       </BottomButtonBar>
-    </GamePhaseWrapper>
+    </PageWrapper>
   );
 };
 

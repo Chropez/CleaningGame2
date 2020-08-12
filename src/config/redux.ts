@@ -3,7 +3,7 @@ import {
   getFirebase,
   ExtendedAuthInstance,
   ExtendedStorageInstance,
-  ExtendedFirebaseInstance
+  ExtendedFirebaseInstance,
 } from 'react-redux-firebase';
 import { getFirestore as reduxGetFirestore } from 'redux-firestore';
 import { AnyAction, applyMiddleware, compose, createStore } from 'redux';

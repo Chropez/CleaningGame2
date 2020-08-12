@@ -9,7 +9,7 @@ import { loginWithFacebook, loginWithGoogle } from '../../account-duck';
 import ThirdPartyButton from '../../components/ThirdPartyButton';
 import {
   FacebookColoredIcon,
-  GoogleColoredIcon
+  GoogleColoredIcon,
 } from '../../components/ThirdPartyIcons';
 
 const Wrapper = styled(SecondaryBackground)`

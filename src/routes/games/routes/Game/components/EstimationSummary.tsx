@@ -19,7 +19,7 @@ const EstimationSummary: FC<Props> = ({
   totalTasks,
   totalEstimationPoints,
   minEstimationPointsPerPlayer,
-  maxEstimationPointsPerPlayer
+  maxEstimationPointsPerPlayer,
 }) => (
   <Paper>
     <Box display="flex" flexDirection="row" flexWrap="wrap">

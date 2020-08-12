@@ -11,7 +11,7 @@ enum AddTasksActionTypes {
   AddTaskRequested = 'GAMES/GAME/ADD_TASK/ADD_TASK_REQUESTED',
   AddTaskSucceeded = 'GAMES/GAME/ADD_TASK/ADD_TASK_SUCCEEDED',
   RemoveTaskRequested = 'GAMES/GAME/ADD_TASK/REMOVE_TASK_REQUESTED',
-  RemoveTaskSucceeded = 'GAMES/GAME/ADD_TASK/REMOVE_TASK_SUCCEEDED'
+  RemoveTaskSucceeded = 'GAMES/GAME/ADD_TASK/REMOVE_TASK_SUCCEEDED',
 }
 
 // Selectors
@@ -27,8 +27,8 @@ export const newTaskTextChanged: AppActionCreator = (
   dispatch({
     type: AddTasksActionTypes.NewTaskTextChanged,
     payload: {
-      newTaskText
-    }
+      newTaskText,
+    },
   });
 
 export const addTask: AppActionCreator = () => async (
@@ -49,7 +49,7 @@ export const addTask: AppActionCreator = () => async (
   let task: Task = {
     name,
     createdBy: selectCurrentUserId(state),
-    createdAt: timestamp(firestore)
+    createdAt: timestamp(firestore),
   };
 
   dispatch({ type: AddTasksActionTypes.AddTaskRequested, payload: task });
@@ -58,7 +58,7 @@ export const addTask: AppActionCreator = () => async (
     {
       collection: 'games',
       doc: gameId,
-      subcollections: [{ collection: 'tasks' }]
+      subcollections: [{ collection: 'tasks' }],
     },
     task
   );
@@ -81,7 +81,7 @@ export const removeTask: AppActionCreator = (taskId: string) => async (
   await firestore.delete({
     collection: 'games',
     doc: gameId,
-    subcollections: [{ collection: 'tasks', doc: taskId }]
+    subcollections: [{ collection: 'tasks', doc: taskId }],
   });
 
   dispatch({ type: AddTasksActionTypes.RemoveTaskSucceeded });
@@ -98,7 +98,7 @@ export interface AddTasksState {
 }
 
 const initialState: AddTasksState = {
-  newTaskText: ''
+  newTaskText: '',
 };
 
 export const addTasksReducer = (

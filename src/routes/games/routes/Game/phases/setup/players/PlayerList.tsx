@@ -11,7 +11,7 @@ import {
   IconButton,
   Fab,
   Typography,
-  Box
+  Box,
 } from '@material-ui/core';
 import DeleteIcon from 'mdi-material-ui/Delete';
 import styled from 'styled-components/macro';
@@ -30,7 +30,7 @@ interface PlayerListItemProps {
 const PlayerListItem: FC<PlayerListItemProps> = ({
   canBeRemoved,
   onRemovePlayer,
-  player
+  player,
 }) => (
   <>
     <ListItem>
@@ -90,7 +90,7 @@ const PlayerList: FC<Props> = ({
   currentPlayerId,
   onShowAddPlayerDialog,
   onRemovePlayer,
-  players
+  players,
 }) => (
   <List
     subheader={

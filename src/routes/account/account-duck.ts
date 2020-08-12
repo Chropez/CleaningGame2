@@ -3,7 +3,7 @@ import { AppActionCreator } from 'store';
 enum AccountActionTypes {
   LoginWithGoogle = 'ACCOUNT/LOGIN_GOOGLE',
   LoginWithFacebook = 'ACCOUNT/LOGIN_FACEBOOK',
-  Logout = 'ACCOUNT/LOGOUT'
+  Logout = 'ACCOUNT/LOGOUT',
 }
 
 // ActionCreators
@@ -15,6 +15,7 @@ export const loginWithGoogle: AppActionCreator = () => async (
 ) => {
   // login with google in firebase
   let firebase = getFirebase();
+
   let createdUser = await firebase.login({ provider: 'google', type: 'popup' });
 
   dispatch({ type: AccountActionTypes.LoginWithGoogle, payload: createdUser });
@@ -27,13 +28,15 @@ export const loginWithFacebook: AppActionCreator = () => async (
 ) => {
   // login with google in firebase
   let firebase = getFirebase();
+
   let createdUser = await firebase.login({
     provider: 'facebook',
-    type: 'popup'
+    type: 'popup',
   });
+
   dispatch({
     type: AccountActionTypes.LoginWithFacebook,
-    payload: createdUser
+    payload: createdUser,
   });
 };
 

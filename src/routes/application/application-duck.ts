@@ -3,7 +3,7 @@ import { AppActionCreator } from 'store';
 import { ApplicationState } from 'store/root-reducer';
 
 enum ApplicationActionTypes {
-  realViewHeightUnitUpdated = 'APPLICATION/REAL_VIEW_HEIGHT_UNIT_UPDATED'
+  realViewHeightUnitUpdated = 'APPLICATION/REAL_VIEW_HEIGHT_UNIT_UPDATED',
 }
 
 // Selectors
@@ -17,7 +17,7 @@ export const updateRealViewHeightUnit: AppActionCreator = (
 ) => dispatch =>
   dispatch({
     type: ApplicationActionTypes.realViewHeightUnitUpdated,
-    payload: { realViewHeightUnit: vhUnit }
+    payload: { realViewHeightUnit: vhUnit },
   });
 
 // Reducer
@@ -32,7 +32,7 @@ export interface ApplicationRouteState {
 }
 
 const initialState: ApplicationRouteState = {
-  realViewHeightUnit: window.innerHeight * 0.01
+  realViewHeightUnit: window.innerHeight * 0.01,
 };
 
 export const applicationRouteReducer = (
@@ -43,7 +43,7 @@ export const applicationRouteReducer = (
     case ApplicationActionTypes.realViewHeightUnitUpdated:
       return {
         ...state,
-        realViewHeightUnit: action.payload.realViewHeightUnit
+        realViewHeightUnit: action.payload.realViewHeightUnit,
       };
     default:
       return state;

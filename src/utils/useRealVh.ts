@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   updateRealViewHeightUnit,
-  selectRealVhUnit
+  selectRealVhUnit,
 } from 'routes/application/application-duck';
 import { AppThunkDispatch } from 'store';
 

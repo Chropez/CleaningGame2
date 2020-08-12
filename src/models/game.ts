@@ -3,7 +3,7 @@ export enum GamePhase {
   Estimate = 'estimate',
   ChoosePlayerOrder = 'choose-player-order',
   ChooseTasks = 'choose-tasks',
-  Clean = 'clean'
+  Clean = 'clean',
 }
 
 export default interface Game {
@@ -12,5 +12,6 @@ export default interface Game {
   createdAt: number;
   createdById: string;
   phase: GamePhase;
+  invitationId: string;
   participants: string[];
 }
