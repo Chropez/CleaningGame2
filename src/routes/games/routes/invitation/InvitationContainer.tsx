@@ -7,14 +7,23 @@ import {
   selectIsLoading,
   showMenu,
   hideMenu,
-  selectMenuIsOpen
+  selectMenuIsOpen,
+  acceptInvitation,
 } from './invitation-duck';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import InvitationAppBar from './InvitationAppBar';
 import { logout } from 'routes/account/account-duck';
 import PageWrapper from 'components/PageWrapper';
 import PageContentWrapper from 'components/PageContentWrapper';
-import { Box } from '@material-ui/core';
+import {
+  Box,
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  CardActions,
+} from '@material-ui/core';
 
 interface Props {
   gameId: string;
@@ -27,10 +36,15 @@ const InvitationContainer: FC<Props> = ({ gameId, invitationId }) => {
   let isLoading = useSelector(selectIsLoading);
   let userAlreadyJoinedGame = useSelector(selectUserAlreadyJoinedGame);
   let menuIsOpen = useSelector(selectMenuIsOpen);
+  const history = useHistory();
 
   let onLogout = () => {
     dispatch(hideMenu());
     dispatch(logout());
+  };
+
+  let onAcceptInvitationClick = () => {
+    dispatch(acceptInvitation(history, gameId, invitationId));
   };
 
   useEffect(() => {
@@ -54,16 +68,36 @@ const InvitationContainer: FC<Props> = ({ gameId, invitationId }) => {
       menuIsOpen={menuIsOpen}
     >
       <PageWrapper>
-        <PageContentWrapper>
-          <Box mt={2}>
+        <PageContentWrapper maxWidth="md">
+          <Box p={2}>
             {!game && (
-              <>Kunde inte hitta spelet. Kontrollera att länken fungerar</>
+              <Typography>
+                Kunde inte hitta spelet. Kontrollera att länken fungerar
+              </Typography>
             )}
 
             {game && (
-              <>
-                Du har blivit inbjuden till spelet <strong>{game.name}</strong>
-              </>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" color="textSecondary">
+                    Inbjudan till städspel!
+                  </Typography>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Du har blivit inbjuden till spelet{' '}
+                    <strong>{game.name}</strong>
+                  </Typography>
+                </CardContent>
+                <Divider />
+                <CardActions disableSpacing>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={onAcceptInvitationClick}
+                  >
+                    Acceptera Inbjudan
+                  </Button>
+                </CardActions>
+              </Card>
             )}
           </Box>
         </PageContentWrapper>

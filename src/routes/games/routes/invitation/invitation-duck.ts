@@ -4,12 +4,18 @@ import Game from 'models/game';
 import { AppAction } from 'config/redux';
 import { createSelector } from 'reselect';
 import { selectCurrentUserId } from 'application/selectors';
+import GamePlayer from 'models/game-player';
+import { timestamp } from 'utils/firestore';
+import { DocumentQuery } from 'typings/firestore';
+import * as H from 'history';
 
 enum InvitationActionTypes {
   FetchGameRequested = 'GAMES/INVITATION/FETCH_GAME_REQUESTED',
   FetchGameSucceeded = 'GAMES/INVITATION/FETCH_GAME_SUCCEEDED',
   GameMenuOpened = 'GAMES/INVITATION/GAME_MENU_OPENED',
-  GameMenuHidden = 'GAMES/INVITATION/GAME_MENU_HIDDEN'
+  GameMenuHidden = 'GAMES/INVITATION/GAME_MENU_HIDDEN',
+  InvitationAcceptedRequested = 'GAMES/INVITATION/INVITATION_ACCEPTED_REQUESTED',
+  InvitationAcceptedSucceeded = 'GAMES/INVITATION/INVITATION_ACCEPTED_SUCCEEDED',
 }
 
 // Selectors
@@ -50,12 +56,28 @@ const gameInvitationGameQuery = (gameId: string, invitationId: string) => ({
   populates: [
     {
       child: 'participants',
-      root: 'users'
-    }
+      root: 'users',
+    },
   ],
   where: [['invitationId', '==', invitationId]],
   // doc: gameId,
-  storeAs: 'invitationGame'
+  storeAs: 'invitationGame',
+});
+
+export const setPlayerToGameQuery = (
+  gameId: string,
+  userId: string
+): DocumentQuery => ({
+  collection: 'games',
+  doc: gameId,
+  storeAs: 'setPlayerToGameWhenAcceptingInvitation',
+  subcollections: [{ collection: 'players', doc: userId }],
+});
+
+export const updateGameQuery = (gameId: string): DocumentQuery => ({
+  collection: 'games',
+  doc: gameId,
+  storeAs: 'updateGameQuery',
 });
 
 // Actions
@@ -68,13 +90,13 @@ export const fetchInvitationGame: AppActionCreator = (
 
   dispatch({
     type: InvitationActionTypes.FetchGameRequested,
-    payload: { gameId, invitationId }
+    payload: { gameId, invitationId },
   });
 
   await firestore.get(gameInvitationGameQuery(gameId, invitationId));
 
   dispatch({
-    type: InvitationActionTypes.FetchGameSucceeded
+    type: InvitationActionTypes.FetchGameSucceeded,
   });
 };
 
@@ -83,6 +105,40 @@ export const showMenu: AppActionCreator = () => dispatch =>
 
 export const hideMenu: AppActionCreator = () => dispatch =>
   dispatch({ type: InvitationActionTypes.GameMenuHidden });
+
+export const acceptInvitation: AppActionCreator = (
+  history: H.History,
+  gameId: string,
+  invitationId: string
+) => async (dispatch, getState, { getFirestore }) => {
+  let firestore = getFirestore();
+  let state = getState();
+  let userId = selectCurrentUserId(state)!;
+  let game = selectGame(state);
+
+  if (game?.id !== gameId || game.invitationId !== invitationId) {
+    new Error('Could not accept invitation. Invitation did not match the game');
+  }
+
+  let player: GamePlayer = {
+    userId,
+    createdAt: timestamp(firestore),
+  };
+
+  dispatch({ type: InvitationActionTypes.InvitationAcceptedRequested });
+
+  await firestore.set(setPlayerToGameQuery(gameId, userId), player);
+
+  let updatedGame: Partial<Game> = {
+    participants: firestore.FieldValue.arrayUnion(userId),
+  };
+
+  await firestore.update(updateGameQuery(gameId), updatedGame);
+
+  dispatch({ type: InvitationActionTypes.InvitationAcceptedSucceeded });
+
+  history.push(`/games/${gameId}`);
+};
 
 // Reducer
 
@@ -106,7 +162,7 @@ const initialState: InvitationState = {
   gameId: '',
   invitationId: '',
   isLoading: false,
-  menuIsOpen: false
+  menuIsOpen: false,
 };
 
 export const invitationReducer = (
@@ -119,12 +175,12 @@ export const invitationReducer = (
         ...state,
         gameId: action.payload.gameId,
         invitationId: action.payload.invitationId,
-        isLoading: true
+        isLoading: true,
       };
     case InvitationActionTypes.FetchGameSucceeded:
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
       };
     case InvitationActionTypes.GameMenuOpened:
       return { ...state, menuIsOpen: true };
